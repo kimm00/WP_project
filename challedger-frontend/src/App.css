@@ -1,38 +1,58 @@
-.App {
+/* index.css 또는 App.css에 추가 */
+
+body {
+  background-color: #FAF9F6;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+}
+
+.login-container {
+  max-width: 420px;         /* 살짝 넓히기 */
+  margin: 100px auto;       /* 위 여백 더 주기 */
+  padding: 50px 40px;       /* 안쪽 여백도 넉넉하게 */
+  border-radius: 24px;      /* 라운딩 약간 더 부드럽게 */
+  background-color: white;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06); /* 그림자도 살짝 강조 */
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.login-logo {
+  width: 140px; /* 더 크게 */
+  height: auto;
+  margin-bottom: 30px;
+  margin-top: 10px; /* 로고 위쪽 간격 추가 */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.login-title {
+  font-size: 24px;
+  color: #2C3E50;
+  margin-bottom: 30px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.login-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 15px;
+}
+
+.login-input {
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #F9A826;
+  border-radius: 8px;
+}
+
+.login-input:focus {
+  border-color: #F25C54;
+}
+
+.login-button {
+  padding: 12px;
+  font-size: 18px;
+  background-color: #19C197;
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
