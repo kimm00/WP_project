@@ -1,58 +1,115 @@
-/* index.css 또는 App.css에 추가 */
+:root {
+  --color-primary: #19C197;       /* 메인 버튼 색 */
+  --color-on-primary: #FFFFFF;    /* 버튼 텍스트 */
+  --color-primary-hover: #139e7f; /* 버튼 hover */
+
+  --color-accent-alt: #FFC940;    /* 완료 포인트 */
+  --color-text-strong: #223A5E;   /* 강조 텍스트 */
+  --color-card: #FFFFFF;          /* 카드 배경 */
+  --color-body: #FAF9F6;          /* 전체 배경 */
+}
 
 body {
-  background-color: #FAF9F6;
+  background-color: var(--color-body);
   font-family: 'Noto Sans KR', sans-serif;
   margin: 0;
 }
 
-.login-container {
-  max-width: 420px;         /* 살짝 넓히기 */
-  margin: 100px auto;       /* 위 여백 더 주기 */
-  padding: 50px 40px;       /* 안쪽 여백도 넉넉하게 */
-  border-radius: 24px;      /* 라운딩 약간 더 부드럽게 */
-  background-color: white;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06); /* 그림자도 살짝 강조 */
+/* 공통 카드 박스 */
+.login-container,
+.home-container {
+  max-width: 640px;
+  margin: 80px auto;
+  padding: 48px 36px;
+  border-radius: 20px;
+  background-color: var(--color-card);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
   text-align: center;
 }
 
-
-.login-logo {
-  width: 140px; /* 더 크게 */
+/* 로고 */
+.login-logo,
+.home-logo {
+  width: 160px;
   height: auto;
-  margin-bottom: 30px;
-  margin-top: 10px; /* 로고 위쪽 간격 추가 */
+  margin: 0 auto 24px;
 }
 
-.login-title {
-  font-size: 24px;
-  color: #2C3E50;
-  margin-bottom: 30px;
+/* 텍스트 */
+.login-title,
+.home-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  margin-bottom: 8px;
 }
 
+.home-date {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 28px;
+}
+
+/* 입력 폼 */
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
 .login-input {
   padding: 12px 15px;
   font-size: 16px;
-  border: 2px solid #F9A826;
+  border: 2px solid #DADADA;
   border-radius: 8px;
+  outline: none;
 }
 
 .login-input:focus {
-  border-color: #F25C54;
+  border-color: var(--color-primary);
 }
 
-.login-button {
-  padding: 12px;
-  font-size: 18px;
-  background-color: #19C197;
-  color: white;
+/* 버튼 */
+.login-button,
+.home-btn {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+.login-button:hover,
+.home-btn:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+}
+
+/* 챌린지 요약 */
+.challenge-summary {
+  background-color: var(--color-body);
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.challenge-summary h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: var(--color-text-strong);
+}
+
+/* 버튼 섹션 */
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
 }

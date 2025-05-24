@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import HomePage from './pages/HomePage'; // ✅ 추가
 
 function App() {
   return React.createElement(
@@ -12,8 +13,18 @@ function App() {
     React.createElement(
       Routes,
       null,
-      React.createElement(Route, { path: '/', element: React.createElement(LoginPage) }),
-      React.createElement(Route, { path: '/signup', element: React.createElement(SignupPage) })
+      React.createElement(Route, {
+        path: '/',
+        element: React.createElement(LoginPage)
+      }),
+      React.createElement(Route, {
+        path: '/signup',
+        element: React.createElement(SignupPage)
+      }),
+      React.createElement(Route, {
+        path: '/home',
+        element: React.createElement(HomePage) // ✅ 홈 페이지 라우팅 추가
+      })
     )
   );
 }
