@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-import HomePage from './pages/HomePage'; // ✅ 추가
+import HomePage from './pages/HomePage';
+import RecordPage from './pages/RecordPage';
+import ChallengePage from './pages/ChallengePage';
 
 function App() {
   return React.createElement(
@@ -23,7 +25,15 @@ function App() {
       }),
       React.createElement(Route, {
         path: '/home',
-        element: React.createElement(HomePage) // ✅ 홈 페이지 라우팅 추가
+        element: React.createElement(HomePage) 
+      }),
+      React.createElement(Route, {
+        path: '/record',
+        element: React.createElement(RecordPage) 
+      }),
+      React.createElement(Route, {
+        path: '/challenge',
+        element: React.createElement(ChallengePage)
       })
     )
   );
