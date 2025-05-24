@@ -7,6 +7,7 @@ import SignupPage from './pages/SignupPage';
 import HomePage from './pages/HomePage';
 import RecordPage from './pages/RecordPage';
 import ChallengePage from './pages/ChallengePage';
+import StatsPage from './pages/StatsPage';
 
 function App() {
   return React.createElement(
@@ -34,6 +35,10 @@ function App() {
       React.createElement(Route, {
         path: '/challenge',
         element: React.createElement(ChallengePage)
+      }),
+      React.createElement(Route, {
+        path: '/stats',
+        element: React.createElement(StatsPage)
       })
     )
   );
