@@ -1,4 +1,5 @@
 // src/pages/LoginPage.js
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -8,18 +9,27 @@ function LoginPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
-
-    // 예시: 임시 로그인 로직 (실제 프로젝트에서는 API 요청 필요)
-    if (email === 'user@example.com' && password === '1234') {
+  
+    try {
+      const res = await axios.post('http://localhost:4000/api/auth/login', {
+        email,
+        password
+      });
+  
+      // ✅ 로그인 성공 시 토큰과 사용자 이메일 저장
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('email', res.data.email);
+  
+      // ✅ 에러 초기화 및 페이지 이동
       setError('');
-      localStorage.setItem('user', JSON.stringify({ email })); // 로그인 상태 저장
-      navigate('/home'); // 홈으로 이동
-    } else {
-      setError('Incorrect email or password');
+      navigate('/home'); // 홈 페이지로 이동
+    } catch (err) {
+      console.error('❌ 로그인 실패:', err.response?.data || err.message);
+      setError(err.response?.data?.error || 'Login failed');
     }
-  }
+  }  
 
   return React.createElement(
     'div',
