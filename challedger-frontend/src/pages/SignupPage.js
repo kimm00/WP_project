@@ -1,4 +1,5 @@
 // src/pages/SignupPage.js
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -9,21 +10,30 @@ function SignupPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  function handleSignup(event) {
+  async function handleSignup(event) {
     event.preventDefault();
-
-    // 간단한 비밀번호 확인 검사
+  
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
-    // TODO: 실제 회원가입 API 요청 처리
-    console.log('회원가입 시도:', email, password);
-
-    // 성공 시 로그인 페이지로 이동
-    navigate('/');
-  }
+  
+    try {
+      const response = await axios.post('http://localhost:4000/api/auth/signup', {
+        email,
+        password,
+      });
+  
+      console.log('✅ 회원가입 성공:', response.data);
+  
+      // 회원가입 성공 시 로그인 페이지로 이동
+      navigate('/');
+    } catch (err) {
+      console.error('❌ 회원가입 실패:', err.response?.data || err.message);
+      const message = err.response?.data?.error || 'Signup failed';
+      setError(message);
+    }
+  }  
 
   return React.createElement(
     'div',
