@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 function SignupPage() {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -44,6 +45,13 @@ function SignupPage() {
       className: 'login-logo',
     }),
     React.createElement('h1', { className: 'login-title' }, 'Create Your Account'),
+    React.createElement('input', {
+      type: 'text',
+      placeholder: 'Username',
+      value: username,
+      onChange: (e) => setUsername(e.target.value),
+      className: 'login-input',
+    }),    
     React.createElement(
       'form',
       { className: 'login-form', onSubmit: handleSignup },

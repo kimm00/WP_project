@@ -357,4 +357,10 @@ body {
 .history-item.in-progress {
   border-left-color: #FFC940;
 }
+.user-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 12px;
+  color: var(--color-text-strong);
+}
 
