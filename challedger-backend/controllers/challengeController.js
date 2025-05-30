@@ -33,7 +33,6 @@ exports.getCurrentChallenges = async (req, res) => {
   }
 };
 
-// exports.getChallengeProgress → getChallengeProgresses 로 이름 바꾸는 것도 추천
 exports.getChallengeProgresses = async (req, res) => {
   const userId = req.user.id;
   const today = new Date().toISOString().slice(0, 10);
