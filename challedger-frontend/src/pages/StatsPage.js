@@ -58,7 +58,7 @@ function StatsPage() {
         setProgressError('진행 중인 챌린지가 없습니다.');
       }
     };
-
+  
     fetchExpenses();
     fetchChallenges();
   }, []);
