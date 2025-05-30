@@ -52,7 +52,7 @@ body {
   font-size: 26px;
   font-weight: 700;
   color: var(--color-text-strong);
-  margin: 0 0 8px;
+  margin: 0 0 20px;
   text-align: center;
 }
 
@@ -140,6 +140,95 @@ body {
   gap: 14px;
   margin-top: 24px;
 }
+/* -------------------- 챌린지 진행률 카드 -------------------- */
+.challenge-progress-box {
+  display: flex;
+  justify-content: space-between; /* 텍스트 왼쪽, 그래프 오른쪽 */
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 32px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  margin-bottom: 32px;
+}
+
+.challenge-progress-box h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.challenge-progress-text {
+  flex: 1;
+  min-width: 240px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.challenge-progress-text strong {
+  color: #000;
+}
+
+.challenge-status-good {
+  color: var(--color-primary);
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.challenge-status-bad {
+  color: #F95C2F;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.challenge-progress-chart {
+  width: 120px;
+  height: 120px;
+}
+.challenge-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 24px;
+}
+
+.challenge-highlight {
+  width: 280px;
+}
+.challenge-card {
+  flex: 0 1 calc(50% - 1.5rem); /* 2개씩 나열되도록 */
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.challenge-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+.donut-chart-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+.challenge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* 카드 간격 */
+  justify-content: center; /* 가운데 정렬 */
+}
+
 
 /* -------------------- Header -------------------- */
 .site-header {
@@ -488,4 +577,117 @@ body {
   .landing-left img {
     width: 180px;
   }
+}
+.calendar-grid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.calendar-box {
+  min-width: 320px;
+}
+
+.calendar-details {
+  min-width: 250px;
+}
+
+.expense-list {
+  padding-left: 1.2rem;
+}
+
+.total-expense {
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+}
+/* 전체 달력 스타일 */
+.react-calendar {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  width: 100%;
+  max-width: 350px;
+  background: #ffffff;
+}
+
+/* 상단 네비게이션 */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #2e3a59;
+}
+
+.react-calendar__navigation button {
+  background: none;
+  border: none;
+  color: #4e5d78;
+  font-size: 1rem;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.react-calendar__navigation button:hover {
+  color: #19C197;
+}
+
+/* 요일 헤더 */
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: 600;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* 날짜 셀 */
+.react-calendar__tile {
+  padding: 0.7rem 0;
+  background: none;
+  border: none;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #333;
+  transition: background 0.2s ease-in-out;
+}
+
+/* hover 시 */
+.react-calendar__tile:hover {
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+/* 오늘 날짜 */
+.react-calendar__tile--now {
+  background: #19C197 !important;   /* 부드러운 민트색: 강조 + 통일성 */
+  color: #fff !important;           /* 텍스트는 흰색으로 가독성 확보 */
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+/* 선택된 날짜 */
+.react-calendar__tile--active {
+  background: #1F2F56 !important;   /* 짙은 네이비 */
+  color: white !important;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+.react-calendar__tile--active:enabled:hover {
+  background: #2c3f6b !important; /* 네이비 hover 시 약간 밝게 */
+}
+
+/* 주말 색상 변경 */
+.react-calendar__month-view__days__day--weekend {
+  color: #f95c2f;
 }
