@@ -1,4 +1,5 @@
 // src/pages/ChallengePage.js
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -11,11 +12,37 @@ function ChallengePage() {
   const [endDate, setEndDate] = useState('');
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log('🎯 챌린지 등록:', { title, category, goal, startDate, endDate });
-    alert('Challenge saved!');
-    navigate('/home'); // ✅ 저장 후 홈으로 이동
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+
+      await axios.post(
+        'http://localhost:4000/api/challenges',
+        {
+          category,
+          goal_amount: goal,
+          start_date: startDate,
+          end_date: endDate
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      alert('🎯 챌린지가 성공적으로 등록되었습니다!');
+      navigate('/home');
+    } catch (err) {
+      console.error('❌ 챌린지 등록 실패:', err);
+      alert('챌린지 등록 중 오류가 발생했습니다.');
+    }
   }
 
   function goHome() {
