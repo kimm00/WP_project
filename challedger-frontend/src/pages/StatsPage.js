@@ -164,7 +164,7 @@ function StatsPage() {
 
       // Challenge Progress
       React.createElement('div', { className: 'section-box' },
-        React.createElement('h2', { className: 'record-title' }, '🎯 Challenge SpendingRatio'),
+        React.createElement('h2', { className: 'record-title' }, '🎯 Challenge Spending Ratio'),
       
         progressError && React.createElement(
           'p',
@@ -181,7 +181,7 @@ function StatsPage() {
               React.createElement('p', null, `Category: ${c.category}`),
               React.createElement('p', null, `Goal: ${Number(c.goalAmount || c.goal_amount).toLocaleString()} KRW`),
               React.createElement('p', null, `Current Spending: ${Number(c.actualSpending || c.actual_spending || 0).toLocaleString()} KRW`),
-              React.createElement('p', null, `SpendingRatio: ${c.percent || c.progress || 0}%`),
+              React.createElement('p', null, `Spending Ratio: ${c.percent || c.progress || 0}%`),
       
               React.createElement('div', { className: 'donut-chart-box', style: { marginTop: '16px' } },
                 React.createElement(PieChart, { width: 150, height: 150 },
