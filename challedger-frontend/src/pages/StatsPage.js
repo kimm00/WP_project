@@ -40,7 +40,8 @@ function StatsPage() {
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user')) || {};
+        const token = user.token;
         const month = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
 
         const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
@@ -59,7 +60,8 @@ function StatsPage() {
 
     const fetchChallengeProgress = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user')) || {};
+        const token = user.token;
         const res = await axios.get('http://localhost:4000/api/challenges/progress', {
           headers: { Authorization: `Bearer ${token}` },
         });

@@ -18,9 +18,12 @@ function LoginPage() {
         password
       });
   
-      // ✅ 로그인 성공 시 토큰과 사용자 이메일 저장
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('email', res.data.email);
+      // ✅ 로그인 성공 시 사용자 정보 저장
+      localStorage.setItem('user', JSON.stringify({
+        token: res.data.token,
+        email: res.data.email,
+        username: res.data.username
+      }));      
   
       // ✅ 에러 초기화 및 페이지 이동
       setError('');

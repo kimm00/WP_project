@@ -19,7 +19,8 @@ function HomePage() {
   useEffect(() => {
     const fetchChallengeProgress = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user')) || {};
+        const token = user.token;
         const res = await axios.get('http://localhost:4000/api/challenges/progress', {
           headers: { Authorization: `Bearer ${token}` },
         });

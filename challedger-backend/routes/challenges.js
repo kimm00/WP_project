@@ -4,7 +4,8 @@ const auth = require('../middleware/auth');
 const challengeController = require('../controllers/challengeController');
 
 router.post('/', auth, challengeController.createChallenge);
-router.get('/', auth, challengeController.getCurrentChallenge);
+router.get('/', auth, challengeController.getAllChallengesWithProgress);
+router.get('/current', auth, challengeController.getCurrentChallenge);
 router.get('/progress', auth, challengeController.getChallengeProgress);
 
 module.exports = router;

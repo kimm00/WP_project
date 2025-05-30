@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ error: '비밀번호 불일치' });
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, username: user.username });
+    res.json({ token, username: user.username, email: user.email });
   } catch (err) {
     res.status(500).json({ error: '로그인 실패', detail: err.message });
   }

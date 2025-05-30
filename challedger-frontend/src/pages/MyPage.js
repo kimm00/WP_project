@@ -1,13 +1,14 @@
 // src/pages/MyPage.js
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 
 function MyPage() {
   const [filter, setFilter] = useState('All');
-
-  const user = JSON.parse(localStorage.getItem('user')) || {};
-  const email = user.email || 'unknown@example.com';
-  const name = user.username || email.split('@')[0];
+  const [challenges, setChallenges] = useState([]);
+  const [error, setError] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
 
   // 뱃지 목록
   const badges = [
@@ -16,16 +17,56 @@ function MyPage() {
     { label: 'First Challenge', icon: '🎉' },
   ];
 
-  // 챌린지 이력 데이터
-  const challengeHistory = [
-    { title: 'April Savings', status: 'Completed', progress: 100, period: '2024.04.01 - 04.30' },
-    { title: 'May Coffee Budget', status: 'In Progress', progress: 60, period: '2024.05.01 - 05.31' },
-    { title: 'February No Shopping', status: 'Completed', progress: 100, period: '2024.02.01 - 02.28' },
-  ];
+  // ✅ 사용자 챌린지 목록 불러오기
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      const user = JSON.parse(localStorage.getItem('user')) || {};
+      const email = user.email || 'unknown@example.com';
+      const name = user.username || email.split('@')[0];
 
-  // 필터링된 챌린지 리스트
+      setUserEmail(email);
+      setUserName(name);
+  
+      if (!user || !user.token) {
+        console.warn('⛔ No user or token found in localStorage');
+        setChallenges([]);
+        return;
+      }
+  
+      try {
+        const res = await axios.get('http://localhost:4000/api/challenges', {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
+
+        // 진행률 계산
+        const processed = (Array.isArray(res.data) ? res.data : [res.data]).map((c) => {
+          const actual = Number(c.actual_spending || 0);
+          const goal = Number(c.goal_amount || 1);
+          const progress = Math.min(Math.round((actual / goal) * 100), 100);
+
+          return {
+            ...c,
+            progress,
+          };
+        });
+
+        setChallenges(processed);
+      } catch (err) {
+        console.error('❌ 챌린지 불러오기 실패:', err);
+        setError('Failed to load challenges');
+      }
+    };
+  
+    fetchChallenges();
+  }, []);
+
+  // ✅ 필터링된 챌린지 리스트
   const filteredChallenges =
-    filter === 'All' ? challengeHistory : challengeHistory.filter((c) => c.status === filter);
+    filter === 'All'
+      ? challenges
+      : filter === 'Completed'
+      ? challenges.filter((c) => c.progress === 100)
+      : challenges.filter((c) => c.progress < 100);
 
   return React.createElement(
     React.Fragment,
@@ -42,21 +83,28 @@ function MyPage() {
         'div',
         { className: 'profile-card' },
         React.createElement('img', {
-          src: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=19C197&color=fff&rounded=true`,
+          src: `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=19C197&color=fff&rounded=true`,
           alt: 'User Avatar',
           className: 'profile-avatar'
         }),
-        React.createElement('h2', { className: 'user-name' }, name),
-        React.createElement('p', { className: 'user-email' }, email)
+        React.createElement('h2', { className: 'user-name' }, userName),
+        React.createElement('p', { className: 'user-email' }, userEmail),        
       ),
 
-      // 📌 챌린지 진행 중인 항목 요약
+      // 📌 챌린지 개요
       React.createElement(
         'div',
         { className: 'section-box' },
         React.createElement('h3', null, 'My Challenges'),
-        React.createElement('p', null, '💼 April Savings Challenge — 80% Complete'),
-        React.createElement('p', null, '✈️ March Travel Challenge — 100% Complete')
+        challenges.length === 0
+          ? React.createElement('p', null, 'No challenges yet.')
+          : challenges.slice(0, 2).map((c, i) =>
+              React.createElement(
+                'p',
+                { key: i },
+                `${c.title || 'Untitled'} — ${c.progress}% Complete`
+              )
+            )
       ),
 
       // 🏅 보유한 뱃지
@@ -78,13 +126,14 @@ function MyPage() {
         )
       ),
 
-      // 📊 챌린지 이력 + 필터링 기능
+      // 📊 챌린지 이력
       React.createElement(
         'div',
         { className: 'section-box' },
         React.createElement('h3', null, 'Challenge History'),
+        error && React.createElement('p', { style: { color: 'red' } }, error),
 
-        // 필터 버튼 그룹
+        // 필터 버튼
         React.createElement(
           'div',
           { className: 'filter-group' },
@@ -94,7 +143,7 @@ function MyPage() {
               {
                 key: f,
                 className: filter === f ? 'filter-btn active' : 'filter-btn',
-                onClick: () => setFilter(f)
+                onClick: () => setFilter(f),
               },
               f
             )
@@ -105,18 +154,22 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'history-list' },
-          filteredChallenges.map((c, i) =>
-            React.createElement(
+          filteredChallenges.map((c, i) => {
+            const status = c.progress === 100 ? 'Completed' : 'In Progress';
+            const statusClass = status.toLowerCase().replace(' ', '-');
+            const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
+
+            return React.createElement(
               'div',
               {
                 key: i,
-                className: `history-item ${c.status.toLowerCase().replace(' ', '-')}`
+                className: `history-item ${statusClass}`
               },
-              React.createElement('strong', null, `${c.status === 'Completed' ? '✅' : '🔄'} ${c.title}`),
-              React.createElement('p', null, c.period),
+              React.createElement('strong', null, `${status === 'Completed' ? '✅' : '🔄'} ${c.title || 'Untitled'}`),
+              React.createElement('p', null, period),
               React.createElement('p', null, `Progress: ${c.progress}%`)
-            )
-          )
+            );
+      })
         )
       )
     )
