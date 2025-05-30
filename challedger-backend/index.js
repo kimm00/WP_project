@@ -38,5 +38,5 @@ app.get('/test-db', async (req, res) => {
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
-const expenseRoutes = require('./routes/expense');
-app.use('/api/expense', expenseRoutes);
+const expenseRoutes = require('./routes/expenses');
+app.use('/api/expenses', expenseRoutes);

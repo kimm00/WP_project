@@ -1,4 +1,5 @@
 // src/pages/RecordPage.js
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -8,12 +9,37 @@ function RecordPage() {
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('Food');
   const [note, setNote] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log('💸 Expense recorded:', { date, amount, category, note });
-    alert('Expense recorded!');
+
+    try {
+      const token = localStorage.getItem('token'); // 로그인 후 저장된 토큰
+
+      if (!token) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+
+      await axios.post('http://localhost:4000/api/expenses', {
+        amount,
+        category,
+        date,
+        description: note
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      alert('✅ 소비가 성공적으로 등록되었습니다!');
+      navigate('/home');
+    } catch (err) {
+      console.error('❌ 소비 등록 실패:', err.response?.data || err.message);
+      setError(err.response?.data?.error || '소비 등록 중 오류 발생');
+    }
   }
 
   function goHome() {
@@ -96,7 +122,14 @@ function RecordPage() {
           'button',
           { type: 'submit', className: 'record-button' },
           '💾 Save Expense'
-        )
+        ),
+
+        error &&
+          React.createElement(
+            'p',
+            { style: { color: 'red', fontSize: '14px', marginTop: '10px' } },
+            error
+          )
       )
     )
   );
