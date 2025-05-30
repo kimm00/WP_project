@@ -13,25 +13,27 @@ function HomePage() {
     weekday: 'long',
   });
 
-  const [challenge, setChallenge] = useState(null);
-  const [progressError, setProgressError] = useState('');
+  const [challenges, setChallenges] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchChallengeProgress = async () => {
+    const fetchChallenges = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const res = await axios.get('http://localhost:4000/api/challenges/progress', {
+        const res = await axios.get('http://localhost:4000/api/challenges/current', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setChallenge(res.data);
+
+        const list = Array.isArray(res.data) ? res.data : [res.data];
+        setChallenges(list);
       } catch (err) {
-        console.error('❌ 챌린지 조회 실패:', err);
-        setProgressError('No active challenge.');
+        console.error('❌ 진행 중 챌린지 조회 실패:', err);
+        setError('No active challenge.');
       }
     };
 
-    fetchChallengeProgress();
+    fetchChallenges();
   }, []);
 
   // 버튼 클릭 핸들러
@@ -64,21 +66,25 @@ function HomePage() {
       React.createElement(
         'div',
         { className: 'challenge-summary' },
-        React.createElement('h2', null, 'Current Challenge'),
-        progressError
-          ? React.createElement('p', { style: { color: 'gray' } }, progressError)
-          : challenge && React.createElement(
-              React.Fragment,
-              null,
+        React.createElement('h2', null, 'Current Challenges'),
+        error
+          ? React.createElement('p', { style: { color: 'gray' } }, error)
+          : challenges.length === 0
+          ? React.createElement('p', null, 'No challenges right now.')
+          : challenges.map((c, i) =>
               React.createElement(
-                'p',
-                null,
-                `This week's goal: Spend less than ${challenge.goalAmount.toLocaleString()} KRW on ${challenge.category.toLowerCase()}`
-              ),
-              React.createElement(
-                'p',
-                null,
-                `Current spending: ${challenge.actualSpending.toLocaleString()} KRW`
+                'div',
+                { key: i, style: { marginBottom: '12px' } },
+                React.createElement(
+                  'p',
+                  null,
+                  `🎯 ${c.title || 'Untitled'} — Spend less than ${c.goal_amount.toLocaleString()} KRW on ${c.category.toLowerCase()}`
+                ),
+                React.createElement(
+                  'p',
+                  null,
+                  `💸 Current spending: ${c.actual_spending ? c.actual_spending.toLocaleString() : '0'} KRW`
+                )
               )
             )
       ),

@@ -15,16 +15,19 @@ function ChallengePage() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('로그인이 필요합니다.');
-        return;
-      }
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const token = user.token;
 
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    try {
       await axios.post(
         'http://localhost:4000/api/challenges',
         {
+          title,
           category,
           goal_amount: goal,
           start_date: startDate,

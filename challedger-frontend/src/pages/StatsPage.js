@@ -58,22 +58,24 @@ function StatsPage() {
       }
     };
 
-    const fetchChallengeProgress = async () => {
+    const fetchChallenges = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const res = await axios.get('http://localhost:4000/api/challenges/progress', {
+        const res = await axios.get('http://localhost:4000/api/challenges/current', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setChallenge(res.data);
+  
+        const list = Array.isArray(res.data) ? res.data : [res.data];
+        setChallenge(list); // 배열로 저장
       } catch (err) {
-        console.error('❌ 챌린지 진행률 조회 실패:', err);
+        console.error('❌ 진행 중 챌린지 조회 실패:', err);
         setProgressError('진행 중인 챌린지가 없습니다.');
       }
     };
-
+  
     fetchExpenses();
-    fetchChallengeProgress();
+    fetchChallenges();
   }, []);
 
   function processChartData(data) {
@@ -152,19 +154,22 @@ function StatsPage() {
               {progressError}
             </p>
           )}
-          {challenge && (
-            <p style={{ fontSize: '16px', marginTop: '8px' }}>
-              Category: <strong>{challenge.category}</strong><br />
-              Goal: <strong>{challenge.goalAmount.toLocaleString()} KRW</strong><br />
-              Current Spending: <strong>{challenge.actualSpending.toLocaleString()} KRW</strong><br />
-              Progress: <strong>{challenge.percent}%</strong><br />
-              {challenge.isExceeded ? (
-                <span style={{ color: 'red', fontWeight: 'bold' }}>⚠ Budget Exceeded!</span>
-              ) : (
-                <span style={{ color: '#19C197', fontWeight: 'bold' }}>✔ You're on track!</span>
-              )}
-            </p>
-          )}
+          {Array.isArray(challenge) && challenge.length > 0 && challenge.map((c, i) => (
+            <div key={i} style={{ marginBottom: '16px' }}>
+              <p style={{ fontSize: '16px' }}>
+                🏷 <strong>{c.title || 'Untitled Challenge'}</strong><br />
+                Category: <strong>{c.category}</strong><br />
+                Goal: <strong>{Number(c.goal_amount).toLocaleString()} KRW</strong><br />
+                Current Spending: <strong>{Number(c.actual_spending || 0).toLocaleString()} KRW</strong><br />
+                Progress: <strong>{c.progress || 0}%</strong><br />
+                {Number(c.actual_spending) > Number(c.goal_amount) ? (
+                  <span style={{ color: 'red', fontWeight: 'bold' }}>⚠ Budget Exceeded!</span>
+                ) : (
+                  <span style={{ color: '#19C197', fontWeight: 'bold' }}>✔ You're on track!</span>
+                )}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </>

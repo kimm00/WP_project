@@ -34,7 +34,7 @@ function MyPage() {
       }
   
       try {
-        const res = await axios.get('http://localhost:4000/api/challenges', {
+        const res = await axios.get('http://localhost:4000/api/challenges/all', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
@@ -98,7 +98,7 @@ function MyPage() {
         React.createElement('h3', null, 'My Challenges'),
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
-          : challenges.slice(0, 2).map((c, i) =>
+          : challenges.map((c, i) =>
               React.createElement(
                 'p',
                 { key: i },
