@@ -21,8 +21,9 @@ function SignupPage() {
   
     try {
       const response = await axios.post('http://localhost:4000/api/auth/signup', {
+        username,
         email,
-        password,
+        password
       });
   
       console.log('✅ 회원가입 성공:', response.data);
@@ -48,8 +49,7 @@ function SignupPage() {
     React.createElement(
       'form',
       { className: 'login-form', onSubmit: handleSignup },
-    
-      // Username input
+
       React.createElement('input', {
         type: 'text',
         placeholder: 'Username',
@@ -57,9 +57,7 @@ function SignupPage() {
         onChange: (e) => setUsername(e.target.value),
         className: 'login-input',
       }),
-    React.createElement(
-      'form',
-      { className: 'login-form', onSubmit: handleSignup },
+
       React.createElement('input', {
         type: 'email',
         placeholder: 'Email',
@@ -67,6 +65,7 @@ function SignupPage() {
         onChange: (e) => setEmail(e.target.value),
         className: 'login-input',
       }),
+
       React.createElement('input', {
         type: 'password',
         placeholder: 'Password',
@@ -74,6 +73,7 @@ function SignupPage() {
         onChange: (e) => setPassword(e.target.value),
         className: 'login-input',
       }),
+
       React.createElement('input', {
         type: 'password',
         placeholder: 'Confirm Password',
@@ -81,11 +81,13 @@ function SignupPage() {
         onChange: (e) => setConfirmPassword(e.target.value),
         className: 'login-input',
       }),
+
       React.createElement(
         'button',
         { type: 'submit', className: 'login-button' },
         'Sign Up'
       ),
+
       error &&
         React.createElement(
           'p',
@@ -93,17 +95,20 @@ function SignupPage() {
           error
         )
     ),
+
     React.createElement(
       'p',
       { style: { marginTop: '15px' } },
       'Already have an account? ',
       React.createElement(
         Link,
-        { to: '/', style: { color: 'blue', textDecoration: 'none', fontWeight: 'bold' } },
+        {
+          to: '/',
+          style: { color: 'blue', textDecoration: 'none', fontWeight: 'bold' }
+        },
         'Log in'
       )
     )
-  )
   );
 }
 
