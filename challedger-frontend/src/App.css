@@ -140,6 +140,91 @@ body {
   gap: 14px;
   margin-top: 24px;
 }
+/* -------------------- 챌린지 진행률 카드 -------------------- */
+.challenge-progress-box {
+  display: flex;
+  justify-content: space-between; /* 텍스트 왼쪽, 그래프 오른쪽 */
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 32px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  margin-bottom: 32px;
+}
+
+.challenge-progress-box h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.challenge-progress-text {
+  flex: 1;
+  min-width: 240px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.challenge-progress-text strong {
+  color: #000;
+}
+
+.challenge-status-good {
+  color: var(--color-primary);
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.challenge-status-bad {
+  color: #F95C2F;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.challenge-progress-chart {
+  width: 120px;
+  height: 120px;
+}
+.challenge-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 24px;
+}
+
+.challenge-highlight {
+  width: 280px;
+}
+.challenge-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  width: 300px;
+  padding: 24px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.challenge-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+.donut-chart-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
 
 /* -------------------- Header -------------------- */
 .site-header {
