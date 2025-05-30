@@ -21,13 +21,31 @@ exports.getCurrentChallenges = async (req, res) => {
   const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
   try {
-    const [rows] = await db.query(
+    const [challengeRows] = await db.query(
       `SELECT * FROM challenges
        WHERE user_id = ? AND start_date <= ? AND end_date >= ?
        ORDER BY start_date DESC`,
       [userId, today, today]
     );
-    res.json(rows);  // ❗ 배열로 반환
+
+    const enhanced = await Promise.all(
+      challengeRows.map(async (ch) => {
+        const [spendingRows] = await db.query(
+          `SELECT SUM(amount) AS total FROM expenses
+           WHERE user_id = ? AND category = ? AND DATE(date) BETWEEN DATE(?) AND DATE(?)`,
+          [userId, ch.category, ch.start_date, ch.end_date]
+        );
+
+        const actual = Number(spendingRows[0].total || 0);
+
+        return {
+          ...ch,
+          actual_spending: actual,
+        };
+      })
+    );
+
+    res.json(enhanced);
   } catch (err) {
     res.status(500).json({ error: '진행 중 챌린지 목록 조회 실패', detail: err.message });
   }

@@ -39,7 +39,7 @@ function HomePage() {
   // 버튼 클릭 핸들러
   const goToRecord = () => navigate('/record');
   const goToChallenge = () => navigate('/challenge');
-  const goToStats = () =>navigate('/stats');
+  const goToStats = () => navigate('/stats');
 
   return React.createElement(
     React.Fragment,
@@ -71,22 +71,15 @@ function HomePage() {
           ? React.createElement('p', { style: { color: 'gray' } }, error)
           : challenges.length === 0
           ? React.createElement('p', null, 'No challenges right now.')
-          : challenges.map((c, i) =>
-              React.createElement(
-                'div',
-                { key: i, style: { marginBottom: '12px' } },
-                React.createElement(
-                  'p',
-                  null,
-                  `🎯 ${c.title || 'Untitled'} — Spend less than ${c.goal_amount.toLocaleString()} KRW on ${c.category.toLowerCase()}`
-                ),
-                React.createElement(
-                  'p',
-                  null,
-                  `💸 Current spending: ${c.actual_spending ? c.actual_spending.toLocaleString() : '0'} KRW`
-                )
-              )
-            )
+          : challenges.map((c, i) => (
+            React.createElement(
+              'div',
+              { key: i, style: { marginBottom: '16px' } },
+              React.createElement('p', { style: { fontWeight: 'bold', marginBottom: '4px' } }, `🎯 ${c.title || 'Untitled'}`),
+              React.createElement('p', null, `- Spend less than ${Number(c.goal_amount).toLocaleString()} KRW on ${c.category.toLowerCase()}`),
+              React.createElement('p', null, `- Current spending: ${Number(c.actual_spending || 0).toLocaleString()} KRW`),
+          ))
+        )
       ),
 
       // 버튼 영역
