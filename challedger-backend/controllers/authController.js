@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
   try {
     const hashed = await bcrypt.hash(password, 10);
     await db.query(
-      'INSERT INTO users (email, password) VALUES (?, ?)',
-      [email, hashed]
+      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+      [username, email, hashed]
     );
     res.status(201).json({ message: '회원가입 성공' });
   } catch (err) {
@@ -27,8 +27,8 @@ exports.login = async (req, res) => {
     if (!isMatch) return res.status(401).json({ error: '비밀번호 불일치' });
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, email: user.email });
-} catch (err) {
+    res.json({ token, username: user.username });
+  } catch (err) {
     res.status(500).json({ error: '로그인 실패', detail: err.message });
   }
 };
