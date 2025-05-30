@@ -191,7 +191,7 @@ function MyPage() {
               },
               React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
               React.createElement('p', null, period),
-              React.createElement('p', null, `Progress: ${c.progress}%`)
+              React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
             );
           })          
         )
