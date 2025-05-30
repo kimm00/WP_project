@@ -28,7 +28,7 @@ const COLORS = ['#19C197', '#F95C2F', '#FFC940', '#8884d8'];
 
 function StatsPage() {
   const navigate = useNavigate();
-  const [expenses, setExpenses] = useState([]);
+  const [, setExpenses] = useState([]);
   const [dailyData, setDailyData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [error, setError] = useState('');
@@ -161,7 +161,9 @@ function StatsPage() {
                 Category: <strong>{c.category}</strong><br />
                 Goal: <strong>{Number(c.goal_amount).toLocaleString()} KRW</strong><br />
                 Current Spending: <strong>{Number(c.actual_spending || 0).toLocaleString()} KRW</strong><br />
-                Progress: <strong>{c.progress || 0}%</strong><br />
+                Usage: <strong>
+                  ₩{Number(c.actual_spending || 0).toLocaleString()} / ₩{Number(c.goal_amount).toLocaleString()}
+                </strong><br />
                 {Number(c.actual_spending) > Number(c.goal_amount) ? (
                   <span style={{ color: 'red', fontWeight: 'bold' }}>⚠ Budget Exceeded!</span>
                 ) : (

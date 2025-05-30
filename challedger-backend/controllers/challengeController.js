@@ -4,6 +4,9 @@ exports.createChallenge = async (req, res) => {
   const { title, category, goal_amount, start_date, end_date } = req.body;
   const userId = req.user.id;
 
+  console.log('[DEBUG] req.user:', req.user);
+  console.log('[DEBUG] req.body:', req.body);
+
   try {
     await db.query(
       `INSERT INTO challenges (user_id, title, category, goal_amount, start_date, end_date)

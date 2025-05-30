@@ -167,7 +167,12 @@ function MyPage() {
               },
               React.createElement('strong', null, `${status === 'Completed' ? '✅' : '🔄'} ${c.title || 'Untitled'}`),
               React.createElement('p', null, period),
-              React.createElement('p', null, `Progress: ${c.progress}%`)
+              React.createElement(
+                'p',
+                null,
+                `Progress: ₩${Number(c.actual_spending || 0).toLocaleString()} / ₩${Number(c.goal_amount || 0).toLocaleString()}`
+              )
+              
             );
       })
         )
