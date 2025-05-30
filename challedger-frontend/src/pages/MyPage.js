@@ -109,11 +109,7 @@ function MyPage() {
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
           : challenges.map((c, i) =>
-              React.createElement(
-                'p',
-                { key: i },
-                `${c.title || 'Untitled'} — ${c.progress}% Complete`
-              )
+              React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
             )
       ),
 
@@ -191,11 +187,7 @@ function MyPage() {
               },
               React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
               React.createElement('p', null, period),
-              React.createElement(
-                'p',
-                null,
-                `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`
-              )
+              React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
             );
           })          
         )
