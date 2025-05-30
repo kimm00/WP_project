@@ -1,4 +1,28 @@
 const db = require('../models/db');
+const { grantBadge, hasCompletedAnyChallenge } = require('../models/badgeModel'); // 배지 관련 함수
+
+exports.completeChallenge = async (req, res) => {
+  const { challengeId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    // 1. 챌린지 상태를 'Completed'로 변경
+    await pool.execute(`UPDATE challenges SET status = 'Completed' WHERE id = ? AND user_id = ?`, [challengeId, userId]);
+
+    // 2. 유저가 이미 완료한 챌린지가 있는지 확인
+    const alreadyCompleted = await hasCompletedAnyChallenge(userId);
+
+    // 3. 첫 완료인 경우에만 배지 지급
+    if (!alreadyCompleted) {
+      await grantBadge(userId, 'First Challenge Badge');
+    }
+
+    res.json({ success: true, message: '챌린지 완료 및 배지 지급 여부 확인 완료' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: '챌린지 완료 처리 실패', detail: err.message });
+  }
+};
 
 exports.createChallenge = async (req, res) => {
   const { title, category, goal_amount, start_date, end_date } = req.body;
