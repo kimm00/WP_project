@@ -96,10 +96,21 @@ exports.getAllChallengesWithProgress = async (req, res) => {
         const goal = Number(ch.goal_amount) || 1;
         const progress = Math.min(Math.round((actual / goal) * 100), 100);
 
+        const now = new Date();
+        const end = new Date(ch.end_date);
+
+        let status = 'in-progress';
+        if (actual >= goal) {
+          status = 'success';
+        } else if (now > end) {
+          status = 'fail';
+        }
+
         return {
           ...ch,
           actual_spending: actual,
           progress,
+          status,
         };
       })
     );
