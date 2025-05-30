@@ -13,7 +13,7 @@ const COLORS = ['#19C197', '#F95C2F', '#FFC940', '#8884d8'];
 
 function StatsPage() {
   const navigate = useNavigate();
-  const [expenses, setExpenses] = useState([]);
+  const [, setExpenses] = useState([]);
   const [dailyData, setDailyData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [error, setError] = useState('');
