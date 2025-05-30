@@ -33,7 +33,6 @@ exports.getCurrentChallenges = async (req, res) => {
   }
 };
 
-// exports.getChallengeProgress → getChallengeProgresses 로 이름 바꾸는 것도 추천
 exports.getChallengeProgresses = async (req, res) => {
   const userId = req.user.id;
   const today = new Date().toISOString().slice(0, 10);
@@ -97,10 +96,21 @@ exports.getAllChallengesWithProgress = async (req, res) => {
         const goal = Number(ch.goal_amount) || 1;
         const progress = Math.min(Math.round((actual / goal) * 100), 100);
 
+        const now = new Date();
+        const end = new Date(ch.end_date);
+
+        let status = 'in-progress';
+        if (actual >= goal) {
+          status = 'success';
+        } else if (now > end) {
+          status = 'fail';
+        }
+
         return {
           ...ch,
           actual_spending: actual,
           progress,
+          status,
         };
       })
     );

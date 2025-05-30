@@ -39,14 +39,26 @@ function MyPage() {
         });
 
         // 진행률 계산
+        const now = new Date();
         const processed = (Array.isArray(res.data) ? res.data : [res.data]).map((c) => {
           const actual = Number(c.actual_spending || 0);
           const goal = Number(c.goal_amount || 1);
           const progress = Math.min(Math.round((actual / goal) * 100), 100);
+          const endDate = new Date(c.end_date);
+          let status = 'In Progress';
+
+          if (now <= endDate) {
+            status = 'In Progress';
+          } else if (actual <= goal) {
+            status = 'Success'; // ✅ 예산 초과 안 했으면 성공
+          } else {
+            status = 'Fail'; // ✅ 초과한 경우만 실패
+          }
 
           return {
             ...c,
             progress,
+            status,
           };
         });
 
@@ -62,11 +74,9 @@ function MyPage() {
 
   // ✅ 필터링된 챌린지 리스트
   const filteredChallenges =
-    filter === 'All'
-      ? challenges
-      : filter === 'Completed'
-      ? challenges.filter((c) => c.progress === 100)
-      : challenges.filter((c) => c.progress < 100);
+  filter === 'All'
+    ? challenges
+    : challenges.filter((c) => c.status === filter);
 
   return React.createElement(
     React.Fragment,
@@ -137,7 +147,7 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'filter-group' },
-          ['All', 'Completed', 'In Progress'].map((f) =>
+          ['All', 'In Progress', 'Success', 'Fail'].map((f) =>
             React.createElement(
               'button',
               {
@@ -155,21 +165,35 @@ function MyPage() {
           'div',
           { className: 'history-list' },
           filteredChallenges.map((c, i) => {
-            const status = c.progress === 100 ? 'Completed' : 'In Progress';
-            const statusClass = status.toLowerCase().replace(' ', '-');
+            const statusIcon = c.status === 'Success' ? '✅'
+                             : c.status === 'Fail' ? '❌'
+                             : '🔄';
             const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
 
+            const statusColor =
+              c.status === 'Success' ? '#19C197'
+              : c.status === 'Fail' ? '#f44336'
+              : '#FFC107';
+          
             return React.createElement(
               'div',
               {
                 key: i,
-                className: `history-item ${statusClass}`
+                className: `history-item ${c.status}`,
+                style: {
+                  borderLeft: `6px solid ${statusColor}`,
+                  borderRadius: '10px',
+                  padding: '12px',
+                  marginBottom: '10px',
+                  backgroundColor: '#fff',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                }
               },
-              React.createElement('strong', null, `${status === 'Completed' ? '✅' : '🔄'} ${c.title || 'Untitled'}`),
+              React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
               React.createElement('p', null, period),
               React.createElement('p', null, `Progress: ${c.progress}%`)
             );
-      })
+          })          
         )
       )
     )
