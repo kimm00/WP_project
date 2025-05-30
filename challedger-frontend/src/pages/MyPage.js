@@ -194,9 +194,8 @@ function MyPage() {
               React.createElement(
                 'p',
                 null,
-                `Progress: ₩${Number(c.actual_spending || 0).toLocaleString()} / ₩${Number(c.goal_amount || 0).toLocaleString()}`
+                `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`
               )
-              
             );
           })          
         )
