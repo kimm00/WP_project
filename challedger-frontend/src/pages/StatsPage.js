@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +19,8 @@ function StatsPage() {
   const [challenges, setChallenges] = useState([]);
   const [progressError, setProgressError] = useState('');
 
+  const goHome = () => navigate('/home');
+
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
@@ -26,9 +29,7 @@ function StatsPage() {
         const month = new Date().toISOString().slice(0, 7);
 
         const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         setExpenses(res.data);
@@ -39,22 +40,24 @@ function StatsPage() {
       }
     };
 
-    const fetchChallengeProgress = async () => {
+    const fetchChallenges = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
         const res = await axios.get('http://localhost:4000/api/challenges/progress', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setChallenges(Array.isArray(res.data) ? res.data : [res.data]);
+
+        const list = Array.isArray(res.data) ? res.data : [res.data];
+        setChallenges(list);
       } catch (err) {
-        console.error('❌ 착용 진행률 조회 실패:', err);
-        setProgressError('진행 중인 착용이 없습니다.');
+        console.error('❌ 진행 중 챌린지 조회 실패:', err);
+        setProgressError('진행 중인 챌린지가 없습니다.');
       }
     };
 
     fetchExpenses();
-    fetchChallengeProgress();
+    fetchChallenges();
   }, []);
 
   function processChartData(data) {
@@ -71,133 +74,108 @@ function StatsPage() {
       categoryMap[cat] = (categoryMap[cat] || 0) + Number(item.amount);
     });
 
-    const dailyList = days.map((day) => ({
-      date: day,
-      amount: dailyMap[day] || 0,
-    }));
-
-    const categoryList = Object.entries(categoryMap).map(([key, value]) => ({
-      name: key,
-      value,
-    }));
+    const dailyList = days.map((day) => ({ date: day, amount: dailyMap[day] || 0 }));
+    const categoryList = Object.entries(categoryMap).map(([key, value]) => ({ name: key, value }));
 
     setDailyData(dailyList);
     setCategoryData(categoryList);
   }
 
-  return React.createElement(
-    React.Fragment,
-    null,
-    React.createElement(Header),
-    React.createElement('div', { className: 'page-wrapper' },
+  return (
+    <>
+      <Header />
+      <div className="page-wrapper">
+        <div className="section-box">
+          <button className="back-button" onClick={goHome}>← Back to Home</button>
+          <h2 className="record-title">📊 Spending Overview</h2>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={dailyData}>
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="amount" fill="#19C197" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-      challenges.length > 0 && React.createElement(
-        'div',
-        { className: 'challenge-list' },
-        challenges.map((challenge, idx) =>
-          React.createElement('div', { key: idx, className: 'section-box challenge-highlight' },
-            React.createElement('h2', { className: 'record-title' }, `🎯 ${challenge.category} Challenge`),
-            React.createElement('div', { className: 'challenge-flex' },
-              React.createElement('div', { className: 'challenge-info' },
-                React.createElement('p', null, React.createElement('strong', null, 'Category:'), ' ', challenge.category),
-                React.createElement('p', null, React.createElement('strong', null, 'Goal:'), ' ', challenge.goalAmount.toLocaleString(), ' KRW'),
-                React.createElement('p', null, React.createElement('strong', null, 'Current Spending:'), ' ', challenge.actualSpending.toLocaleString(), ' KRW'),
-                React.createElement('p', null, React.createElement('strong', null, 'Progress:'), ' ', challenge.percent + '%'),
-                challenge.isExceeded ? (
-                  React.createElement('p', { className: 'status-text danger' }, '⚠ Budget Exceeded!')
-                ) : (
-                  React.createElement('p', { className: 'status-text success' }, '✔ You\'re on track!')
-                )
-              ),
-              React.createElement('div', { className: 'donut-chart-box' },
-                (() => {
-                  const progress = challenge.percent;
-      
-                  return React.createElement(PieChart, { width: 150, height: 150 },
-                    React.createElement(Pie, {
-                      data: [
-                        { name: 'Progress', value: progress },
-                        { name: 'Remaining', value: 100 - progress }
-                      ],
-                      dataKey: 'value',
-                      cx: '50%',
-                      cy: '50%',
-                      innerRadius: 50,
-                      outerRadius: 70,
-                      startAngle: 90,
-                      endAngle: -270,
-                      isAnimationActive: true,
-                      animationDuration: 1000,
-                      label: () => null,
-                      labelLine: false
-                    },
-                      React.createElement(Cell, { fill: '#19C197' }),
-                      React.createElement(Cell, { fill: '#e0e0e0' })
-                    ),
-                    React.createElement('text', {
-                      x: '50%',
-                      y: '50%',
-                      textAnchor: 'middle',
-                      dominantBaseline: 'middle',
-                      fontSize: 16,
-                      fontWeight: 'bold',
-                      fill: '#333'
-                    }, `${progress}%`)
-                  );
-                })()
-              )
-            )
-          )
-        )
-      ),
+        <div className="section-box">
+          <h2 className="record-title">📂 Category Breakdown</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={categoryData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                label
+              >
+                {categoryData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
 
-      progressError && React.createElement('div', { className: 'section-box' },
-        React.createElement('h2', { className: 'record-title' }, '🎯 Challenge Progress'),
-        React.createElement('p', { style: { fontSize: '16px', color: 'gray', marginTop: '8px' } }, progressError)
-      ),
-
-      React.createElement('div', { className: 'section-box' },
-        React.createElement('h2', { className: 'record-title' }, '📊 Spending Overview'),
-        error && React.createElement('p', { style: { color: 'red' } }, error),
-        React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
-          React.createElement(BarChart, { data: dailyData },
-            React.createElement(XAxis, { dataKey: 'date' }),
-            React.createElement(YAxis),
-            React.createElement(Tooltip),
-            React.createElement(Bar, { dataKey: 'amount', fill: '#19C197', radius: [4, 4, 0, 0] })
-          )
-        )
-      ),
-
-      React.createElement('div', { className: 'section-box' },
-        React.createElement('h2', { className: 'record-title' }, '📂 Category Breakdown'),
-        React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
-          React.createElement(PieChart, null,
-            React.createElement(Pie, {
-              data: categoryData,
-              dataKey: 'value',
-              nameKey: 'name',
-              cx: '50%',
-              cy: '50%',
-              outerRadius: 80,               // ✅ innerRadius 제거, 원형 차트
-              label: function renderLabel({ percent }) {
-                return `${(percent * 100).toFixed(0)}%`; // ✅ 라벨 텍스트 표시
-              },
-              labelLine: false               // ✅ 라벨 선 제거 (선택사항)
-            },
-              categoryData.map((entry, index) =>
-                React.createElement(Cell, {
-                  key: `cell-${index}`,
-                  fill: COLORS[index % COLORS.length]
-                })
-              )
-            ),
-            React.createElement(Tooltip, null),
-            React.createElement(Legend, null)
-          )
-        )
-      )      
-    )
+        <div className="section-box">
+          <h2 className="record-title">🎯 Challenge Progress</h2>
+          {progressError && (
+            <p style={{ fontSize: '16px', color: 'gray', marginTop: '8px' }}>
+              {progressError}
+            </p>
+          )}
+          {challenges.map((c, i) => (
+            <div key={i} className="challenge-card" style={{ marginBottom: '16px' }}>
+              <h3>🎯 {c.title || 'Untitled Challenge'}</h3>
+              <p>
+                Category: <strong>{c.category}</strong><br />
+                Goal: <strong>{Number(c.goalAmount || c.goal_amount).toLocaleString()} KRW</strong><br />
+                Current Spending: <strong>{Number(c.actualSpending || c.actual_spending || 0).toLocaleString()} KRW</strong><br />
+                Progress: <strong>{c.percent || c.progress || 0}%</strong>
+              </p>
+              <div className="donut-chart-box">
+                <PieChart width={150} height={150}>
+                  <Pie
+                    data={[
+                      { name: 'Progress', value: c.percent || c.progress || 0 },
+                      { name: 'Remaining', value: 100 - (c.percent || c.progress || 0) }
+                    ]}
+                    dataKey="value"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={70}
+                    startAngle={90}
+                    endAngle={-270}
+                    labelLine={false}
+                    label={() => null}
+                  >
+                    <Cell fill="#19C197" />
+                    <Cell fill="#e0e0e0" />
+                  </Pie>
+                  <text
+                    x="50%"
+                    y="50%"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={16}
+                    fontWeight="bold"
+                    fill="#333"
+                  >
+                    {(c.percent || c.progress || 0) + '%'}
+                  </text>
+                </PieChart>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }
 
