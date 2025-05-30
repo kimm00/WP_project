@@ -32,6 +32,8 @@ function StatsPage() {
   const [dailyData, setDailyData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [error, setError] = useState('');
+  const [challenge, setChallenge] = useState(null);
+  const [progressError, setProgressError] = useState('');
 
   const goHome = () => navigate('/home');
 
@@ -55,7 +57,21 @@ function StatsPage() {
       }
     };
 
+    const fetchChallengeProgress = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:4000/api/challenges/progress', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setChallenge(res.data);
+      } catch (err) {
+        console.error('❌ 챌린지 진행률 조회 실패:', err);
+        setProgressError('진행 중인 챌린지가 없습니다.');
+      }
+    };
+
     fetchExpenses();
+    fetchChallengeProgress();
   }, []);
 
   function processChartData(data) {
@@ -129,11 +145,24 @@ function StatsPage() {
 
         <div className="section-box">
           <h2 className="record-title">🎯 Challenge Progress</h2>
-          <p style={{ fontSize: '16px', marginTop: '8px' }}>
-            Weekly Food Budget Goal: <strong>20,000 KRW</strong><br />
-            Current Spending: <strong>15,300 KRW</strong><br />
-            <span style={{ color: '#19C197', fontWeight: 'bold' }}>✔ You're on track!</span>
-          </p>
+          {progressError && (
+            <p style={{ fontSize: '16px', color: 'gray', marginTop: '8px' }}>
+              {progressError}
+            </p>
+          )}
+          {challenge && (
+            <p style={{ fontSize: '16px', marginTop: '8px' }}>
+              Category: <strong>{challenge.category}</strong><br />
+              Goal: <strong>{challenge.goalAmount.toLocaleString()} KRW</strong><br />
+              Current Spending: <strong>{challenge.actualSpending.toLocaleString()} KRW</strong><br />
+              Progress: <strong>{challenge.percent}%</strong><br />
+              {challenge.isExceeded ? (
+                <span style={{ color: 'red', fontWeight: 'bold' }}>⚠ Budget Exceeded!</span>
+              ) : (
+                <span style={{ color: '#19C197', fontWeight: 'bold' }}>✔ You're on track!</span>
+              )}
+            </p>
+          )}
         </div>
       </div>
     </>
