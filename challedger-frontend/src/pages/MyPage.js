@@ -9,17 +9,18 @@ function MyPage() {
   const [error, setError] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [badges, setBadges] = useState([]);
 
   // 뱃지 목록
-  const badges = [
-    { label: '3-Time Streak', icon: '🏅' },
-    { label: 'Budget Master', icon: '💰' },
-    { label: 'First Challenge', icon: '🎉' },
-  ];
+  const badgeIcons = {
+    'First Challenge Badge': '🎉',
+    '3-Time Streak': '🏅',
+    'Budget Master': '💰',
+  };
 
   // ✅ 사용자 챌린지 목록 불러오기
   useEffect(() => {
-    const fetchChallenges = async () => {
+    const fetchData = async () => {
       const user = JSON.parse(localStorage.getItem('user')) || {};
       const email = user.email || 'unknown@example.com';
       const name = user.username || email.split('@')[0];
@@ -30,17 +31,18 @@ function MyPage() {
       if (!user || !user.token) {
         console.warn('⛔ No user or token found in localStorage');
         setChallenges([]);
+        setBadges([]);
         return;
       }
   
       try {
-        const res = await axios.get('http://localhost:4000/api/challenges/all', {
+        const challengeRes = await axios.get('http://localhost:4000/api/challenges/all', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
         // 진행률 계산
         const now = new Date();
-        const processed = (Array.isArray(res.data) ? res.data : [res.data]).map((c) => {
+        const processed = (Array.isArray(challengeRes.data) ? challengeRes.data : [challengeRes.data]).map((c) => {
           const actual = Number(c.actual_spending || 0);
           const goal = Number(c.goal_amount || 1);
           const progress = Math.min(Math.round((actual / goal) * 100), 100);
@@ -63,13 +65,18 @@ function MyPage() {
         });
 
         setChallenges(processed);
+        const badgeRes = await axios.get('http://localhost:4000/api/badges', {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
+        setBadges(badgeRes.data.badges);
+
       } catch (err) {
-        console.error('❌ 챌린지 불러오기 실패:', err);
-        setError('Failed to load challenges');
+        console.error('❌ 데이터 불러오기 실패:', err);
+        setError('Failed to load challenges or badges');
       }
     };
   
-    fetchChallenges();
+    fetchData();
   }, []);
 
   // ✅ 필터링된 챌린지 리스트
@@ -124,12 +131,17 @@ function MyPage() {
           'div',
           { className: 'badge-list' },
           badges.map((badge, idx) =>
-            React.createElement(
-              'div',
-              { className: 'badge', key: idx },
-              React.createElement('div', { className: 'badge-icon' }, badge.icon),
-              React.createElement('div', { className: 'badge-label' }, badge.label)
-            )
+            badges.length === 0
+            ? React.createElement('p', null, 'No badges earned yet.')
+            : badges.map((badge, idx) => {
+                const name = badge.badge_name || badge.badgeName;
+                return React.createElement(
+                  'div',
+                  { className: 'badge', key: idx },
+                  React.createElement('div', { className: 'badge-icon' }, badgeIcons[name] || '🏆'),
+                  React.createElement('div', { className: 'badge-label' }, name.replace(' Badge', ''))
+                );
+              })
           )
         )
       ),

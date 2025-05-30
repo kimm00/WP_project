@@ -89,12 +89,14 @@ function StatsPage() {
   }, []);
 
   function processChartData(data) {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const dailyMap = {};
     const categoryMap = {};
 
     const startOfWeek = new Date(chartDate);
-    startOfWeek.setDate(chartDate.getDate() - chartDate.getDay());
+    const day = startOfWeek.getDay();
+    const diff = (day === 0 ? -6 : 1 - day);
+    startOfWeek.setDate(chartDate.getDate() + diff);
     startOfWeek.setHours(0, 0, 0, 0);
 
     const endOfWeek = new Date(startOfWeek);
@@ -107,8 +109,12 @@ function StatsPage() {
     });
 
     weeklyData.forEach(item => {
-      const day = days[new Date(item.date).getDay()];
-      dailyMap[day] = (dailyMap[day] || 0) + Number(item.amount);
+      const d = new Date(item.date);
+      const jsDay = d.getDay();
+      const isoDay = jsDay === 0 ? 6 : jsDay - 1;
+      const dayName = days[isoDay];
+  
+      dailyMap[dayName] = (dailyMap[dayName] || 0) + Number(item.amount);
       categoryMap[item.category] = (categoryMap[item.category] || 0) + Number(item.amount);
     });
 
