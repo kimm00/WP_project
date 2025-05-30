@@ -108,13 +108,11 @@ function MyPage() {
         React.createElement('h3', null, 'My Challenges'),
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
-          : challenges.map((c, i) =>
-              React.createElement(
-                'p',
-                { key: i },
-                `${c.title || 'Untitled'} — ${c.progress}% Complete`
+          : [...challenges]
+              .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
+              .map((c, i) =>
+                React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
               )
-            )
       ),
 
       // 🏅 보유한 뱃지
@@ -164,36 +162,38 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'history-list' },
-          filteredChallenges.map((c, i) => {
-            const statusIcon = c.status === 'Success' ? '✅'
-                             : c.status === 'Fail' ? '❌'
-                             : '🔄';
-            const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
+          [...filteredChallenges]
+            .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
+            .map((c, i) => {
+              const statusIcon = c.status === 'Success' ? '✅'
+                              : c.status === 'Fail' ? '❌'
+                              : '🔄';
+              const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
 
-            const statusColor =
-              c.status === 'Success' ? '#19C197'
-              : c.status === 'Fail' ? '#f44336'
-              : '#FFC107';
-          
-            return React.createElement(
-              'div',
-              {
-                key: i,
-                className: `history-item ${c.status}`,
-                style: {
-                  borderLeft: `6px solid ${statusColor}`,
-                  borderRadius: '10px',
-                  padding: '12px',
-                  marginBottom: '10px',
-                  backgroundColor: '#fff',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
-                }
-              },
-              React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
-              React.createElement('p', null, period),
-              React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
-            );
-          })          
+              const statusColor =
+                c.status === 'Success' ? '#19C197'
+                : c.status === 'Fail' ? '#f44336'
+                : '#FFC107';
+            
+              return React.createElement(
+                'div',
+                {
+                  key: i,
+                  className: `history-item ${c.status}`,
+                  style: {
+                    borderLeft: `6px solid ${statusColor}`,
+                    borderRadius: '10px',
+                    padding: '12px',
+                    marginBottom: '10px',
+                    backgroundColor: '#fff',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                  }
+                },
+                React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
+                React.createElement('p', null, period),
+                React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
+              );
+            })          
         )
       )
     )

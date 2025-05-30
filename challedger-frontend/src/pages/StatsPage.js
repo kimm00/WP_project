@@ -14,14 +14,16 @@ const COLORS = ['#19C197', '#F95C2F', '#FFC940', '#8884d8'];
 function StatsPage() {
   const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
+  const [calendarExpenses, setCalendarExpenses] = useState([]);
   const [dailyData, setDailyData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [error, setError] = useState('');
   const [challenges, setChallenges] = useState([]);
   const [progressError, setProgressError] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [chartDate] = useState(new Date());
 
-  const filteredExpenses = expenses.filter(item =>
+  const filteredExpenses = calendarExpenses.filter(item =>
     new Date(item.date).toDateString() === selectedDate.toDateString()
   );
 
@@ -32,9 +34,9 @@ function StatsPage() {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const month = new Date().toISOString().slice(0, 7);
+        const month = chartDate.toISOString().slice(0, 7);
         const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         setExpenses(res.data);
         processChartData(res.data);
@@ -44,12 +46,36 @@ function StatsPage() {
       }
     };
 
+    fetchExpenses();
+  }, [chartDate]);
+
+  useEffect(() => {
+    const fetchCalendarExpenses = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('user')) || {};
+        const token = user.token;
+        const month = selectedDate.toISOString().slice(0, 7);
+
+        const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setCalendarExpenses(res.data);
+      } catch (err) {
+        console.error('❌ 달력용 소비 데이터 조회 실패:', err);
+      }
+    };
+
+    fetchCalendarExpenses();
+  }, [selectedDate]);
+
+  useEffect(() => {
     const fetchChallenges = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
         const res = await axios.get('http://localhost:4000/api/challenges/progress', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         const list = Array.isArray(res.data) ? res.data : [res.data];
         setChallenges(list);
@@ -59,7 +85,6 @@ function StatsPage() {
       }
     };
   
-    fetchExpenses();
     fetchChallenges();
   }, []);
 
@@ -68,14 +93,27 @@ function StatsPage() {
     const dailyMap = {};
     const categoryMap = {};
 
-    data.forEach(item => {
+    const startOfWeek = new Date(chartDate);
+    startOfWeek.setDate(chartDate.getDate() - chartDate.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    const weeklyData = data.filter(item => {
+      const date = new Date(item.date);
+      return date >= startOfWeek && date <= endOfWeek;
+    });
+
+    weeklyData.forEach(item => {
       const day = days[new Date(item.date).getDay()];
       dailyMap[day] = (dailyMap[day] || 0) + Number(item.amount);
       categoryMap[item.category] = (categoryMap[item.category] || 0) + Number(item.amount);
     });
 
     setDailyData(days.map(day => ({ date: day, amount: dailyMap[day] || 0 })));
-    setCategoryData(Object.entries(categoryMap).map(([k, v]) => ({ name: k, value: v })));
+    setCategoryData(Object.entries(categoryMap).map(([name, value]) => ({ name, value })));
   }
 
   return React.createElement(
@@ -164,7 +202,7 @@ function StatsPage() {
 
       // Challenge Progress
       React.createElement('div', { className: 'section-box' },
-        React.createElement('h2', { className: 'record-title' }, '🎯 Challenge SpendingRatio'),
+        React.createElement('h2', { className: 'record-title' }, '🎯 Challenge Spending Ratio'),
       
         progressError && React.createElement(
           'p',
@@ -181,7 +219,7 @@ function StatsPage() {
               React.createElement('p', null, `Category: ${c.category}`),
               React.createElement('p', null, `Goal: ${Number(c.goalAmount || c.goal_amount).toLocaleString()} KRW`),
               React.createElement('p', null, `Current Spending: ${Number(c.actualSpending || c.actual_spending || 0).toLocaleString()} KRW`),
-              React.createElement('p', null, `SpendingRatio: ${c.percent || c.progress || 0}%`),
+              React.createElement('p', null, `Spending Ratio: ${c.percent || c.progress || 0}%`),
       
               React.createElement('div', { className: 'donut-chart-box', style: { marginTop: '16px' } },
                 React.createElement(PieChart, { width: 150, height: 150 },

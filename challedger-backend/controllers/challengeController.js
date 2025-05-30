@@ -18,7 +18,11 @@ exports.createChallenge = async (req, res) => {
 
 exports.getCurrentChallenges = async (req, res) => {
   const userId = req.user.id;
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const todayObj = new Date();
+  const yyyy = todayObj.getFullYear();
+  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
+  const dd = String(todayObj.getDate()).padStart(2, '0');
+  const today = `${yyyy}-${mm}-${dd}`;
 
   try {
     const [challengeRows] = await db.query(
@@ -53,7 +57,11 @@ exports.getCurrentChallenges = async (req, res) => {
 
 exports.getChallengeProgresses = async (req, res) => {
   const userId = req.user.id;
-  const today = new Date().toISOString().slice(0, 10);
+  const todayObj = new Date();
+  const yyyy = todayObj.getFullYear();
+  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
+  const dd = String(todayObj.getDate()).padStart(2, '0');
+  const today = `${yyyy}-${mm}-${dd}`;
 
   try {
     const [challengeRows] = await db.query(
