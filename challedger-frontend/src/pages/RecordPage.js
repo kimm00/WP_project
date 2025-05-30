@@ -15,14 +15,15 @@ function RecordPage() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const token = user.token;
+
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
     try {
-      const token = localStorage.getItem('token'); // 로그인 후 저장된 토큰
-
-      if (!token) {
-        alert('로그인이 필요합니다.');
-        return;
-      }
-
       await axios.post('http://localhost:4000/api/expenses', {
         amount,
         category,

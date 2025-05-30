@@ -1,14 +1,14 @@
 const db = require('../models/db');
 
 exports.createChallenge = async (req, res) => {
-  const { category, goal_amount, start_date, end_date } = req.body;
+  const { title, category, goal_amount, start_date, end_date } = req.body;
   const userId = req.user.id;
 
   try {
     await db.query(
-      `INSERT INTO challenges (user_id, category, goal_amount, start_date, end_date)
-       VALUES (?, ?, ?, ?, ?)`,
-      [userId, category, goal_amount, start_date, end_date]
+      `INSERT INTO challenges (user_id, title, category, goal_amount, start_date, end_date)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [userId, title, category, goal_amount, start_date, end_date]
     );
     res.status(201).json({ message: '챌린지 등록 완료' });
   } catch (err) {
@@ -72,5 +72,40 @@ exports.getChallengeProgress = async (req, res) => {
       });
     } catch (err) {
       res.status(500).json({ error: '챌린지 진행률 계산 실패', detail: err.message });
+    }
+  };
+
+  exports.getAllChallengesWithProgress = async (req, res) => {
+    const userId = req.user.id;
+  
+    try {
+      const [challengeRows] = await db.query(
+        `SELECT * FROM challenges WHERE user_id = ? ORDER BY start_date DESC`,
+        [userId]
+      );
+  
+      const enhanced = await Promise.all(
+        challengeRows.map(async (ch) => {
+          const [spendingRows] = await db.query(
+            `SELECT SUM(amount) AS total FROM expenses
+             WHERE user_id = ? AND category = ? AND date BETWEEN ? AND ?`,
+            [userId, ch.category, ch.start_date, ch.end_date]
+          );
+  
+          const actual = Number(spendingRows[0].total || 0);
+          const goal = Number(ch.goal_amount) || 1;
+          const progress = Math.min(Math.round((actual / goal) * 100), 100);
+  
+          return {
+            ...ch,
+            actual_spending: actual,
+            progress,
+          };
+        })
+      );
+  
+      res.json(enhanced);
+    } catch (err) {
+      res.status(500).json({ error: '챌린지 전체 조회 실패', detail: err.message });
     }
   };  
