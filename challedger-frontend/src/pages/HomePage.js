@@ -1,5 +1,6 @@
 // src/pages/HomePage.js
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 
@@ -11,6 +12,26 @@ function HomePage() {
     day: 'numeric',
     weekday: 'long',
   });
+
+  const [challenge, setChallenge] = useState(null);
+  const [progressError, setProgressError] = useState('');
+
+  useEffect(() => {
+    const fetchChallengeProgress = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:4000/api/challenges/progress', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setChallenge(res.data);
+      } catch (err) {
+        console.error('❌ 챌린지 조회 실패:', err);
+        setProgressError('No active challenge.');
+      }
+    };
+
+    fetchChallengeProgress();
+  }, []);
 
   // 버튼 클릭 핸들러
   const goToRecord = () => navigate('/record');
@@ -43,8 +64,22 @@ function HomePage() {
         'div',
         { className: 'challenge-summary' },
         React.createElement('h2', null, 'Current Challenge'),
-        React.createElement('p', null, "This week's goal: Spend less than 20,000 KRW on food"),
-        React.createElement('p', null, 'Current spending: 15,300 KRW')
+        progressError
+          ? React.createElement('p', { style: { color: 'gray' } }, progressError)
+          : challenge && React.createElement(
+              React.Fragment,
+              null,
+              React.createElement(
+                'p',
+                null,
+                `This week's goal: Spend less than ${challenge.goalAmount.toLocaleString()} KRW on ${challenge.category.toLowerCase()}`
+              ),
+              React.createElement(
+                'p',
+                null,
+                `Current spending: ${challenge.actualSpending.toLocaleString()} KRW`
+              )
+            )
       ),
 
       // 버튼 영역
