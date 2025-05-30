@@ -109,11 +109,7 @@ function MyPage() {
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
           : challenges.map((c, i) =>
-              React.createElement(
-                'p',
-                { key: i },
-                `${c.title || 'Untitled'} — ${c.progress}% Complete`
-              )
+              React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
             )
       ),
 
