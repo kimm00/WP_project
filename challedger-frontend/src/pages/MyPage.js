@@ -7,7 +7,7 @@ function MyPage() {
 
   const user = JSON.parse(localStorage.getItem('user')) || {};
   const email = user.email || 'unknown@example.com';
-  const name = email.split('@')[0]; // 이메일 앞부분을 이름처럼 사용
+  const name = user.username || email.split('@')[0];
 
   // 뱃지 목록
   const badges = [
@@ -46,7 +46,7 @@ function MyPage() {
           alt: 'User Avatar',
           className: 'profile-avatar'
         }),
-        React.createElement('h2', null, name),
+        React.createElement('h2', { className: 'user-name' }, name),
         React.createElement('p', { className: 'user-email' }, email)
       ),
 
@@ -112,7 +112,7 @@ function MyPage() {
                 key: i,
                 className: `history-item ${c.status.toLowerCase().replace(' ', '-')}`
               },
-              React.createElement('strong', null, c.title),
+              React.createElement('strong', null, `${c.status === 'Completed' ? '✅' : '🔄'} ${c.title}`),
               React.createElement('p', null, c.period),
               React.createElement('p', null, `Progress: ${c.progress}%`)
             )
