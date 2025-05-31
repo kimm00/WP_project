@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer'; 
 
 function RecordPage() {
   const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
@@ -132,8 +133,10 @@ function RecordPage() {
             error
           )
       )
-    )
-  );
+    ),
+    // ✅ Footer 삽입
+  React.createElement(Footer)
+);
 }
 
 export default RecordPage;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer'; 
 
 function HomePage() {
   const navigate = useNavigate();
@@ -101,8 +102,10 @@ function HomePage() {
           onClick: goToStats
         }, '📊 View Your Progress')
       )
-    )
-  );
+    ),
+    // ✅ Footer 삽입
+  React.createElement(Footer)
+);
 }
 
 export default HomePage;

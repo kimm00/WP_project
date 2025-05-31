@@ -2,6 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
+import Footer from '../components/Footer'; 
 
 function MyPage() {
   const [filter, setFilter] = useState('All');
@@ -204,7 +205,9 @@ function MyPage() {
           })          
         )
       )
-    )
+    ),
+        // ✅ Footer 삽입
+      React.createElement(Footer)
   );
 }
 
