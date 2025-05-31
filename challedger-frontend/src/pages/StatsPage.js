@@ -42,8 +42,8 @@ function StatsPage() {
         setExpenses(res.data);
         processChartData(res.data);
       } catch (err) {
-        console.error('❌ 소비 데이터 조회 실패:', err);
-        setError('소비 데이터를 불러오는 데 실패했습니다.');
+        console.error('❌ Failed to fetch spending data:', err);
+        setError('Failed to load your spending data.');
       }
     };
 
@@ -63,7 +63,7 @@ function StatsPage() {
 
         setCalendarExpenses(res.data);
       } catch (err) {
-        console.error('❌ 달력용 소비 데이터 조회 실패:', err);
+        console.error('❌ Failed to fetch spending data for calendar view:', err);
       }
     };
 
@@ -81,8 +81,8 @@ function StatsPage() {
         const list = Array.isArray(res.data) ? res.data : [res.data];
         setChallenges(list);
       } catch (err) {
-        console.error('❌ 진행 중 챌린지 조회 실패:', err);
-        setProgressError('진행 중인 챌린지가 없습니다.');
+        console.error('❌ Failed to fetch ongoing challenges:', err);
+        setProgressError('No ongoing challenges found.');
       }
     };
   
@@ -264,9 +264,10 @@ function StatsPage() {
         )
       )      
     ),
+
     // ✅ Footer 삽입
-  React.createElement(Footer)
-);
+    React.createElement(Footer)
+  );
 }
 
 export default StatsPage;
