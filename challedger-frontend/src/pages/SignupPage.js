@@ -103,7 +103,7 @@ function SignupPage() {
       React.createElement(
         Link,
         {
-          to: '/',
+          to: '/login',
           style: { color: 'blue', textDecoration: 'none', fontWeight: 'bold' }
         },
         'Log in'

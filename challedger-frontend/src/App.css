@@ -721,3 +721,24 @@ body {
 .badge-label {
   font-weight: bold;
 }
+
+/* -------------------- Footer -------------------- */
+.footer {
+  background-color: #fefefe;   /* 거의 흰색에 가까운 부드러운 톤 */
+  padding: 12px 0;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+  margin-top: auto;
+  border-top: 1px solid #f1f1f1; /* 은은한 구분선 */
+}
+
+.footer a {
+  color: #777;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer'; 
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
@@ -262,7 +263,10 @@ function StatsPage() {
           )
         )
       )      
-    )
+    ),
+
+    // ✅ Footer 삽입
+    React.createElement(Footer)
   );
 }
 
