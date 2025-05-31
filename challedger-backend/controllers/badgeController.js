@@ -9,7 +9,7 @@ exports.getUserBadges = async (req, res) => {
     );
     res.json({ badges: rows });
   } catch (err) {
-    console.error('❌ 배지 조회 실패:', err);
-    res.status(500).json({ error: '배지 조회 실패', detail: err.message });
+    console.error('❌ Failed to retrieve badges:', err);
+    res.status(500).json({ error: 'Failed to retrieve badges', detail: err.message });
   }
 };

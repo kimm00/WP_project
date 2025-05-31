@@ -46,4 +46,4 @@ async function updateChallengeStatuses() {
   }
 }
 
-updateChallengeStatuses();
+module.exports = updateChallengeStatuses;

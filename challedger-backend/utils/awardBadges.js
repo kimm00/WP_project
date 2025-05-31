@@ -3,7 +3,7 @@ const db = require('../models/db');
 const { grantBadge } = require('../models/badgeModel');
 
 // 새로운 배지 부여 로직
-exports.awardBadges = async (userId) => {
+const awardBadges = async (userId) => {
   try {
     // 1. First Challenge - 챌린지를 1개 이상 등록했을 때
     const [[{ count: totalChallenges }]] = await db.query(
@@ -48,7 +48,7 @@ exports.awardBadges = async (userId) => {
         WHERE category = 'Food'`,
         [userId]
     );
-    if (recentFoodCount === 5) {
+    if (recentFoodCount.count === 5) {
         await grantBadge(userId, 'Food Budget Destroyer');
     }
 
@@ -63,7 +63,7 @@ exports.awardBadges = async (userId) => {
         WHERE amount <= 5000`,
         [userId]
     );
-    if (smallExpenses === 3) {
+    if (smallExpenses.count === 3){
         await grantBadge(userId, 'Savings Superstar');
     }
     
@@ -107,6 +107,8 @@ exports.awardBadges = async (userId) => {
     if (counts['Others'] >= 4) await grantBadge(userId, 'Explorer');
 
   } catch (err) {
-    console.error('❌ 배지 부여 중 오류:', err);
+    console.error('❌ Error while awarding badges:', err);
   }
 };
+
+module.exports = awardBadges;

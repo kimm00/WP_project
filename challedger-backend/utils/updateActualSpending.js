@@ -1,6 +1,6 @@
 const db = require('../models/db');
 
-(async () => {
+async function updateActualSpending() {
   try {
     const [challenges] = await db.query('SELECT * FROM challenges');
 
@@ -25,4 +25,6 @@ const db = require('../models/db');
   } catch (err) {
     console.error('❌ Error updating actual spending:', err);
   }
-})();
+}
+
+module.exports = updateActualSpending;
