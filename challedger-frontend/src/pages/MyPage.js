@@ -136,21 +136,20 @@ function MyPage() {
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
           : React.createElement(
-              'ul',
-              { className: 'challenge-list' },
-              [...challenges]
-                .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
-                .map((c, i) =>
-                  React.createElement(
-                    'li',
-                    { key: i, className: 'challenge-item' },
-                    c.title || 'Untitled'
-                  )
+            'ul',
+            { className: 'challenge-list' },
+            [...challenges]
+              .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
+              .map((c, i) =>
+                React.createElement(
+                  'li',
+                  { key: i, className: 'challenge-item' },
+                  c.title || 'Untitled'
                 )
-            )
+              )
+          )
       ),
 
-      // 🏅 보유한 뱃지
       React.createElement(
         'div',
         { className: 'section-box' },
@@ -172,14 +171,12 @@ function MyPage() {
         )
       ),
 
-      // 📊 챌린지 이력
       React.createElement(
         'div',
         { className: 'section-box' },
         React.createElement('h3', null, 'Challenge History'),
         error && React.createElement('p', { style: { color: 'red' } }, error),
 
-        // 필터 버튼
         React.createElement(
           'div',
           { className: 'filter-group' },
@@ -196,7 +193,6 @@ function MyPage() {
           )
         ),
 
-        // 필터링된 챌린지 리스트
         React.createElement(
           'div',
           { className: 'history-list' },
@@ -236,7 +232,6 @@ function MyPage() {
       )
     ),
 
-    // ✅ Footer 삽입
     React.createElement(Footer)
   );
 }
