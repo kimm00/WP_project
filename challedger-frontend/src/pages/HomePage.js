@@ -103,9 +103,10 @@ function HomePage() {
         }, '📊 View Your Progress')
       )
     ),
+    
     // ✅ Footer 삽입
-  React.createElement(Footer)
-);
+    React.createElement(Footer)
+  );
 }
 
 export default HomePage;

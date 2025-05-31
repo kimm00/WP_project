@@ -13,6 +13,22 @@ function RecordPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const categoryOptions = [
+    'Food',
+    'Transport',
+    'Shopping',
+    'Entertainment',
+    'Health',
+    'Education',
+    'Cafe',
+    'Daily',
+    'Bills',
+    'Travel',
+    'Pets',
+    'Gifts',
+    'Others'
+  ];  
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -107,7 +123,7 @@ function RecordPage() {
             onChange: (e) => setCategory(e.target.value),
             className: 'record-input'
           },
-          ['Food', 'Transport', 'Shopping', 'Others'].map((opt) =>
+          categoryOptions.map((opt) =>
             React.createElement('option', { key: opt, value: opt }, opt)
           )
         ),
@@ -134,9 +150,10 @@ function RecordPage() {
           )
       )
     ),
+
     // ✅ Footer 삽입
-  React.createElement(Footer)
-);
+    React.createElement(Footer)
+  );
 }
 
 export default RecordPage;

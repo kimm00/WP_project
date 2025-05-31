@@ -1,5 +1,7 @@
 const db = require('../models/db');
-const { grantBadge, hasBadge } = require('../models/badgeModel'); // 배지 관련 함수들 import
+const updateActualSpending = require('../utils/updateActualSpending');
+const updateChallengeStatuses = require('../utils/updateChallengeStatuses');
+const awardBadges = require('../utils/awardBadges');
 
 exports.createExpense = async (req, res) => {
   const { amount, category, date, description } = req.body;
@@ -10,24 +12,16 @@ exports.createExpense = async (req, res) => {
       [userId, amount, category, date, description]
     );
 
-    // 최근 5개가 전부 food인지 (대소문자 무시하고 비교)
-    const [recentRows] = await db.query(
-      `SELECT category FROM expenses WHERE user_id = ? ORDER BY date DESC LIMIT 5`,
-      [userId]
-    );
+    // 소비 등록 후 챌린지 상태 및 금액 자동 업데이트
+    await updateActualSpending();
+    await updateChallengeStatuses();
 
-    const allFood = recentRows.length === 5 && recentRows.every(r => r.category.toLowerCase() === 'food');
+    // 배지 자동 지급
+    await awardBadges(userId);
 
-    // 3️⃣ 조건 충족 시 "Budget Master" 배지 지급
-    if (allFood) {
-      const alreadyHasBadge = await hasBadge(userId, 'Budget Master');
-      if (!alreadyHasBadge) {
-        await grantBadge(userId, 'Food Budget Destroyer');
-      }
-    }
-
-    res.status(201).json({ message: '소비 등록 완료' });
+    res.status(201).json({ message: '소비 등록 및 챌린지 업데이트 완료' });
   } catch (err) {
+    console.error('❌ 소비 등록 중 오류:', err);
     res.status(500).json({ error: '소비 등록 실패', detail: err.message });
   }
 };
