@@ -20,7 +20,7 @@ exports.createExpense = async (req, res) => {
 
     // 3️⃣ 조건 충족 시 "Budget Master" 배지 지급
     if (allFood) {
-      const alreadyHasBadge = await hasBadge(userId, 'Budget Master');
+      const alreadyHasBadge = await hasBadge(userId, 'Food Budget Destroyer');
       if (!alreadyHasBadge) {
         await grantBadge(userId, 'Food Budget Destroyer');
       }

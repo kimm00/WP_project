@@ -6,44 +6,62 @@ import Header from '../components/Header';
 function MyPage() {
   const [filter, setFilter] = useState('All');
   const [challenges, setChallenges] = useState([]);
-  const [badges, setBadges] = useState([]);
   const [error, setError] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [earnedBadges, setEarnedBadges] = useState([]); 
 
-
-  // ✅ 배지 이름에 대응되는 이모지 매핑
+  // 뱃지 목록
   const badgeIcons = {
     'First Challenge Badge': '🎉',
     '3-Time Streak': '🏅',
     'Food Budget Destroyer': '💥🍔',
   };
 
-  // ✅ 챌린지 + 유저 정보 불러오기
+  // ✅ 수정됨: 획득한 뱃지를 백엔드에서 불러오기
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchBadges = async () => {
+      const user = JSON.parse(localStorage.getItem('user')) || {};
+      if (!user.token) return;
+
+      try {
+        const res = await axios.get('http://localhost:4000/api/badges', {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
+        const earned = res.data.badges.map(b => b.badge_name); // ex: ['First Challenge Badge']
+        setEarnedBadges(earned);
+      } catch (err) {
+        console.error('❌ 뱃지 목록 불러오기 실패', err);
+      }
+    };
+
+    fetchBadges();
+  }, []);
+
+  // ✅ 사용자 챌린지 목록 불러오기
+  useEffect(() => {
+    const fetchChallenges = async () => {
       const user = JSON.parse(localStorage.getItem('user')) || {};
       const email = user.email || 'unknown@example.com';
       const name = user.username || email.split('@')[0];
 
       setUserEmail(email);
       setUserName(name);
-
+  
       if (!user || !user.token) {
         console.warn('⛔ No user or token found in localStorage');
         setChallenges([]);
-        setBadges([]);
         return;
       }
-
+  
       try {
-        // ✅ 챌린지 불러오기
-        const challengeRes = await axios.get('http://localhost:4000/api/challenges/all', {
+        const res = await axios.get('http://localhost:4000/api/challenges/all', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
+        // 진행률 계산
         const now = new Date();
-        const processed = (Array.isArray(challengeRes.data) ? challengeRes.data : [challengeRes.data]).map((c) => {
+        const processed = (Array.isArray(res.data) ? res.data : [res.data]).map((c) => {
           const actual = Number(c.actual_spending || 0);
           const goal = Number(c.goal_amount || 1);
           const progress = Math.min(Math.round((actual / goal) * 100), 100);
@@ -53,9 +71,9 @@ function MyPage() {
           if (now <= endDate) {
             status = 'In Progress';
           } else if (actual <= goal) {
-            status = 'Success';
+            status = 'Success'; // ✅ 예산 초과 안 했으면 성공
           } else {
-            status = 'Fail';
+            status = 'Fail'; // ✅ 초과한 경우만 실패
           }
 
           return {
@@ -66,21 +84,15 @@ function MyPage() {
         });
 
         setChallenges(processed);
-
-        // ✅ 배지 불러오기
-        const badgeRes = await axios.get('http://localhost:4000/api/badges', {
-          headers: { Authorization: `Bearer ${user.token}` }
-        });
-        setBadges(badgeRes.data.badges); // [{ badge_name: "First Challenge Badge" }, ...]
       } catch (err) {
-        console.error('❌ 데이터 불러오기 실패:', err);
-        setError('Failed to load challenges or badges');
+        console.error('❌ 챌린지 불러오기 실패:', err);
+        setError('Failed to load challenges');
       }
     };
-
-    fetchData();
-  }, []);
   
+    fetchChallenges();
+  }, []);
+
   // ✅ 필터링된 챌린지 리스트
   const filteredChallenges =
   filter === 'All'
@@ -117,9 +129,11 @@ function MyPage() {
         React.createElement('h3', null, 'My Challenges'),
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
-          : challenges.map((c, i) =>
-              React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
-            )
+          : [...challenges]
+              .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
+              .map((c, i) =>
+                React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
+              )
       ),
 
       // 🏅 보유한 뱃지
@@ -130,20 +144,20 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'badge-list' },
-          badges.length === 0
-          ? React.createElement('p', null, 'No badges earned yet.')
-          : badges.map((badge, idx) => {
-              const name = badge.badge_name || badge.badgeName;
-              return React.createElement(
+
+          earnedBadges.length === 0
+            ? React.createElement('p', null, 'No badges yet.')
+            : earnedBadges.map((badgeName, idx) =>
+              React.createElement(
                 'div',
                 { className: 'badge', key: idx },
-                React.createElement('div', { className: 'badge-icon' }, badgeIcons[name] || '🏆'),
-                React.createElement('div', { className: 'badge-label' }, name.replace(' Badge', ''))
-              );
-            })
-        )
-      ),
-
+                React.createElement('div', { className: 'badge-icon' }, badgeIcons[badgeName]),
+                React.createElement('div', { className: 'badge-label' }, badgeName)
+              )
+            )
+          )
+        ),
+ 
       // 📊 챌린지 이력
       React.createElement(
         'div',
@@ -172,36 +186,38 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'history-list' },
-          filteredChallenges.map((c, i) => {
-            const statusIcon = c.status === 'Success' ? '✅'
-                             : c.status === 'Fail' ? '❌'
-                             : '🔄';
-            const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
+          [...filteredChallenges]
+            .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
+            .map((c, i) => {
+              const statusIcon = c.status === 'Success' ? '✅'
+                              : c.status === 'Fail' ? '❌'
+                              : '🔄';
+              const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
 
-            const statusColor =
-              c.status === 'Success' ? '#19C197'
-              : c.status === 'Fail' ? '#f44336'
-              : '#FFC107';
-          
-            return React.createElement(
-              'div',
-              {
-                key: i,
-                className: `history-item ${c.status}`,
-                style: {
-                  borderLeft: `6px solid ${statusColor}`,
-                  borderRadius: '10px',
-                  padding: '12px',
-                  marginBottom: '10px',
-                  backgroundColor: '#fff',
-                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
-                }
-              },
-              React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
-              React.createElement('p', null, period),
-              React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
-            );
-          })          
+              const statusColor =
+                c.status === 'Success' ? '#19C197'
+                : c.status === 'Fail' ? '#f44336'
+                : '#FFC107';
+            
+              return React.createElement(
+                'div',
+                {
+                  key: i,
+                  className: `history-item ${c.status}`,
+                  style: {
+                    borderLeft: `6px solid ${statusColor}`,
+                    borderRadius: '10px',
+                    padding: '12px',
+                    marginBottom: '10px',
+                    backgroundColor: '#fff',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                  }
+                },
+                React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
+                React.createElement('p', null, period),
+                React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
+              );
+            })          
         )
       )
     )
