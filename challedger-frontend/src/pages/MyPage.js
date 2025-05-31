@@ -6,19 +6,20 @@ import Header from '../components/Header';
 function MyPage() {
   const [filter, setFilter] = useState('All');
   const [challenges, setChallenges] = useState([]);
+  const [badges, setBadges] = useState([]);
   const [error, setError] = useState('');
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
-  const [badges, setBadges] = useState([]);
 
-  // 뱃지 목록
+
+  // ✅ 배지 이름에 대응되는 이모지 매핑
   const badgeIcons = {
     'First Challenge Badge': '🎉',
     '3-Time Streak': '🏅',
-    'Budget Master': '💰',
+    'Food Budget Destroyer': '💥🍔',
   };
 
-  // ✅ 사용자 챌린지 목록 불러오기
+  // ✅ 챌린지 + 유저 정보 불러오기
   useEffect(() => {
     const fetchData = async () => {
       const user = JSON.parse(localStorage.getItem('user')) || {};
@@ -27,20 +28,20 @@ function MyPage() {
 
       setUserEmail(email);
       setUserName(name);
-  
+
       if (!user || !user.token) {
         console.warn('⛔ No user or token found in localStorage');
         setChallenges([]);
         setBadges([]);
         return;
       }
-  
+
       try {
+        // ✅ 챌린지 불러오기
         const challengeRes = await axios.get('http://localhost:4000/api/challenges/all', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
-        // 진행률 계산
         const now = new Date();
         const processed = (Array.isArray(challengeRes.data) ? challengeRes.data : [challengeRes.data]).map((c) => {
           const actual = Number(c.actual_spending || 0);
@@ -52,9 +53,9 @@ function MyPage() {
           if (now <= endDate) {
             status = 'In Progress';
           } else if (actual <= goal) {
-            status = 'Success'; // ✅ 예산 초과 안 했으면 성공
+            status = 'Success';
           } else {
-            status = 'Fail'; // ✅ 초과한 경우만 실패
+            status = 'Fail';
           }
 
           return {
@@ -65,20 +66,21 @@ function MyPage() {
         });
 
         setChallenges(processed);
+
+        // ✅ 배지 불러오기
         const badgeRes = await axios.get('http://localhost:4000/api/badges', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
-        setBadges(badgeRes.data.badges);
-
+        setBadges(badgeRes.data.badges); // [{ badge_name: "First Challenge Badge" }, ...]
       } catch (err) {
         console.error('❌ 데이터 불러오기 실패:', err);
         setError('Failed to load challenges or badges');
       }
     };
-  
+
     fetchData();
   }, []);
-
+  
   // ✅ 필터링된 챌린지 리스트
   const filteredChallenges =
   filter === 'All'
@@ -115,11 +117,9 @@ function MyPage() {
         React.createElement('h3', null, 'My Challenges'),
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
-          : [...challenges]
-              .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
-              .map((c, i) =>
-                React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
-              )
+          : challenges.map((c, i) =>
+              React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
+            )
       ),
 
       // 🏅 보유한 뱃지
@@ -130,19 +130,17 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'badge-list' },
-          badges.map((badge, idx) =>
-            badges.length === 0
-            ? React.createElement('p', null, 'No badges earned yet.')
-            : badges.map((badge, idx) => {
-                const name = badge.badge_name || badge.badgeName;
-                return React.createElement(
-                  'div',
-                  { className: 'badge', key: idx },
-                  React.createElement('div', { className: 'badge-icon' }, badgeIcons[name] || '🏆'),
-                  React.createElement('div', { className: 'badge-label' }, name.replace(' Badge', ''))
-                );
-              })
-          )
+          badges.length === 0
+          ? React.createElement('p', null, 'No badges earned yet.')
+          : badges.map((badge, idx) => {
+              const name = badge.badge_name || badge.badgeName;
+              return React.createElement(
+                'div',
+                { className: 'badge', key: idx },
+                React.createElement('div', { className: 'badge-icon' }, badgeIcons[name] || '🏆'),
+                React.createElement('div', { className: 'badge-label' }, name.replace(' Badge', ''))
+              );
+            })
         )
       ),
 
@@ -174,38 +172,36 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'history-list' },
-          [...filteredChallenges]
-            .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
-            .map((c, i) => {
-              const statusIcon = c.status === 'Success' ? '✅'
-                              : c.status === 'Fail' ? '❌'
-                              : '🔄';
-              const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
+          filteredChallenges.map((c, i) => {
+            const statusIcon = c.status === 'Success' ? '✅'
+                             : c.status === 'Fail' ? '❌'
+                             : '🔄';
+            const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
 
-              const statusColor =
-                c.status === 'Success' ? '#19C197'
-                : c.status === 'Fail' ? '#f44336'
-                : '#FFC107';
-            
-              return React.createElement(
-                'div',
-                {
-                  key: i,
-                  className: `history-item ${c.status}`,
-                  style: {
-                    borderLeft: `6px solid ${statusColor}`,
-                    borderRadius: '10px',
-                    padding: '12px',
-                    marginBottom: '10px',
-                    backgroundColor: '#fff',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
-                  }
-                },
-                React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
-                React.createElement('p', null, period),
-                React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
-              );
-            })          
+            const statusColor =
+              c.status === 'Success' ? '#19C197'
+              : c.status === 'Fail' ? '#f44336'
+              : '#FFC107';
+          
+            return React.createElement(
+              'div',
+              {
+                key: i,
+                className: `history-item ${c.status}`,
+                style: {
+                  borderLeft: `6px solid ${statusColor}`,
+                  borderRadius: '10px',
+                  padding: '12px',
+                  marginBottom: '10px',
+                  backgroundColor: '#fff',
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                }
+              },
+              React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
+              React.createElement('p', null, period),
+              React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
+            );
+          })          
         )
       )
     )
