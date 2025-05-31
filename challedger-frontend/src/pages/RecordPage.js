@@ -52,11 +52,11 @@ function RecordPage() {
         }
       });
 
-      alert('✅ 소비가 성공적으로 등록되었습니다!');
+      alert('✅ Your spending has been successfully recorded!');
       navigate('/home');
     } catch (err) {
-      console.error('❌ 소비 등록 실패:', err.response?.data || err.message);
-      setError(err.response?.data?.error || '소비 등록 중 오류 발생');
+      console.error('❌ Failed to record spending:', err.response?.data || err.message);
+      setError(err.response?.data?.error || 'An error occurred while recording your spending.');
     }
   }
 
