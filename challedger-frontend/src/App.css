@@ -691,6 +691,38 @@ body {
 .react-calendar__month-view__days__day--weekend {
   color: #f95c2f;
 }
+
+/* -------------------- 배지 -------------------- */
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.badge-card {
+  background: #f9f8f6;
+  border-radius: 16px;
+  padding: 20px;
+  width: 194px;
+  height: 90px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-icon {
+  font-size: 30px;
+}
+
+.badge-label {
+  font-weight: bold;
+}
+
+/* -------------------- Footer -------------------- */
 .footer {
   background-color: #fefefe;   /* 거의 흰색에 가까운 부드러운 톤 */
   padding: 12px 0;
@@ -706,7 +738,7 @@ body {
   text-decoration: none;
   font-weight: 500;
 }
+
 .footer a:hover {
   text-decoration: underline;
 }
-

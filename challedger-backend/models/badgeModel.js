@@ -29,9 +29,8 @@ async function grantBadge(userId, badgeName) {
       `INSERT INTO badges (user_id, badge_name) VALUES (?, ?)`,
       [userId, badgeName]
     );
-    console.log('✅ 배지 INSERT 완료:', badgeName);
   } else {
-    console.log('⚠️ 배지 이미 존재함:', badgeName);
+    console.log(`ℹ️ Badge '${badgeName}' already exists for user ${userId}`);
   }
 }
 

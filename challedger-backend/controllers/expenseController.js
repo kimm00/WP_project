@@ -1,34 +1,25 @@
 const db = require('../models/db');
-const { grantBadge, hasBadge } = require('../models/badgeModel'); // 배지 관련 함수들 import
+const updateActualSpending = require('../utils/updateActualSpending');
+const updateChallengeStatuses = require('../utils/updateChallengeStatuses');
+const awardBadges = require('../utils/awardBadges');
 
 exports.createExpense = async (req, res) => {
   const { amount, category, date, description } = req.body;
-  const userId = req.user.id; // JWT로부터 받은 사용자 ID
+  const userId = req.user.id;
   try {
     await db.query(
       'INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)',
       [userId, amount, category, date, description]
     );
 
-    // 최근 5개가 전부 food인지 (대소문자 무시하고 비교)
-    const [recentRows] = await db.query(
-      `SELECT category FROM expenses WHERE user_id = ? ORDER BY date DESC LIMIT 5`,
-      [userId]
-    );
+    await updateActualSpending();
+    await updateChallengeStatuses();
+    await awardBadges(userId);
 
-    const allFood = recentRows.length === 5 && recentRows.every(r => r.category.toLowerCase() === 'food');
-
-    // 3️⃣ 조건 충족 시 "Budget Master" 배지 지급
-    if (allFood) {
-      const alreadyHasBadge = await hasBadge(userId, 'Budget Master');
-      if (!alreadyHasBadge) {
-        await grantBadge(userId, 'Food Budget Destroyer');
-      }
-    }
-
-    res.status(201).json({ message: '소비 등록 완료' });
+    res.status(201).json({ message: 'Expense registered and challenges updated successfully' });
   } catch (err) {
-    res.status(500).json({ error: '소비 등록 실패', detail: err.message });
+    console.error('❌ Failed to fetch expenses', err);
+    res.status(500).json({ error: 'Failed to register expense', detail: err.message });
   }
 };
 
@@ -43,6 +34,6 @@ exports.getExpenses = async (req, res) => {
     );
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: '소비 내역 조회 실패', detail: err.message });
+    res.status(500).json({ error: 'Failed to fetch expenses', detail: err.message });
   }
 };
