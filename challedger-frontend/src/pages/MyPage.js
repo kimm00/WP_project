@@ -135,11 +135,19 @@ function MyPage() {
         React.createElement('h3', null, 'My Challenges'),
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
-          : [...challenges]
+          : React.createElement(
+            'ul',
+            { className: 'challenge-list' },
+            [...challenges]
               .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
               .map((c, i) =>
-                React.createElement('p',{ key: i },`${c.title || 'Untitled'}`)
+                React.createElement(
+                  'li',
+                  { key: i, className: 'challenge-item' },
+                  c.title || 'Untitled'
+                )
               )
+          )
       ),
 
       // 🏅 보유한 뱃지
