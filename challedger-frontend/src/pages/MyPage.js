@@ -16,7 +16,7 @@ function MyPage() {
   const badgeIcons = {
     'First Challenge Badge': '🎉',
     '3-Time Streak': '🏅',
-    'Budget Master': '💰',
+    'Food Budget Destroyer': '💥🍔',
   };
 
   // ✅ 챌린지 + 유저 정보 불러오기
