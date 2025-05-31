@@ -1,4 +1,7 @@
 const db = require('../models/db');
+const updateActualSpending = require('../utils/updateActualSpending');
+const updateChallengeStatuses = require('../utils/updateChallengeStatuses');
+const awardBadges = require('../utils/awardBadges');
 
 exports.createExpense = async (req, res) => {
   const { amount, category, date, description } = req.body;
@@ -8,8 +11,17 @@ exports.createExpense = async (req, res) => {
       'INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)',
       [userId, amount, category, date, description]
     );
-    res.status(201).json({ message: '소비 등록 완료' });
+
+    // 소비 등록 후 챌린지 상태 및 금액 자동 업데이트
+    await updateActualSpending();
+    await updateChallengeStatuses();
+
+    // 배지 자동 지급
+    await awardBadges(userId);
+
+    res.status(201).json({ message: '소비 등록 및 챌린지 업데이트 완료' });
   } catch (err) {
+    console.error('❌ 소비 등록 중 오류:', err);
     res.status(500).json({ error: '소비 등록 실패', detail: err.message });
   }
 };

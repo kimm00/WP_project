@@ -12,6 +12,22 @@ function ChallengePage() {
   const [endDate, setEndDate] = useState('');
   const navigate = useNavigate();
 
+  const categoryOptions = [
+    'Food',
+    'Transport',
+    'Shopping',
+    'Entertainment',
+    'Health',
+    'Education',
+    'Cafe',
+    'Daily',
+    'Bills',
+    'Travel',
+    'Pet',
+    'Gift',
+    'Others'
+  ];  
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -87,7 +103,7 @@ function ChallengePage() {
             onChange={(e) => setCategory(e.target.value)}
             className="challenge-input"
           >
-            {['Food', 'Transport', 'Shopping', 'Others'].map((c) => (
+            {categoryOptions.map((c) => (
               <option key={c} value={c}>
                 {c}
               </option>

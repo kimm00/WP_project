@@ -13,9 +13,24 @@ function MyPage() {
 
   // 뱃지 목록
   const badgeIcons = {
-    'First Challenge Badge': '🎉',
+    'First Challenge': '🎉',
     '3-Time Streak': '🏅',
-    'Budget Master': '💰',
+    'Challenge Achiever': '🎯',
+    'Perfect Saver': '🧊',
+    'Transport Tracker': '🚗',
+    'Food Budget Destroyer': '💥🍔',
+    'Shopping Spree': '🛍️',
+    'Entertainment Lover': '🎬🎮',
+    'Health First': '💪🏋️‍♂️',
+    'Travel Budgeter': '✈️🌍',
+    'Lifelong Learner': '📚',
+    'Bill Payer': '🧾',
+    'Pet Lover': '🐾',
+    'Gift Giver': '🎁',
+    'Explorer': '🧭',
+    'Cafe Enthusiast': '☕️',
+    'Everyday Essentials': '🛒',
+    'Savings Superstar': '⭐️💵',
   };
 
   // ✅ 사용자 챌린지 목록 불러오기
@@ -68,7 +83,11 @@ function MyPage() {
         const badgeRes = await axios.get('http://localhost:4000/api/badges', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
-        setBadges(badgeRes.data.badges);
+
+        const uniqueBadges = Array.from(
+          new Map(badgeRes.data.badges.map(b => [b.badge_name, b])).values()
+        );
+        setBadges(uniqueBadges);        
 
       } catch (err) {
         console.error('❌ 데이터 불러오기 실패:', err);
@@ -130,19 +149,17 @@ function MyPage() {
         React.createElement(
           'div',
           { className: 'badge-list' },
-          badges.map((badge, idx) =>
-            badges.length === 0
+          badges.length === 0
             ? React.createElement('p', null, 'No badges earned yet.')
             : badges.map((badge, idx) => {
                 const name = badge.badge_name || badge.badgeName;
                 return React.createElement(
                   'div',
-                  { className: 'badge', key: idx },
+                  { className: 'badge-card', key: idx },
                   React.createElement('div', { className: 'badge-icon' }, badgeIcons[name] || '🏆'),
                   React.createElement('div', { className: 'badge-label' }, name.replace(' Badge', ''))
                 );
               })
-          )
         )
       ),
 

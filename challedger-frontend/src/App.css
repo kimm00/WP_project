@@ -695,23 +695,29 @@ body {
 /* -------------------- 배지 -------------------- */
 .badge-list {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: flex-start;
 }
 
 .badge-card {
   background: #f9f8f6;
   border-radius: 16px;
   padding: 20px;
-  width: 150px;
+  width: 194px;
+  height: 90px;
   text-align: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .badge-icon {
   font-size: 30px;
 }
 
-.badge-name {
-  margin-top: 10px;
+.badge-label {
   font-weight: bold;
 }
