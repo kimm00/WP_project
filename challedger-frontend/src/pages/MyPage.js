@@ -91,7 +91,7 @@ function MyPage() {
         setBadges(uniqueBadges);        
 
       } catch (err) {
-        console.error('❌ 데이터 불러오기 실패:', err);
+        console.error('❌ Failed to load current challenges or badges:', err);
         setError('Failed to load challenges or badges');
       }
     };

@@ -29,8 +29,8 @@ function HomePage() {
         const list = Array.isArray(res.data) ? res.data : [res.data];
         setChallenges(list);
       } catch (err) {
-        console.error('❌ 진행 중 챌린지 조회 실패:', err);
-        setError('No active challenge.');
+        console.error('❌ Failed to fetch current challenges:', err);
+        setError('Unable to fetch current challenges.');
       }
     };
 

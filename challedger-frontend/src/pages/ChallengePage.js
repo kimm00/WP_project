@@ -36,7 +36,19 @@ function ChallengePage() {
     const token = user.token;
 
     if (!token) {
-      alert('로그인이 필요합니다.');
+      alert('Login is required.');
+      return;
+    }
+    if (!title.trim()) {
+      alert('Please enter a challenge title.');
+      return;
+    }
+    if (Number(goal) <= 0) {
+      alert('Goal amount must be greater than 0.');
+      return;
+    }
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      alert('Start date must be before or equal to end date.');
       return;
     }
 
@@ -57,11 +69,11 @@ function ChallengePage() {
         }
       );
 
-      alert('🎯 챌린지가 성공적으로 등록되었습니다!');
+      alert('🎯 Challenge created successfully!');
       navigate('/home');
     } catch (err) {
-      console.error('❌ 챌린지 등록 실패:', err);
-      alert('챌린지 등록 중 오류가 발생했습니다.');
+      console.error('❌ Challenge creation failed:', err);
+      alert('An error occurred while creating the challenge.');
     }
   }
 

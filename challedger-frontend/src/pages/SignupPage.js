@@ -31,8 +31,8 @@ function SignupPage() {
       // 회원가입 성공 시 로그인 페이지로 이동
       navigate('/');
     } catch (err) {
-      console.error('❌ 회원가입 실패:', err.response?.data || err.message);
-      const message = err.response?.data?.error || 'Signup failed';
+      console.error('❌ Signup failed:', err.response?.data || err.message);
+      const message = err.response?.data?.error || 'An error occurred during signup.';
       setError(message);
     }
   }  
