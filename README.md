@@ -38,16 +38,17 @@
 
 ## 📂 프로젝트 구조
 WP_project/
-├── challedger-backend/ # 백엔드: Node + Express + MySQL
-│ ├── controllers/ # 라우터 로직
-│ ├── models/ # DB 모델
-│ └── routes/ # API 라우팅
-├── challedger-frontend/ # 프론트엔드: React 기반 UI
-│ ├── src/components/ # 재사용 컴포넌트
-│ ├── src/pages/ # 주요 페이지 (Home, Challenge, Record 등)
-│ └── src/utils/ # 유틸 함수 (날짜 포맷 등)
-└── README.md # 리드미 파일
-
+├── challedger-backend/        # 백엔드: Node + Express + MySQL
+│   ├── controllers/           # 라우터 로직
+│   ├── models/                # DB 모델
+│   └── routes/                # API 라우팅
+│
+├── challedger-frontend/       # 프론트엔드: React 기반 UI
+│   ├── src/components/        # 재사용 컴포넌트
+│   ├── src/pages/             # 주요 페이지 (Home, Challenge, Record 등)
+│   └── src/utils/             # 유틸 함수 (날짜 포맷 등)
+│
+└── README.md                  # 리드미 파일
 
 ---
 
