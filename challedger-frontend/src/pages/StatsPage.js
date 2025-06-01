@@ -76,7 +76,7 @@ function StatsPage() {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const month = selectedDate.toISOString().slice(0, 7);
+        const month = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1).toString().padStart(2, '0');
 
         const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
           headers: { Authorization: `Bearer ${token}` },
