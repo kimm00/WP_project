@@ -1,6 +1,7 @@
 const db = require('../models/db');
 const { grantBadge, hasCompletedAnyChallenge } = require('../models/badgeModel');
 
+// Mark a challenge as completed
 exports.completeChallenge = async (req, res) => {
   const { challengeId } = req.params;
   const userId = req.user.id;
@@ -15,6 +16,7 @@ exports.completeChallenge = async (req, res) => {
   }
 };
 
+// Create a new challenge for the user
 exports.createChallenge = async (req, res) => {
   const { title, category, goal_amount, start_date, end_date } = req.body;
   const userId = req.user.id;
@@ -31,8 +33,11 @@ exports.createChallenge = async (req, res) => {
   }
 };
 
+// Get only current (ongoing) challenges
 exports.getCurrentChallenges = async (req, res) => {
   const userId = req.user.id;
+
+  // Get today's date in YYYY-MM-DD format
   const todayObj = new Date();
   const yyyy = todayObj.getFullYear();
   const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
@@ -47,6 +52,7 @@ exports.getCurrentChallenges = async (req, res) => {
       [userId, today, today]
     );
 
+    // Calculate actual spending for each challenge
     const enhanced = await Promise.all(
       challengeRows.map(async (ch) => {
         const [spendingRows] = await db.query(
@@ -70,6 +76,7 @@ exports.getCurrentChallenges = async (req, res) => {
   }
 };
 
+// Get progress info (percent spent) for current challenges
 exports.getChallengeProgresses = async (req, res) => {
   const userId = req.user.id;
   const todayObj = new Date();
@@ -116,6 +123,7 @@ exports.getChallengeProgresses = async (req, res) => {
   }
 };
 
+// Get all challenges + progress + status (success/fail/in-progress)
 exports.getAllChallengesWithProgress = async (req, res) => {
   const userId = req.user.id;
 

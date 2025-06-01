@@ -3,18 +3,20 @@ const updateActualSpending = require('../utils/updateActualSpending');
 const updateChallengeStatuses = require('../utils/updateChallengeStatuses');
 const awardBadges = require('../utils/awardBadges');
 
+// Register a new expense and update related challenge data
 exports.createExpense = async (req, res) => {
   const { amount, category, date, description } = req.body;
   const userId = req.user.id;
   try {
+    // Insert new expense record
     await db.query(
       'INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)',
       [userId, amount, category, date, description]
     );
 
-    await updateActualSpending();
-    await updateChallengeStatuses();
-    await awardBadges(userId);
+    await updateActualSpending();  // Update actual_spending field for challenges
+    await updateChallengeStatuses();  // Update challenge statuses (In Progress / Success / Fail)
+    await awardBadges(userId);  // Award badges if eligible
 
     res.status(201).json({ message: 'Expense registered and challenges updated successfully' });
   } catch (err) {
@@ -23,9 +25,10 @@ exports.createExpense = async (req, res) => {
   }
 };
 
+// Get all expenses for the given month
 exports.getExpenses = async (req, res) => {
   const userId = req.user.id;
-  const { month } = req.query; // ?month=2025-05
+  const { month } = req.query; 
 
   try {
     const [rows] = await db.query(

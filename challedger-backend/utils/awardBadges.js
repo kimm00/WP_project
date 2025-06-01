@@ -2,10 +2,10 @@
 const db = require('../models/db');
 const { grantBadge } = require('../models/badgeModel');
 
-// 새로운 배지 부여 로직
+// Badge awarding logic based on user activities
 const awardBadges = async (userId) => {
   try {
-    // 1. First Challenge - 챌린지를 1개 이상 등록했을 때
+    // First Challenge: at least 1 challenge created
     const [[{ count: totalChallenges }]] = await db.query(
       `SELECT COUNT(*) AS count FROM challenges WHERE user_id = ?`,
       [userId]
@@ -14,7 +14,7 @@ const awardBadges = async (userId) => {
       await grantBadge(userId, 'First Challenge');
     }
 
-    // 2. 3-Time Streak - 챌린지를 3개 이상 성공했을 때
+    // 3-Time Streak: 3 or more successful challenges
     const [[{ count: successCount }]] = await db.query(
       `SELECT COUNT(*) AS count FROM challenges WHERE user_id = ? AND status = 'Success'`,
       [userId]
@@ -22,12 +22,12 @@ const awardBadges = async (userId) => {
     if (successCount >= 3) {
         await grantBadge(userId, '3-Time Streak');
     }
-    // 3. Challenge Achiever - 첫 번째 성공한 챌린지를 만든 경우
+    // Challenge Achiever: at least one successful challenge
     if (successCount >= 1) {
       await grantBadge(userId, 'Challenge Achiever');
     }
 
-    // 4. Perfect Saver - actual_spending = 0 인 성공한 챌린지가 있을 때
+    // Perfect Saver: success with zero spending
     const [[{ count: perfectSaves }]] = await db.query(
       `SELECT COUNT(*) AS count FROM challenges 
        WHERE user_id = ? AND status = 'Success' AND actual_spending = 0`,
@@ -37,7 +37,7 @@ const awardBadges = async (userId) => {
       await grantBadge(userId, 'Perfect Saver');
     }
 
-    // 5. 최근 소비 5개가 모두 Food → Food Budget Destroyer
+    // Food Budget Destroyer: latest 5 expenses all in Food
     const [[{ count: recentFoodCount }]] = await db.query(
         `SELECT COUNT(*) AS count FROM (
           SELECT category FROM expenses
@@ -52,7 +52,7 @@ const awardBadges = async (userId) => {
         await grantBadge(userId, 'Food Budget Destroyer');
     }
 
-    // 6. 최근 소비 3개가 모두 5000원 이하 → Savings Superstar
+    // Savings Superstar: latest 3 expenses all ≤ 5000
     const [[{ count: smallExpenses }]] = await db.query(
         `SELECT COUNT(*) AS count FROM (
           SELECT amount FROM expenses
@@ -67,7 +67,7 @@ const awardBadges = async (userId) => {
         await grantBadge(userId, 'Savings Superstar');
     }
     
-    // 5. 카테고리 기반 배지 (최소 5회 소비 시 지급)
+    // Category-specific badges based on usage counts
     const categoryBadges = {
         'Transport': 'Transport Tracker',
         'Shopping': 'Shopping Spree',
