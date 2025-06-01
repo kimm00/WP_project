@@ -1,5 +1,5 @@
 const db = require('../models/db');
-const { awardBadges } = require('./awardBadges');
+const awardBadges = require('../utils/awardBadges');
 
 async function updateChallengeStatuses() {
   try {
