@@ -3,32 +3,32 @@ const updateActualSpending = require('../utils/updateActualSpending');
 const updateChallengeStatuses = require('../utils/updateChallengeStatuses');
 const awardBadges = require('../utils/awardBadges');
 
+// Register a new expense and update related challenge data
 exports.createExpense = async (req, res) => {
   const { amount, category, date, description } = req.body;
-  const userId = req.user.id; // JWT로부터 받은 사용자 ID
+  const userId = req.user.id;
   try {
+    // Insert new expense record
     await db.query(
       'INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)',
       [userId, amount, category, date, description]
     );
 
-    // 소비 등록 후 챌린지 상태 및 금액 자동 업데이트
-    await updateActualSpending();
-    await updateChallengeStatuses();
+    await updateActualSpending();  // Update actual_spending field for challenges
+    await updateChallengeStatuses();  // Update challenge statuses (In Progress / Success / Fail)
+    await awardBadges(userId);  // Award badges if eligible
 
-    // 배지 자동 지급
-    await awardBadges(userId);
-
-    res.status(201).json({ message: '소비 등록 및 챌린지 업데이트 완료' });
+    res.status(201).json({ message: 'Expense registered and challenges updated successfully' });
   } catch (err) {
-    console.error('❌ 소비 등록 중 오류:', err);
-    res.status(500).json({ error: '소비 등록 실패', detail: err.message });
+    console.error('❌ Failed to fetch expenses', err);
+    res.status(500).json({ error: 'Failed to register expense', detail: err.message });
   }
 };
 
+// Get all expenses for the given month
 exports.getExpenses = async (req, res) => {
   const userId = req.user.id;
-  const { month } = req.query; // ?month=2025-05
+  const { month } = req.query; 
 
   try {
     const [rows] = await db.query(
@@ -37,6 +37,6 @@ exports.getExpenses = async (req, res) => {
     );
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: '소비 내역 조회 실패', detail: err.message });
+    res.status(500).json({ error: 'Failed to fetch expenses', detail: err.message });
   }
 };

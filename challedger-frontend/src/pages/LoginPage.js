@@ -18,16 +18,16 @@ function LoginPage() {
         password
       });
   
-      // ✅ 로그인 성공 시 사용자 정보 저장
+      // Save user info in localStorage after successful login
       localStorage.setItem('user', JSON.stringify({
         token: res.data.token,
         email: res.data.email,
         username: res.data.username
       }));      
   
-      // ✅ 에러 초기화 및 페이지 이동
+      // ✅ Clear error and navigate to home
       setError('');
-      navigate('/home'); // 홈 페이지로 이동
+      navigate('/home'); 
     } catch (err) {
       console.error('❌ 로그인 실패:', err.response?.data || err.message);
       setError(err.response?.data?.error || 'Login failed');
@@ -38,17 +38,17 @@ function LoginPage() {
     'div',
     { className: 'login-container' },
     
-    // 로고
+    // App logo
     React.createElement('img', {
       src: '/logo.png',
       alt: 'ChalLedger 로고',
       className: 'login-logo',
     }),
 
-    // 타이틀
+    // Page title
     React.createElement('h1', { className: 'login-title' }, 'Welcome to ChalLedger!'),
 
-    // 로그인 폼
+    // Login form
     React.createElement(
       'form',
       { className: 'login-form', onSubmit: handleLogin },
@@ -71,7 +71,7 @@ function LoginPage() {
 
       React.createElement('button', { type: 'submit', className: 'login-button' }, 'Login'),
 
-      // 에러 메시지 출력
+      // Error message
       error &&
         React.createElement(
           'p',
@@ -80,7 +80,7 @@ function LoginPage() {
         )
     ),
 
-    // 회원가입 링크
+    // Sign-up link
     React.createElement(
       'p',
       { style: { marginTop: '15px' } },

@@ -11,6 +11,7 @@ function SignupPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Handle signup form submission
   async function handleSignup(event) {
     event.preventDefault();
   
@@ -26,9 +27,9 @@ function SignupPage() {
         password
       });
   
-      console.log('✅ 회원가입 성공:', response.data);
+      console.log('✅ Signup successful:', response.data);
   
-      // 회원가입 성공 시 로그인 페이지로 이동
+      // Navigate to login page after successful signup
       navigate('/');
     } catch (err) {
       console.error('❌ Signup failed:', err.response?.data || err.message);
@@ -39,13 +40,14 @@ function SignupPage() {
 
   return React.createElement(
     'div',
-    { className: 'login-container' }, // 로그인과 동일한 디자인 재사용
+    { className: 'login-container' }, // Reuse login styles
     React.createElement('img', {
       src: '/logo.png',
       alt: 'ChalLedger 로고',
       className: 'login-logo',
     }),
     React.createElement('h1', { className: 'login-title' }, 'Create Your Account'),
+    // Signup form
     React.createElement(
       'form',
       { className: 'login-form', onSubmit: handleSignup },
@@ -88,6 +90,7 @@ function SignupPage() {
         'Sign Up'
       ),
 
+      // Error message
       error &&
         React.createElement(
           'p',
@@ -96,6 +99,7 @@ function SignupPage() {
         )
     ),
 
+    // Redirect to login
     React.createElement(
       'p',
       { style: { marginTop: '15px' } },

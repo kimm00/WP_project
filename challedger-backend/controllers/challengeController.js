@@ -1,29 +1,22 @@
 const db = require('../models/db');
-const { grantBadge, hasCompletedAnyChallenge } = require('../models/badgeModel'); // 배지 관련 함수
+const { grantBadge, hasCompletedAnyChallenge } = require('../models/badgeModel');
 
+// Mark a challenge as completed
 exports.completeChallenge = async (req, res) => {
   const { challengeId } = req.params;
   const userId = req.user.id;
 
   try {
-    // 1. 챌린지 상태를 'Completed'로 변경
     await pool.execute(`UPDATE challenges SET status = 'Completed' WHERE id = ? AND user_id = ?`, [challengeId, userId]);
 
-    // 2. 유저가 이미 완료한 챌린지가 있는지 확인
-    const alreadyCompleted = await hasCompletedAnyChallenge(userId);
-
-    // 3. 첫 완료인 경우에만 배지 지급
-    if (!alreadyCompleted) {
-      await grantBadge(userId, 'First Challenge Badge');
-    }
-
-    res.json({ success: true, message: '챌린지 완료 및 배지 지급 여부 확인 완료' });
+    res.json({ success: true, message: 'Challenge marked as completed.' });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: '챌린지 완료 처리 실패', detail: err.message });
+    console.error('❌ Error marking challenge as completed:', err);
+    res.status(500).json({ error: 'Failed to mark challenge as completed', detail: err.message });
   }
 };
 
+// Create a new challenge for the user
 exports.createChallenge = async (req, res) => {
   const { title, category, goal_amount, start_date, end_date } = req.body;
   const userId = req.user.id;
@@ -34,14 +27,17 @@ exports.createChallenge = async (req, res) => {
        VALUES (?, ?, ?, ?, ?, ?)`,
       [userId, title, category, goal_amount, start_date, end_date]
     );
-    res.status(201).json({ message: '챌린지 등록 완료' });
+    res.status(201).json({ message: 'Challenge created successfully' });
   } catch (err) {
-    res.status(500).json({ error: '챌린지 등록 실패', detail: err.message });
+    res.status(500).json({ error: 'Failed to create challenge', detail: err.message });
   }
 };
 
+// Get only current (ongoing) challenges
 exports.getCurrentChallenges = async (req, res) => {
   const userId = req.user.id;
+
+  // Get today's date in YYYY-MM-DD format
   const todayObj = new Date();
   const yyyy = todayObj.getFullYear();
   const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
@@ -56,6 +52,7 @@ exports.getCurrentChallenges = async (req, res) => {
       [userId, today, today]
     );
 
+    // Calculate actual spending for each challenge
     const enhanced = await Promise.all(
       challengeRows.map(async (ch) => {
         const [spendingRows] = await db.query(
@@ -75,10 +72,11 @@ exports.getCurrentChallenges = async (req, res) => {
 
     res.json(enhanced);
   } catch (err) {
-    res.status(500).json({ error: '진행 중 챌린지 목록 조회 실패', detail: err.message });
+    res.status(500).json({ error: 'Failed to fetch current challenges', detail: err.message });
   }
 };
 
+// Get progress info (percent spent) for current challenges
 exports.getChallengeProgresses = async (req, res) => {
   const userId = req.user.id;
   const todayObj = new Date();
@@ -121,10 +119,11 @@ exports.getChallengeProgresses = async (req, res) => {
 
     res.json(enhanced);
   } catch (err) {
-    res.status(500).json({ error: '진행률 목록 계산 실패', detail: err.message });
+    res.status(500).json({ error: 'Failed to calculate challenge progress', detail: err.message });
   }
 };
 
+// Get all challenges + progress + status (success/fail/in-progress)
 exports.getAllChallengesWithProgress = async (req, res) => {
   const userId = req.user.id;
 
@@ -167,6 +166,6 @@ exports.getAllChallengesWithProgress = async (req, res) => {
 
     res.json(enhanced);
   } catch (err) {
-    res.status(500).json({ error: '챌린지 전체 조회 실패', detail: err.message });
+    res.status(500).json({ error: 'Failed to fetch all challenges', detail: err.message });
   }
 };

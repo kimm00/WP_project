@@ -3,7 +3,7 @@ import React from 'react';
 import '../App.css';
 
 function Footer() {
-  const year = new Date().getFullYear();
+  const year = new Date().getFullYear();  // Get current year dynamically
 
   return (
     <footer className="footer">

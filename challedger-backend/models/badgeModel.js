@@ -1,6 +1,6 @@
-const pool = require('./db'); // MySQL 연결 풀
+const pool = require('./db');
 
-// 유저가 완료한 챌린지가 한 개라도 있는지 확인
+// Check if user has completed at least one challenge
 async function hasCompletedAnyChallenge(userId) {
   const [rows] = await pool.query(
     `SELECT COUNT(*) AS count FROM challenges WHERE user_id = ? AND status = 'Completed'`,
@@ -9,12 +9,23 @@ async function hasCompletedAnyChallenge(userId) {
   return rows[0].count > 0;
 }
 
-// 배지를 지급 (이미 있으면 무시)
+// Check if user already has the given badge
+async function hasBadge(userId, badgeName) {
+  const [rows] = await pool.query(
+    `SELECT 1 FROM badges WHERE user_id = ? AND badge_name = ? LIMIT 1`,
+    [userId, badgeName]
+  );
+  return rows.length > 0;
+}
+
+// Grant badge to user if they don't already have it
 async function grantBadge(userId, badgeName) {
   const [existing] = await pool.query(
     `SELECT * FROM badges WHERE user_id = ? AND badge_name = ?`,
     [userId, badgeName]
   );
+
+  console.log('🔍 badge 존재 여부:', existing);
 
   if (existing.length === 0) {
     await pool.query(
@@ -28,5 +39,6 @@ async function grantBadge(userId, badgeName) {
 
 module.exports = {
   hasCompletedAnyChallenge,
+  hasBadge,
   grantBadge
 };
