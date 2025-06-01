@@ -1,54 +1,77 @@
-# 💸 WP_project - Weekly Challenge Planner
+![KakaoTalk_Photo_2025-06-01-14-40-01](https://github.com/user-attachments/assets/643c639d-7d88-4d19-91e1-9f7e8eea7566)# # 💸ChalLedger - Challenge + Ledger
 
-> **예산을 계획하고, 소비를 기록하며, 배지를 모아보세요!**  
-> 실생활에 도움이 되는 똑똑한 소비 습관 형성 프로젝트 🌱
+**ChalLedger** is a personal challenge tracking and budgeting web application.  
+Track your goals, monitor spending, and earn badges
+as you achieve challenges! 🎯💰🏅
 
----
-
-## 📌 프로젝트 소개
-
-**WP_project**는 사용자가 매달 목표 지출을 설정하고, 그에 맞춰 소비를 기록하며,  
-목표 달성 여부에 따라 다양한 배지를 받을 수 있는 **챌린지 기반 소비 기록 웹 애플리케이션**입니다.
+![KakaoTalk_Photo_2025-06-01-14-40-01](https://github.com/user-attachments/assets/14156229-8259-4a4e-bbda-6c13fe108902)
 
 ---
 
-## 🌟 주요 기능
 
-| 기능명 | 설명 |
-|--------|------|
-| 🔐 회원가입 / 로그인 | 사용자 인증 및 세션 관리 |
-| 🧾 챌린지 생성 | 목표 지출 금액, 기간 설정 |
-| 💳 소비 기록 등록 | 실제 지출 금액 기록 및 수정 |
-| 🏅 배지 시스템 | 조건 달성 시 자동 배지 부여 |
-| 📊 통계 시각화 | 월별 지출 차트, 진행률 표시 |
-| 🌙 다크모드 지원 | 사용자 친화적 인터페이스 |
+## 🌟 Key Features
 
----
-
-## 🛠️ 기술 스택
-
-| 분야 | 사용 기술 |
-|------|-----------|
-| Frontend | React, React Router, Axios, Chart.js |
-| Backend  | Node.js, Express.js |
-| Database | MySQL |
-| 인증 및 배포 | JWT, Postman (API Test), Vercel / Railway 예정 |
+| Feature | Description |
+|---------|-------------|
+| 🔐 Sign Up / Login | User authentication and session management |
+| 🧾 Create Challenge | Set goal spending amount and challenge duration |
+| 💳 Expense Tracking | Record and update actual spending |
+| 🏅 Badge System | Automatically grants badges when conditions are met |
+| 📊 Data Visualization | Monthly spending chart and challenge progress display |
 
 ---
 
-## 📂 프로젝트 구조
-WP_project/
-├── challedger-backend/        # 백엔드: Node + Express + MySQL
-│   ├── controllers/           # 라우터 로직
-│   ├── models/                # DB 모델
-│   └── routes/                # API 라우팅
-│
-├── challedger-frontend/       # 프론트엔드: React 기반 UI
-│   ├── src/components/        # 재사용 컴포넌트
-│   ├── src/pages/             # 주요 페이지 (Home, Challenge, Record 등)
-│   └── src/utils/             # 유틸 함수 (날짜 포맷 등)
-│
-└── README.md                  # 리드미 파일
+## 🏅 Badge Types
+
+ChalLedger rewards users with unique badges based on challenge completion and spending patterns.
+
+### ✅ 1. Challenge-related Badges
+
+| Badge Name         | Icon | Criteria                                                                 |
+|--------------------|------|--------------------------------------------------------------------------|
+| First Challenge    | 🎉   | Granted when user registers at least 1 challenge                         |
+| 3-Time Streak      | 🏅   | Granted when user registers 3 or more challenges                         |
+| Challenge Achiever | 🎯   | Granted when user successfully completes at least 1 challenge            |
+| Perfect Saver      | 🧊   | Granted when `actual_spending` is 0 in at least one successful challenge |
+
+---
+
+### ✅ 2. Spending Pattern Badges
+
+| Badge Name              | Icon   | Criteria                                                                 |
+|-------------------------|--------|--------------------------------------------------------------------------|
+| Food Budget Destroyer   | 💥🍔   | Granted when last 5 expenses are all in the 'Food' category              |
+| Savings Superstar       | ⭐💵   | Granted when last 3 expenses are each less than 5,000 KRW                |
+
+---
+
+### ✅ 3. Category-specific Badges
+
+| Category      | Badge Name             | Icon    | Criteria              |
+|---------------|------------------------|---------|------------------------|
+| Transport     | Transport Tracker       | 🚗      | 3+ expenses in category |
+| Shopping      | Shopping Spree          | 🛍️      | 2+ expenses             |
+| Entertainment | Entertainment Lover     | 🎬🎮    | 3+ expenses             |
+| Health        | Health First            | 💪🥗    | 2+ expenses             |
+| Travel        | Travel Budgeter         | ✈️🌍    | 1+ expense              |
+| Education     | Lifelong Learner        | 📚      | 1+ expense              |
+| Bills         | Bill Payer              | 🧾      | 2+ expenses             |
+| Pets          | Pet Lover               | 🐾      | 2+ expenses             |
+| Gifts         | Gift Giver              | 🎁      | 1+ expense              |
+| Others        | Explorer                | 🧭      | 4+ expenses             |
+| Cafe          | Cafe Enthusiast         | ☕      | 3+ expenses             |
+| Daily         | Everyday Essentials     | 🛒      | 5+ expenses             |
+
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend**: React.js, React Router, CSS (custom responsive design)  
+- **Backend**: Node.js, Express.js  
+- **Database**: MySQL  
+- **Testing**: React Testing Library  
+- **Performance**: web-vitals (optional Core Web Vitals reporting)
 
 ---
 
@@ -64,33 +87,34 @@ WP_project/
 
 ---
 
-## 👨‍👩‍👧‍👦 팀 소개
+## 👨‍👩‍👧‍👦 Team Introduction
 
-| 이름 | 역할 | 주요 담당 |
-|------|------|-----------|
-| 김도이 (Doyi) | 🎨 Frontend & Design | 뱃지 시스템, 차트 시각화, Footer 디자인 등 |
-| 박한얼 (Haneol) | 👨‍💻 Backend Lead | DB 모델링, API 설계, 인증 로직 |
-| 이소담 (Sodam) | 👩‍🎨 Frontend Lead | 챌린지 생성/기록 기능, Footer 디자인 등 |
+| Name         | Role                        | Main Contributions                                                                 |
+|--------------|-----------------------------|-------------------------------------------------------------------------------------|
+| Doyi Kim     | 🧠 Project Planning & Design | Project planning, UI/UX design, badge system logic & display, chart visualization, footer layout |
+| Haneol Lee  | 👨‍💻 Backend Lead             | DB modeling, API development, user authentication, badge logic implementation      |
+| Sodam Lee    | 👩‍🎨 Frontend Lead            | Challenge creation & logging UI, calendar-based expense tracking, responsive layout, footer styling |
 
 ---
 
-## 🧪 실행 방법
+## 🧪 How to Run the Project
 
-### 📦 1) 프로젝트 클론
+### 📦 1) Clone the Repository
 
 ```bash
 git clone https://github.com/kimm00/WP_project.git
 cd WP_project
+```
 
-## 🛠️ 설치 및 실행 방법
+### 🛠️ 2) Installation & Startup 
 
 ```bash
-# 백엔드
+# backend
 cd challedger-backend
 npm install
-npm run dev
+npm run start
 
-# 프론트엔드
+# frontend
 cd challedger-frontend
 npm install
 npm start
