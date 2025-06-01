@@ -25,8 +25,8 @@ const categoryEmojis = {
   Health: '🏥',
   Education: '📚',
   Cafe: '☕️',
-  Daily: '🧻',
-  Bills: '💡',
+  Daily: '🛒',
+  Bills: '🧾',
   Travel: '✈️',
   Pets: '🐶',
   Gifts: '🎁',
@@ -213,7 +213,7 @@ function StatsPage() {
                 React.createElement('ul', { className: 'expense-list' },
                   filteredExpenses.map((e, i) =>
                     React.createElement('li', { key: i },
-                      `${categoryEmojis[e.category] || '💸'} ${e.category}: ${Number(e.amount).toLocaleString()} KRW`
+                      `${categoryEmojis[e.category] || '💸'} ${e.category}: ${e.description ? e.description + ' - ' : ''}${Number(e.amount).toLocaleString()} KRW`
                     )                    
                   )
                 ),
