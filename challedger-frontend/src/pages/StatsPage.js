@@ -10,7 +10,28 @@ import {
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-const COLORS = ['#19C197', '#F95C2F', '#FFC940', '#8884d8'];
+const COLORS = [
+  '#19C197', '#F95C2F', '#FFC940', '#8884d8',
+  '#FF7F50', '#00BFFF', '#ADFF2F', '#FF69B4',
+  '#A52A2A', '#20B2AA', '#DAA520', '#9370DB',
+  '#4682B4'
+];
+
+const categoryEmojis = {
+  Food: '🍽',
+  Transport: '🚇',
+  Shopping: '🛍',
+  Entertainment: '🎬',
+  Health: '🏥',
+  Education: '📚',
+  Cafe: '☕️',
+  Daily: '🧻',
+  Bills: '💡',
+  Travel: '✈️',
+  Pets: '🐶',
+  Gifts: '🎁',
+  Others: '💸'
+};
 
 function StatsPage() {
   const navigate = useNavigate();
@@ -192,8 +213,8 @@ function StatsPage() {
                 React.createElement('ul', { className: 'expense-list' },
                   filteredExpenses.map((e, i) =>
                     React.createElement('li', { key: i },
-                      `${e.category === 'Food' ? '🍽' : e.category === 'Transport' ? '🚇' : e.category === 'Shopping' ? '🛍' : '💸'} ${e.category}: ${Number(e.amount).toLocaleString()} KRW`
-                    )
+                      `${categoryEmojis[e.category] || '💸'} ${e.category}: ${Number(e.amount).toLocaleString()} KRW`
+                    )                    
                   )
                 ),
                 React.createElement('p', { className: 'total-expense' },
