@@ -10,6 +10,7 @@ import {
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
+// Color palette for category chart
 const COLORS = [
   '#19C197', '#F95C2F', '#FFC940', '#8884d8',
   '#FF7F50', '#00BFFF', '#ADFF2F', '#FF69B4',
@@ -17,6 +18,7 @@ const COLORS = [
   '#4682B4'
 ];
 
+// Category emoji mapping
 const categoryEmojis = {
   Food: '🍽',
   Transport: '🚇',
@@ -45,12 +47,14 @@ function StatsPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [chartDate] = useState(new Date());
 
+  // Filter expenses for selected date
   const filteredExpenses = calendarExpenses.filter(item =>
     new Date(item.date).toDateString() === selectedDate.toDateString()
   );
 
   const goHome = () => navigate('/home');
 
+  // Fetch weekly data
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
@@ -71,6 +75,7 @@ function StatsPage() {
     fetchExpenses();
   }, [chartDate]);
 
+  // Fetch calendar data
   useEffect(() => {
     const fetchCalendarExpenses = async () => {
       try {
@@ -91,6 +96,7 @@ function StatsPage() {
     fetchCalendarExpenses();
   }, [selectedDate]);
 
+  // Fetch challenge progress
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
@@ -110,6 +116,7 @@ function StatsPage() {
     fetchChallenges();
   }, []);
 
+  // Process weekly and category chart data
   function processChartData(data) {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const dailyMap = {};
@@ -143,6 +150,9 @@ function StatsPage() {
     setDailyData(days.map(day => ({ date: day, amount: dailyMap[day] || 0 })));
     setCategoryData(Object.entries(categoryMap).map(([name, value]) => ({ name, value })));
   }
+
+  // Render UI elements (omitted here for brevity)
+  // This includes BarChart, PieChart, Calendar, Challenge progress and layout
 
   return React.createElement(
     React.Fragment,
@@ -286,7 +296,7 @@ function StatsPage() {
       )      
     ),
 
-    // ✅ Footer 삽입
+    // Footer
     React.createElement(Footer)
   );
 }

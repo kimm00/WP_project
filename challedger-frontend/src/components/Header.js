@@ -6,20 +6,20 @@ function Header() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
 
-  if (!user) return null; // 로그인하지 않은 경우 표시 안 함
+  if (!user) return null; // If user is not logged in, do not show header
 
-  // ✅ 유저 이름 추출 (username이 없으면 email 앞부분 사용)
+  // Extract display name from username or email
   const email = user.email || 'unknown@example.com';
   const username = user.username;
   const userDisplayName = username || email.split('@')[0];
 
-  // ✅ 로그아웃 핸들러
+  // Handle logout: clear user and go to landing page
   function handleLogout() {
     localStorage.removeItem('user');
     navigate('/');
   }
 
-  // ✅ 마이페이지 이동 핸들러
+  // Navigate to MyPage
   function goToMyPage() {
     navigate('/mypage');
   }
@@ -28,7 +28,7 @@ function Header() {
     'header',
     { className: 'site-header' },
 
-    // 왼쪽: 로고 + 브랜드명
+    // Left section: logo and brand
     React.createElement(
       'div',
       {
@@ -44,7 +44,7 @@ function Header() {
       React.createElement('span', { className: 'brand-name' }, 'ChalLedger')
     ),
 
-    // 오른쪽: 유저명 + 마이페이지 + 로그아웃
+    // Right section: username and logout button
     React.createElement(
       'div',
       { className: 'header-right' },

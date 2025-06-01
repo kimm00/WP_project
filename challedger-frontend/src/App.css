@@ -16,7 +16,7 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* -------------------- 공통 카드 -------------------- */
+/* -------------------- Common Card Layout -------------------- */
 .login-container,
 .home-container,
 .record-container,
@@ -29,7 +29,7 @@ body {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
 }
 
-/* -------------------- 로고 -------------------- */
+/* -------------------- Logo -------------------- */
 .login-logo,
 .home-logo,
 .record-logo {
@@ -44,7 +44,7 @@ body {
   height: auto;
 }
 
-/* -------------------- 텍스트 -------------------- */
+/* -------------------- Text -------------------- */
 .login-title,
 .home-title,
 .challenge-title,
@@ -63,7 +63,7 @@ body {
   margin-bottom: 28px;
 }
 
-/* -------------------- 입력 폼 -------------------- */
+/* -------------------- Input Form -------------------- */
 .login-form,
 .record-form,
 .challenge-form {
@@ -89,7 +89,7 @@ body {
   outline: none;
 }
 
-/* -------------------- 버튼 -------------------- */
+/* -------------------- Button -------------------- */
 .login-button,
 .home-btn,
 .record-button,
@@ -116,7 +116,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* -------------------- 홈: 챌린지 요약 -------------------- */
+/* -------------------- Home: Challenge Summary -------------------- */
 .challenge-summary {
   background-color: var(--color-body);
   padding: 24px;
@@ -140,7 +140,7 @@ body {
   gap: 14px;
   margin-top: 24px;
 }
-/* -------------------- 챌린지 진행률 카드 -------------------- */
+/* -------------------- Challenge Progress Box-------------------- */
 .challenge-progress-box {
   display: flex;
   justify-content: space-between; /* 텍스트 왼쪽, 그래프 오른쪽 */
@@ -207,7 +207,7 @@ body {
   width: 280px;
 }
 .challenge-card {
-  flex: 0 1 calc(50% - 1.5rem); /* 2개씩 나열되도록 */
+  flex: 0 1 calc(50% - 1.5rem); /* listed in two */
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -227,8 +227,8 @@ body {
 .challenge-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem; /* 카드 간격 */
-  justify-content: center; /* 가운데 정렬 */
+  gap: 1.5rem; /* Card spacing */
+  justify-content: center; 
 }
 
 
@@ -284,7 +284,7 @@ body {
   background-color: #e0481c;
 }
 
-/* -------------------- 뒤로가기 버튼 -------------------- */
+/* -------------------- Back button -------------------- */
 .back-button {
   background-color: transparent;
   color: var(--color-text-strong);
@@ -316,16 +316,16 @@ body {
   background: #fff;
   margin-bottom: 32px;
 }
-/* 최상단에 추가 또는 global 설정 */
+
 * {
   box-sizing: border-box;
 }
 
-/* 헤더 고정 */
+/* Hold header */
 .site-header {
   width: 100%;
   max-width: 100%;
-  padding: 16px 24px;  /* ✅ 좌우 여백 줄이기 */
+  padding: 16px 24px;  /* Reduce left and right margins */
   box-shadow: 0 1px 6px rgba(0,0,0,0.04);
   display: flex;
   justify-content: space-between;
@@ -334,7 +334,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow-x: hidden;  /* ✅ 넘치는 콘텐츠 자르기 */
+  overflow-x: hidden;  /* Cuts overflowing content */
 }
 .mypage-container {
   max-width: 720px;
@@ -465,7 +465,7 @@ body {
   color: #223A5E;
 }
 
-/* 내부 콘텐츠 래퍼 */
+/* Internal content rapper */
 .landing-content {
   display: flex;
   align-items: center;
@@ -475,20 +475,20 @@ body {
   width: 100%;
 }
 
-/* 왼쪽 로고 */
+/* Left logo */
 .landing-left img {
   width: 550px;
   max-width: 100%;
   height: auto;
 }
 
-/* 오른쪽 텍스트 영역 */
+/* Right Text Area */
 .landing-right {
   max-width: 520px;
   flex: 1;
 }
 
-/* 제목 */
+/* Title */
 .landing-title {
   font-size: 40px;
   font-weight: 800;
@@ -496,7 +496,7 @@ body {
   line-height: 1.4;
 }
 
-/* 부제 */
+/* Subtitle */
 .landing-subtitle {
   font-size: 18px;
   color: #555;
@@ -504,7 +504,7 @@ body {
   line-height: 1.7;
 }
 
-/* 버튼 그룹 */
+/* Group of buttons */
 .button-group {
   display: flex;
   gap: 16px;
@@ -546,7 +546,7 @@ body {
   outline: none;
 }
 
-/* 기능 설명 */
+/* Feature Description */
 .feature-list {
   display: flex;
   flex-direction: column;
@@ -584,7 +584,7 @@ body {
 .error {
   color: red;
 }
-/* 전체 달력 스타일 */
+/* Entire Calendar Style */
 .react-calendar {
   border: none;
   border-radius: 10px;
@@ -595,7 +595,7 @@ body {
   background: #ffffff;
 }
 
-/* 상단 네비게이션 */
+/* Top Navigation */
 .react-calendar__navigation {
   display: flex;
   justify-content: space-between;
@@ -618,7 +618,7 @@ body {
   color: #19C197;
 }
 
-/* 요일 헤더 */
+/* Day of the week header */
 .react-calendar__month-view__weekdays {
   text-align: center;
   font-weight: 600;
@@ -626,7 +626,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* 날짜 셀 */
+/* Date Cell */
 .react-calendar__tile {
   padding: 0.7rem 0;
   background: none;
@@ -638,13 +638,13 @@ body {
   transition: background 0.2s ease-in-out;
 }
 
-/* hover 시 */
+/* hover */
 .react-calendar__tile:hover {
   background: #f1f1f1;
   cursor: pointer;
 }
 
-/* 오늘 날짜 */
+/* todat date */
 .react-calendar__tile--now {
   background: #19C197 !important;   /* 부드러운 민트색: 강조 + 통일성 */
   color: #fff !important;           /* 텍스트는 흰색으로 가독성 확보 */
@@ -653,7 +653,7 @@ body {
   transition: background 0.3s ease;
 }
 
-/* 선택된 날짜 */
+/* selected date */
 .react-calendar__tile--active {
   background: #1F2F56 !important;   /* 짙은 네이비 */
   color: white !important;
@@ -665,12 +665,12 @@ body {
   background: #2c3f6b !important; /* 네이비 hover 시 약간 밝게 */
 }
 
-/* 주말 색상 변경 */
+/* Change Weekend Color */
 .react-calendar__month-view__days__day--weekend {
   color: #f95c2f;
 }
 
-/* -------------------- 배지 -------------------- */
+/* -------------------- Badge -------------------- */
 .badge-list {
   display: flex;
   flex-wrap: wrap;
@@ -702,13 +702,13 @@ body {
 
 /* -------------------- Footer -------------------- */
 .footer {
-  background-color: #fefefe;   /* 거의 흰색에 가까운 부드러운 톤 */
+  background-color: #fefefe;  
   padding: 12px 0;
   text-align: center;
   font-size: 13px;
   color: #aaa;
   margin-top: auto;
-  border-top: 1px solid #f1f1f1; /* 은은한 구분선 */
+  border-top: 1px solid #f1f1f1; /* Subtle dividing line */
 }
 
 .footer a {
@@ -724,7 +724,7 @@ body {
 
 /* -------------------- Responsive Layout -------------------- */
 
-/* 📱 Mobile (≤600px) */
+/*  Mobile (≤600px) */
 @media (max-width: 600px) {
   .page-wrapper,
   .login-container,
@@ -748,7 +748,7 @@ body {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .challenge-progress-box {
     flex-direction: column;
     align-items: center;
@@ -772,7 +772,7 @@ body {
   }
 }
 
-/* 📱📟 Tablet (601px ~ 1024px) */
+/*  Tablet (601px ~ 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .page-wrapper,
   .login-container,

@@ -13,6 +13,7 @@ function RecordPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Expense categories
   const categoryOptions = [
     'Food',
     'Transport',
@@ -29,6 +30,7 @@ function RecordPage() {
     'Others'
   ];  
 
+  // Submit expense to backend
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -60,6 +62,7 @@ function RecordPage() {
     }
   }
 
+  // Navigate back to home
   function goHome() {
     navigate('/home');
   }
@@ -68,32 +71,32 @@ function RecordPage() {
     React.Fragment,
     null,
 
-    // ✅ 상단 헤더 고정
+    //  Header section
     React.createElement(Header),
 
-    // ✅ 내용 카드
+    // Expense form card
     React.createElement(
       'div',
       { className: 'record-container' },
 
-      // ✅ 로고 단독 상단 표시
+      // Logo
       React.createElement('img', {
         src: '/logo.png',
         alt: 'ChalLedger Logo',
         className: 'record-logo'
       }),
 
-      // ✅ 돌아가기 버튼을 h1 위에 두기 (더 자연스럽게)
+      // Back button
       React.createElement(
         'button',
         { className: 'back-button', onClick: goHome },
         '← Back to Home'
       ),
 
-      // ✅ 제목
+      // Title
       React.createElement('h1', { className: 'record-title' }, '🧾 Record Your Expense'),
 
-      // ✅ 입력 폼
+      // Input form
       React.createElement(
         'form',
         { className: 'record-form', onSubmit: handleSubmit },
@@ -142,6 +145,7 @@ function RecordPage() {
           '💾 Save Expense'
         ),
 
+        // Error display
         error &&
           React.createElement(
             'p',
@@ -151,7 +155,7 @@ function RecordPage() {
       )
     ),
 
-    // ✅ Footer 삽입
+    // Footer section
     React.createElement(Footer)
   );
 }

@@ -6,6 +6,7 @@ import '../App.css';
 function LandingPage() {
   const navigate = useNavigate();
 
+  // Navigation handlers
   function goToLogin() {
     navigate('/login');
   }
@@ -21,7 +22,7 @@ function LandingPage() {
       'div',
       { className: 'landing-content' },
 
-      // 좌측 로고 영역
+      // Left section: Logo
       React.createElement(
         'div',
         { className: 'landing-left' },
@@ -33,7 +34,7 @@ function LandingPage() {
         })
       ),
 
-      // 우측 텍스트 영역
+      // Right section: Title, subtitle, buttons, and features
       React.createElement(
         'div',
         { className: 'landing-right' },
@@ -48,7 +49,7 @@ function LandingPage() {
           'Budget with purpose. Join challenges, earn badges, and master your finances.'
         ),
 
-        // 버튼 그룹
+        // Buttons: Log In & Create Account
         React.createElement(
           'div',
           { className: 'button-group' },
@@ -64,7 +65,7 @@ function LandingPage() {
           )
         ),
 
-        // 특징 나열
+         // Feature highlights
         React.createElement(
           'div',
           { className: 'feature-list' },

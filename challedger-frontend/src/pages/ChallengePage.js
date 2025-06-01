@@ -13,6 +13,7 @@ function ChallengePage() {
   const [endDate, setEndDate] = useState('');
   const navigate = useNavigate();
 
+  // List of predefined spending categories
   const categoryOptions = [
     'Food',
     'Transport',
@@ -29,12 +30,14 @@ function ChallengePage() {
     'Others'
   ];  
 
+  // Handle form submission and send challenge data to backend
   async function handleSubmit(e) {
     e.preventDefault();
 
     const user = JSON.parse(localStorage.getItem('user')) || {};
     const token = user.token;
 
+    // Basic input validation
     if (!token) {
       alert('Login is required.');
       return;
@@ -77,6 +80,7 @@ function ChallengePage() {
     }
   }
 
+  // Navigate back to home
   function goHome() {
     navigate('/home');
   }
@@ -85,15 +89,15 @@ function ChallengePage() {
     React.Fragment,
     null,
 
-    // Header
+    // Top navigation
     React.createElement(Header),
 
-    // Main challenge container
+    // Challenge creation UI
     React.createElement(
       'div',
       { className: 'challenge-container' },
 
-      // Header area
+      // Logo + Back button
       React.createElement(
         'div',
         { className: 'challenge-header' },
@@ -105,7 +109,7 @@ function ChallengePage() {
         React.createElement('button', { className: 'back-button', onClick: goHome }, '← Back to Home')
       ),
 
-      // Title
+      // Challenge input form
       React.createElement('h1', { className: 'challenge-title' }, '🎯 Create a New Challenge'),
 
       // Form
@@ -168,7 +172,7 @@ function ChallengePage() {
       )
     ),
 
-    // ✅ Footer 삽입
+    // Footer
     React.createElement(Footer)
   );
 }

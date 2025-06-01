@@ -7,6 +7,8 @@ import Footer from '../components/Footer';
 
 function HomePage() {
   const navigate = useNavigate();
+
+  // Format today's date (e.g., "Monday, June 3, 2025")
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -18,6 +20,7 @@ function HomePage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // Fetch current challenges from the backend
     const fetchChallenges = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
@@ -37,7 +40,7 @@ function HomePage() {
     fetchChallenges();
   }, []);
 
-  // 버튼 클릭 핸들러
+  // Navigation handlers
   const goToRecord = () => navigate('/record');
   const goToChallenge = () => navigate('/challenge');
   const goToStats = () => navigate('/stats');
@@ -46,15 +49,15 @@ function HomePage() {
     React.Fragment,
     null,
 
-    // ✅ Header는 페이지 바깥에 위치
+    // Top header
     React.createElement(Header),
 
-    // ✅ 본문 콘텐츠는 별도 wrapper에
+    // Main container
     React.createElement(
       'div',
       { className: 'home-container' },
 
-      // 로고 + 타이틀
+      // Logo and greeting
       React.createElement('img', {
         src: '/logo.png',
         alt: 'ChalLedger Logo',
@@ -63,7 +66,7 @@ function HomePage() {
       React.createElement('h1', { className: 'home-title' }, 'Welcome back to ChalLedger!'),
       React.createElement('p', { className: 'home-date' }, today),
 
-      // 챌린지 정보
+      // Challenge summary
       React.createElement(
         'div',
         { className: 'challenge-summary' },
@@ -83,7 +86,7 @@ function HomePage() {
         )
       ),
 
-      // 버튼 영역
+      // Navigation buttons
       React.createElement(
         'div',
         { className: 'home-buttons' },
@@ -104,7 +107,7 @@ function HomePage() {
       )
     ),
     
-    // ✅ Footer 삽입
+    // Footer
     React.createElement(Footer)
   );
 }

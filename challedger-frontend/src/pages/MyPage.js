@@ -12,7 +12,7 @@ function MyPage() {
   const [userEmail, setUserEmail] = useState('');
   const [badges, setBadges] = useState([]);
 
-  // 뱃지 목록
+  // Badge icon map
   const badgeIcons = {
     'First Challenge': '🎉',
     '3-Time Streak': '🏅',
@@ -34,7 +34,7 @@ function MyPage() {
     'Savings Superstar': '⭐️💵',
   };
 
-  // ✅ 사용자 챌린지 목록 불러오기
+  // Fetch challenge and badge data
   useEffect(() => {
     const fetchData = async () => {
       const user = JSON.parse(localStorage.getItem('user')) || {};
@@ -56,7 +56,7 @@ function MyPage() {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
-        // 진행률 계산
+        // Calculate progress and status
         const now = new Date();
         const processed = (Array.isArray(challengeRes.data) ? challengeRes.data : [challengeRes.data]).map((c) => {
           const actual = Number(c.actual_spending || 0);
@@ -68,9 +68,9 @@ function MyPage() {
           if (now <= endDate) {
             status = 'In Progress';
           } else if (actual <= goal) {
-            status = 'Success'; // ✅ 예산 초과 안 했으면 성공
+            status = 'Success'; // Within budget
           } else {
-            status = 'Fail'; // ✅ 초과한 경우만 실패
+            status = 'Fail'; // Over budget
           }
 
           return {
@@ -85,6 +85,7 @@ function MyPage() {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
+        // Deduplicate badges
         const uniqueBadges = Array.from(
           new Map(badgeRes.data.badges.map(b => [b.badge_name, b])).values()
         );
@@ -99,7 +100,7 @@ function MyPage() {
     fetchData();
   }, []);
 
-  // ✅ 필터링된 챌린지 리스트
+  // Apply challenge filter (All, In Progress, Success, Fail)
   const filteredChallenges =
   filter === 'All'
     ? challenges
@@ -115,7 +116,7 @@ function MyPage() {
       'div',
       { className: 'mypage-container' },
 
-      // 👤 프로필 카드
+      // Profile section
       React.createElement(
         'div',
         { className: 'profile-card' },
@@ -128,7 +129,7 @@ function MyPage() {
         React.createElement('p', { className: 'user-email' }, userEmail),        
       ),
 
-      // 📌 챌린지 개요
+      // Challenge overview
       React.createElement(
         'div',
         { className: 'section-box' },
@@ -150,6 +151,7 @@ function MyPage() {
           )
       ),
 
+      // Badge display
       React.createElement(
         'div',
         { className: 'section-box' },
@@ -171,6 +173,7 @@ function MyPage() {
         )
       ),
 
+      // Challenge history with filter
       React.createElement(
         'div',
         { className: 'section-box' },
