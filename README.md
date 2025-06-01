@@ -1,12 +1,13 @@
-![KakaoTalk_Photo_2025-06-01-14-40-01](https://github.com/user-attachments/assets/643c639d-7d88-4d19-91e1-9f7e8eea7566)# # 💸ChalLedger - Challenge + Ledger
+# # 💸ChalLedger - Challenge + Ledger
 
 **ChalLedger** is a personal challenge tracking and budgeting web application.  
 Track your goals, monitor spending, and earn badges
 as you achieve challenges! 🎯💰🏅
 
-![KakaoTalk_Photo_2025-06-01-14-40-01](https://github.com/user-attachments/assets/14156229-8259-4a4e-bbda-6c13fe108902)
+<img src="https://github.com/kimm00/WP_project/assets/![ChalLedger](https://github.com/user-attachments/assets/a52b16b7-9be4-4f4a-9a92-093baf0932ef)" alt="ChalLedger Logo" width="300"/>
 
 ---
+
 
 
 ## 🌟 Key Features
