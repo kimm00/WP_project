@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer'; 
@@ -10,7 +10,7 @@ import {
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-// Color palette for category chart
+// Color palette for charts
 const COLORS = [
   '#19C197', '#F95C2F', '#FFC940', '#8884d8',
   '#FF7F50', '#00BFFF', '#ADFF2F', '#FF69B4',
@@ -18,7 +18,7 @@ const COLORS = [
   '#4682B4'
 ];
 
-// Category emoji mapping
+// Emoji icons for categories
 const categoryEmojis = {
   Food: '🍽',
   Transport: '🚇',
@@ -27,8 +27,8 @@ const categoryEmojis = {
   Health: '🏥',
   Education: '📚',
   Cafe: '☕️',
-  Daily: '🧻',
-  Bills: '💡',
+  Daily: '🛒',
+  Bills: '🧾',
   Travel: '✈️',
   Pets: '🐶',
   Gifts: '🎁',
@@ -37,7 +37,7 @@ const categoryEmojis = {
 
 function StatsPage() {
   const navigate = useNavigate();
-  const [expenses, setExpenses] = useState([]);
+  const [, setExpenses] = useState([]);
   const [calendarExpenses, setCalendarExpenses] = useState([]);
   const [dailyData, setDailyData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
@@ -47,41 +47,20 @@ function StatsPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [chartDate] = useState(new Date());
 
-  // Filter expenses for selected date
+  // Filter calendar data for selected day
   const filteredExpenses = calendarExpenses.filter(item =>
     new Date(item.date).toDateString() === selectedDate.toDateString()
   );
 
   const goHome = () => navigate('/home');
 
-  // Fetch weekly data
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem('user')) || {};
-        const token = user.token;
-        const month = chartDate.toISOString().slice(0, 7);
-        const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setExpenses(res.data);
-        processChartData(res.data);
-      } catch (err) {
-        console.error('❌ Failed to fetch spending data:', err);
-        setError('Failed to load your spending data.');
-      }
-    };
-
-    fetchExpenses();
-  }, [chartDate]);
-
-  // Fetch calendar data
+  // Fetch expenses for calendar view
   useEffect(() => {
     const fetchCalendarExpenses = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const month = selectedDate.toISOString().slice(0, 7);
+        const month = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1).toString().padStart(2, '0');
 
         const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -96,7 +75,7 @@ function StatsPage() {
     fetchCalendarExpenses();
   }, [selectedDate]);
 
-  // Fetch challenge progress
+  // Fetch active challenge progress
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
@@ -116,8 +95,8 @@ function StatsPage() {
     fetchChallenges();
   }, []);
 
-  // Process weekly and category chart data
-  function processChartData(data) {
+  // Group expense data by day and category for charts
+  const processChartData = useCallback((data) => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const dailyMap = {};
     const categoryMap = {};
@@ -149,11 +128,30 @@ function StatsPage() {
 
     setDailyData(days.map(day => ({ date: day, amount: dailyMap[day] || 0 })));
     setCategoryData(Object.entries(categoryMap).map(([name, value]) => ({ name, value })));
-  }
+  }, [chartDate]);
 
-  // Render UI elements (omitted here for brevity)
-  // This includes BarChart, PieChart, Calendar, Challenge progress and layout
+  // Fetch weekly expenses and generate chart data
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('user')) || {};
+        const token = user.token;
+        const month = chartDate.toISOString().slice(0, 7);
+        const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setExpenses(res.data);
+        processChartData(res.data);
+      } catch (err) {
+        console.error('❌ Failed to fetch spending data:', err);
+        setError('Failed to load your spending data.');
+      }
+    };
 
+    fetchExpenses();
+  }, [chartDate, processChartData]);
+   // UI rendering skipped here for brevity
+   
   return React.createElement(
     React.Fragment,
     null,
@@ -223,7 +221,7 @@ function StatsPage() {
                 React.createElement('ul', { className: 'expense-list' },
                   filteredExpenses.map((e, i) =>
                     React.createElement('li', { key: i },
-                      `${categoryEmojis[e.category] || '💸'} ${e.category}: ${Number(e.amount).toLocaleString()} KRW`
+                      `${categoryEmojis[e.category] || '💸'} ${e.category}: ${e.description ? e.description + ' - ' : ''}${Number(e.amount).toLocaleString()} KRW`
                     )                    
                   )
                 ),
