@@ -4,7 +4,7 @@
 Track your goals, monitor spending, and earn badges
 as you achieve challenges! 🎯💰🏅
 
-<img src="https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/logo-main.png" alt="ChalLedger Logo" width="300"/>
+<img src="https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/logo-main.png" alt="ChalLedger Logo" width="500"/>
 
 ---
 
