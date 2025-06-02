@@ -1,4 +1,4 @@
-# # 💸ChalLedger - Challenge + Ledger
+# 💸ChalLedger - Challenge + Ledger
 
 **ChalLedger** is a personal challenge tracking and budgeting web application.  
 Track your goals, monitor spending, and earn badges
@@ -83,6 +83,10 @@ ChalLedger rewards users with unique badges based on challenge completion and sp
 ### 🔐 Sign Up & Login  
 ![Sign Up and Login](https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/signup-login.gif)
 
+### 📝 Full Challenge & Expense Flow  
+This GIF demonstrates the full flow from creating a challenge to adding expenses and viewing the expense history.
+
+![Challenge and Expense Flow](https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/challenge-expense.gif)
 ---
 
 ## 👨‍👩‍👧‍👦 Team Introduction
