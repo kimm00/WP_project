@@ -1,10 +1,10 @@
-# # 💸ChalLedger - Challenge + Ledger
+# 💸ChalLedger - Challenge + Ledger
 
 **ChalLedger** is a personal challenge tracking and budgeting web application.  
 Track your goals, monitor spending, and earn badges
 as you achieve challenges! 🎯💰🏅
 
-<img src="https://github.com/kimm00/WP_project/assets/![ChalLedger](https://github.com/user-attachments/assets/a52b16b7-9be4-4f4a-9a92-093baf0932ef)" alt="ChalLedger Logo" width="300"/>
+<img src="https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/logo-main.png" alt="ChalLedger Logo" width="300"/>
 
 ---
 
@@ -76,16 +76,17 @@ ChalLedger rewards users with unique badges based on challenge completion and sp
 
 ---
 
-## 📸 데모 스크린샷
+## 📸 Demo Screenshots
 
-> 아래에는 실제 동작 화면 캡처 혹은 GIF를 넣어주세요!
+> Below are actual demo screenshots and GIFs of ChalLedger in action.
 
-- 홈 화면  
-- 챌린지 생성  
-- 소비 기록  
-- 뱃지 획득  
-- 통계 시각화
+### 🔐 Sign Up & Login  
+![Sign Up and Login](https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/signup-login.gif)
 
+### 📝 Full Challenge & Expense Flow  
+This GIF demonstrates the full flow from creating a challenge to adding expenses and viewing the expense history.
+
+![Challenge and Expense Flow](https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/challenge-expense.gif)
 ---
 
 ## 👨‍👩‍👧‍👦 Team Introduction
