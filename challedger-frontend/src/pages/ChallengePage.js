@@ -30,13 +30,13 @@ function ChallengePage() {
     'Others'
   ];  
 
-  // Handle form submission and send challenge data to backend
+  // Handle form submission and send challenge data to backend  
   async function handleSubmit(e) {
     e.preventDefault();
 
     const user = JSON.parse(localStorage.getItem('user')) || {};
     const token = user.token;
-
+    
     // Basic input validation
     if (!token) {
       alert('Login is required.');
@@ -55,7 +55,7 @@ function ChallengePage() {
       return;
     }
 
-    try {
+    try { 
       // Send POST request to create a challenge using API instance
       await api.post(
         '/api/challenges',
@@ -118,8 +118,9 @@ function ChallengePage() {
         'form',
         { className: 'challenge-form', onSubmit: handleSubmit },
 
-        React.createElement('label', null, 'Challenge Title'),
+        React.createElement('label', { htmlFor: 'challenge-title' }, 'Challenge Title'),
         React.createElement('input', {
+          id: 'challenge-title',
           type: 'text',
           value: title,
           onChange: (e) => setTitle(e.target.value),
@@ -127,10 +128,11 @@ function ChallengePage() {
           placeholder: 'ex. Weekly Food Budget'
         }),
 
-        React.createElement('label', null, 'Category'),
+        React.createElement('label', { htmlFor: 'challenge-category' }, 'Category'),
         React.createElement(
           'select',
           {
+            id: 'challenge-category',
             value: category,
             onChange: (e) => setCategory(e.target.value),
             className: 'challenge-input'
@@ -140,8 +142,9 @@ function ChallengePage() {
           )
         ),
 
-        React.createElement('label', null, 'Goal Amount (KRW)'),
+        React.createElement('label', { htmlFor: 'challenge-goal' }, 'Goal Amount (KRW)'),
         React.createElement('input', {
+          id: 'challenge-goal',
           type: 'number',
           value: goal,
           onChange: (e) => setGoal(e.target.value),
@@ -149,16 +152,18 @@ function ChallengePage() {
           required: true
         }),
 
-        React.createElement('label', null, 'Start Date'),
+        React.createElement('label', { htmlFor: 'challenge-start' }, 'Start Date'),
         React.createElement('input', {
+          id: 'challenge-start',
           type: 'date',
           value: startDate,
           onChange: (e) => setStartDate(e.target.value),
           className: 'challenge-input'
         }),
 
-        React.createElement('label', null, 'End Date'),
+        React.createElement('label', { htmlFor: 'challenge-end' }, 'End Date'),
         React.createElement('input', {
+          id: 'challenge-end',
           type: 'date',
           value: endDate,
           onChange: (e) => setEndDate(e.target.value),

@@ -26,6 +26,10 @@ jobs:
         working-directory: ./challedger-frontend
         run: npm install
 
+      - name: Run Tests # ✅ 이 부분을 새로 추가
+        working-directory: ./challedger-frontend
+        run: npm test -- --watchAll=false
+
       - name: Run Build
         working-directory: ./challedger-frontend
         run: npm run build

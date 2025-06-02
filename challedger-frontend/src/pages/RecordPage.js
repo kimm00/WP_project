@@ -101,16 +101,18 @@ function RecordPage() {
         'form',
         { className: 'record-form', onSubmit: handleSubmit },
 
-        React.createElement('label', null, 'Date'),
+        React.createElement('label', { htmlFor: 'input-date' }, 'Date'),
         React.createElement('input', {
+          id: 'input-date',
           type: 'date',
           value: date,
           onChange: (e) => setDate(e.target.value),
           className: 'record-input'
         }),
 
-        React.createElement('label', null, 'Amount (KRW)'),
+        React.createElement('label', { htmlFor: 'input-amount' }, 'Amount (KRW)'),
         React.createElement('input', {
+          id: 'input-amount',
           type: 'number',
           value: amount,
           onChange: (e) => setAmount(e.target.value),
@@ -118,10 +120,11 @@ function RecordPage() {
           required: true
         }),
 
-        React.createElement('label', null, 'Category'),
+        React.createElement('label', { htmlFor: 'input-category' }, 'Category'),
         React.createElement(
           'select',
           {
+            id: 'input-category',
             value: category,
             onChange: (e) => setCategory(e.target.value),
             className: 'record-input'
@@ -131,8 +134,9 @@ function RecordPage() {
           )
         ),
 
-        React.createElement('label', null, 'Note (optional)'),
+        React.createElement('label', { htmlFor: 'input-note' }, 'Note (optional)'),
         React.createElement('input', {
+          id: 'input-note',
           type: 'text',
           value: note,
           onChange: (e) => setNote(e.target.value),
@@ -155,7 +159,6 @@ function RecordPage() {
       )
     ),
 
-    // Footer section
     React.createElement(Footer)
   );
 }

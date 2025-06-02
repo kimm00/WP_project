@@ -12,7 +12,7 @@ import 'react-calendar/dist/Calendar.css';
 
 // Color palette for charts
 const COLORS = [
-  '#19C197', '#F95C2F', '#FFC940', '#8884d8',
+  '#008080', '#F95C2F', '#FFC940', '#8884d8',
   '#FF7F50', '#00BFFF', '#ADFF2F', '#FF69B4',
   '#A52A2A', '#20B2AA', '#DAA520', '#9370DB',
   '#4682B4'
@@ -161,7 +161,7 @@ function StatsPage() {
       // Spending Overview
       React.createElement('div', { className: 'section-box' },
         React.createElement('button', { className: 'back-button', onClick: goHome }, '← Back to Home'),
-        React.createElement('h2', { className: 'record-title' }, '📊 Spending Overview'),
+        React.createElement('h2', { className: 'record-title' }, '📊 Weekly Spending Overview'),
         error && React.createElement('p', { className: 'error' }, error),
         React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
           React.createElement(BarChart, { data: dailyData },
@@ -175,7 +175,7 @@ function StatsPage() {
 
       // Category Breakdown
       React.createElement('div', { className: 'section-box' },
-        React.createElement('h2', { className: 'record-title' }, '📂 Category Breakdown'),
+        React.createElement('h2', { className: 'record-title' }, '📂 Weekly Category Breakdown'),
         React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
           React.createElement(PieChart, null,
             React.createElement(Pie, {
