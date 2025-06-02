@@ -1,7 +1,7 @@
 // src/pages/LoginPage.js
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import api from '../services/api'; // Use shared Axios instance
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -13,7 +13,8 @@ function LoginPage() {
     event.preventDefault();
   
     try {
-      const res = await axios.post('http://localhost:4000/api/auth/login', {
+      // Send login request to backend
+      const res = await api.post('/api/auth/login', {
         email,
         password
       });

@@ -1,8 +1,8 @@
 // src/pages/MyPage.js
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer'; 
+import api from '../services/api'; // Use shared Axios instance
 
 function MyPage() {
   const [filter, setFilter] = useState('All');
@@ -52,7 +52,8 @@ function MyPage() {
       }
   
       try {
-        const challengeRes = await axios.get('http://localhost:4000/api/challenges/all', {
+        // Fetch all challenges for the user
+        const challengeRes = await api.get('/api/challenges/all', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
@@ -81,7 +82,9 @@ function MyPage() {
         });
 
         setChallenges(processed);
-        const badgeRes = await axios.get('http://localhost:4000/api/badges', {
+
+        // Fetch user's earned badges
+        const badgeRes = await api.get('/api/badges', {
           headers: { Authorization: `Bearer ${user.token}` }
         });
 
@@ -102,9 +105,9 @@ function MyPage() {
 
   // Apply challenge filter (All, In Progress, Success, Fail)
   const filteredChallenges =
-  filter === 'All'
-    ? challenges
-    : challenges.filter((c) => c.status === filter);
+    filter === 'All'
+      ? challenges
+      : challenges.filter((c) => c.status === filter);
 
   return React.createElement(
     React.Fragment,
@@ -137,18 +140,18 @@ function MyPage() {
         challenges.length === 0
           ? React.createElement('p', null, 'No challenges yet.')
           : React.createElement(
-            'ul',
-            { className: 'challenge-list' },
-            [...challenges]
-              .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
-              .map((c, i) =>
-                React.createElement(
-                  'li',
-                  { key: i, className: 'challenge-item' },
-                  c.title || 'Untitled'
+              'ul',
+              { className: 'challenge-list' },
+              [...challenges]
+                .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
+                .map((c, i) =>
+                  React.createElement(
+                    'li',
+                    { key: i, className: 'challenge-item' },
+                    c.title || 'Untitled'
+                  )
                 )
-              )
-          )
+            )
       ),
 
       // Badge display
@@ -203,8 +206,8 @@ function MyPage() {
             .sort((a, b) => new Date(b.end_date) - new Date(a.end_date))
             .map((c, i) => {
               const statusIcon = c.status === 'Success' ? '✅'
-                              : c.status === 'Fail' ? '❌'
-                              : '🔄';
+                                : c.status === 'Fail' ? '❌'
+                                : '🔄';
               const period = c.period || `${c.start_date?.slice(0, 10)} - ${c.end_date?.slice(0, 10)}`;
 
               const statusColor =

@@ -9,7 +9,10 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware setup
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json()); // Parse incoming JSON requests
 
 // Root route for health check
