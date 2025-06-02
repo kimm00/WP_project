@@ -1,9 +1,9 @@
 // src/pages/RecordPage.js
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer'; 
+import Footer from '../components/Footer';
+import api from '../services/api'; // Use shared Axios instance
 
 function RecordPage() {
   const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
@@ -28,7 +28,7 @@ function RecordPage() {
     'Pets',
     'Gifts',
     'Others'
-  ];  
+  ];
 
   // Submit expense to backend
   async function handleSubmit(e) {
@@ -38,12 +38,12 @@ function RecordPage() {
     const token = user.token;
 
     if (!token) {
-      alert('로그인이 필요합니다.');
+      alert('Login required');
       return;
     }
 
     try {
-      await axios.post('http://localhost:4000/api/expenses', {
+      await api.post('/api/expenses', {
         amount,
         category,
         date,

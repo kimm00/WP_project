@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer'; 
+import api from '../services/api'; // Use shared Axios instance
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
@@ -62,7 +62,7 @@ function StatsPage() {
         const token = user.token;
         const month = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1).toString().padStart(2, '0');
 
-        const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
+        const res = await api.get(`/api/expenses?month=${month}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -81,7 +81,7 @@ function StatsPage() {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const res = await axios.get('http://localhost:4000/api/challenges/progress', {
+        const res = await api.get('/api/challenges/progress', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const list = Array.isArray(res.data) ? res.data : [res.data];
@@ -91,7 +91,7 @@ function StatsPage() {
         setProgressError('No ongoing challenges found.');
       }
     };
-  
+
     fetchChallenges();
   }, []);
 
@@ -121,7 +121,7 @@ function StatsPage() {
       const jsDay = d.getDay();
       const isoDay = jsDay === 0 ? 6 : jsDay - 1;
       const dayName = days[isoDay];
-  
+
       dailyMap[dayName] = (dailyMap[dayName] || 0) + Number(item.amount);
       categoryMap[item.category] = (categoryMap[item.category] || 0) + Number(item.amount);
     });
@@ -137,7 +137,7 @@ function StatsPage() {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
         const month = chartDate.toISOString().slice(0, 7);
-        const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
+        const res = await api.get(`/api/expenses?month=${month}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setExpenses(res.data);

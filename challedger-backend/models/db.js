@@ -1,19 +1,14 @@
-const mysql = require('mysql2');
+const { Pool } = require('pg');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Create a MySQL connection pool
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,                    // e.g., 'localhost'
-  user: process.env.DB_USER,                    // e.g., 'root'
-  password: process.env.DB_PASSWORD || '',      // May be empty
-  database: process.env.DB_NAME,                // May be empty
-  waitForConnections: true,                     
-  connectionLimit: 10,                          // Max simultaneous connections
-  queueLimit: 0,                                // Unlimited queued requests
+// Create a PostgreSQL connection pool using DATABASE_URL
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Render PostgreSQL에 필요
+  }
 });
 
-// Export the pool with Promise support
-module.exports = pool.promise();
+module.exports = pool;

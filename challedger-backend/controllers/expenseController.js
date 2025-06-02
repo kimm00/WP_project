@@ -10,7 +10,7 @@ exports.createExpense = async (req, res) => {
   try {
     // Insert new expense record
     await db.query(
-      'INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO expenses (user_id, amount, category, date, description) VALUES ($1, $2, $3, $4, $5)',
       [userId, amount, category, date, description]
     );
 
@@ -31,11 +31,13 @@ exports.getExpenses = async (req, res) => {
   const { month } = req.query; 
 
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM expenses WHERE user_id = ? AND DATE_FORMAT(date, "%Y-%m") = ? ORDER BY date DESC',
+    const result = await db.query(
+      `SELECT * FROM expenses 
+       WHERE user_id = $1 AND TO_CHAR(date, 'YYYY-MM') = $2 
+       ORDER BY date DESC`,
       [userId, month]
     );
-    res.json(rows);
+    res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch expenses', detail: err.message });
   }
