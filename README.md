@@ -76,15 +76,12 @@ ChalLedger rewards users with unique badges based on challenge completion and sp
 
 ---
 
-## 📸 데모 스크린샷
+## 📸 Demo Screenshots
 
-> 아래에는 실제 동작 화면 캡처 혹은 GIF를 넣어주세요!
+> Below are actual demo screenshots and GIFs of ChalLedger in action.
 
-- 홈 화면  
-- 챌린지 생성  
-- 소비 기록  
-- 뱃지 획득  
-- 통계 시각화
+### 🔐 Sign Up & Login  
+![Sign Up and Login](https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/signup-login.gif)
 
 ---
 
