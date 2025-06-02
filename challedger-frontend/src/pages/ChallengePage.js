@@ -1,9 +1,9 @@
 // src/pages/ChallengePage.js
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer'; 
+import Footer from '../components/Footer';
+import api from '../services/api'; // Use shared Axios instance
 
 function ChallengePage() {
   const [title, setTitle] = useState('');
@@ -56,8 +56,9 @@ function ChallengePage() {
     }
 
     try {
-      await axios.post(
-        'http://localhost:4000/api/challenges',
+      // Send POST request to create a challenge using API instance
+      await api.post(
+        '/api/challenges',
         {
           title,
           category,

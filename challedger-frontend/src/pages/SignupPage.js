@@ -1,7 +1,7 @@
 // src/pages/SignupPage.js
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import api from '../services/api'; // Use shared Axios instance
 
 function SignupPage() {
   const [username, setUsername] = useState('');
@@ -14,21 +14,22 @@ function SignupPage() {
   // Handle signup form submission
   async function handleSignup(event) {
     event.preventDefault();
-  
+
+    // Check if passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-  
+
     try {
-      const response = await axios.post('http://localhost:4000/api/auth/signup', {
+      const response = await api.post('/api/auth/signup', {
         username,
         email,
         password
       });
-  
+
       console.log('✅ Signup successful:', response.data);
-  
+
       // Navigate to login page after successful signup
       navigate('/');
     } catch (err) {
@@ -36,7 +37,7 @@ function SignupPage() {
       const message = err.response?.data?.error || 'An error occurred during signup.';
       setError(message);
     }
-  }  
+  }
 
   return React.createElement(
     'div',
@@ -47,6 +48,7 @@ function SignupPage() {
       className: 'login-logo',
     }),
     React.createElement('h1', { className: 'login-title' }, 'Create Your Account'),
+
     // Signup form
     React.createElement(
       'form',
