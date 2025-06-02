@@ -10,7 +10,7 @@ exports.signup = async (req, res) => {
     const hashed = await bcrypt.hash(password, 10);
     // Insert the new user into the database
     await db.query(
-      'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+      'INSERT INTO users (username, email, password) VALUES ($1, $2, $3)',
       [username, email, hashed]
     );
     // Send success response
@@ -25,9 +25,9 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    // Look for user by email
-    const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    const user = users[0];
+    // SELECT query
+    const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = result.rows[0];
 
     // If user not found
     if (!user) return res.status(401).json({ error: 'User does not exist' });
