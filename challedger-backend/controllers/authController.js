@@ -45,4 +45,5 @@ exports.login = async (req, res) => {
     // Send error if login fails
     res.status(500).json({ error: 'Login failed', detail: err.message });
   }
+  
 };
