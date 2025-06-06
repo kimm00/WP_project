@@ -8,6 +8,7 @@ router.get('/current', auth, challengeController.getCurrentChallenges);  // Get 
 router.get('/progress', auth, challengeController.getChallengeProgresses);  // Get progress for current challenges
 router.get('/all', auth, challengeController.getAllChallengesWithProgress);  // Get all challenges with progress and status
 router.post('/complete/:challengeId', auth, challengeController.completeChallenge);  // Mark a challenge as completed manually
+router.delete('/:id', auth, challengeController.deleteChallenge); // Delete challenge by ID
 
 // Export the router to be used in the app
 module.exports = router;

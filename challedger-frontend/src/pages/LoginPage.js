@@ -30,7 +30,7 @@ function LoginPage() {
       setError('');
       navigate('/home'); 
     } catch (err) {
-      console.error('❌ 로그인 실패:', err.response?.data || err.message);
+      console.error('❌ Login failed:', err.response?.data || err.message);
       setError(err.response?.data?.error || 'Login failed');
     }
   }  

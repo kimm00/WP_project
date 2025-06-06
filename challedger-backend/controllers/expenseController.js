@@ -25,10 +25,28 @@ exports.createExpense = async (req, res) => {
   }
 };
 
-// Get all expenses for the given month
-exports.getExpenses = async (req, res) => {
+// Retrieve all expenses
+exports.getAllExpenses = async (req, res) => {
   const userId = req.user.id;
-  const { month } = req.query; 
+  try {
+    const result = await db.query(
+      `SELECT * FROM expenses 
+       WHERE user_id = $1 
+       ORDER BY date DESC`,
+      [userId]
+    );
+    // Return the list of expenses as JSON
+    res.json(result.rows);
+  } catch (err) {
+    // Handle any errors during the database query
+    res.status(500).json({ error: 'Failed to fetch expenses', detail: err.message });
+  }
+};
+
+// Retrieve expenses for the specified month
+exports.getMonthlyExpenses = async (req, res) => {
+  const userId = req.user.id;
+  const { month } = req.query; // Expected format: 'YYYY-MM'
 
   try {
     const result = await db.query(
@@ -37,8 +55,39 @@ exports.getExpenses = async (req, res) => {
        ORDER BY date DESC`,
       [userId, month]
     );
+
+    // Return the list of expenses as JSON
     res.json(result.rows);
   } catch (err) {
+    // Handle any errors during the database query
     res.status(500).json({ error: 'Failed to fetch expenses', detail: err.message });
+  }
+};
+
+// Delete a specific expense and update related challenge data
+exports.deleteExpense = async (req, res) => {
+  const userId = req.user.id;
+  const expenseId = req.params.id;
+
+  try {
+    // Delete the expense only if it belongs to the current user
+    const result = await db.query(
+      'DELETE FROM expenses WHERE id = $1 AND user_id = $2 RETURNING *',
+      [expenseId, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Expense not found or not authorized' });
+    }
+
+    // After deletion, update related challenge and badge data
+    await updateActualSpending();        // Recalculate actual_spending for all challenges
+    await updateChallengeStatuses();     // Refresh challenge statuses (e.g., In Progress, Success, Fail)
+    await awardBadges(userId);           // Re-evaluate and award badges if needed
+
+    res.status(200).json({ message: 'Expense deleted successfully' });
+  } catch (err) {
+    console.error('❌ Failed to delete expense', err);
+    res.status(500).json({ error: 'Failed to delete expense', detail: err.message });
   }
 };
