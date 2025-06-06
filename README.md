@@ -93,7 +93,7 @@ This GIF demonstrates the full flow from creating a challenge to adding expenses
 <img src="https://github.com/user-attachments/assets/89072bae-07d8-46de-b891-14b301a39d87" alt="Challenge Screenshot" width="100%"/>
 
 ### 📝 Weekly Spending Overview & Weekly Category Breakdown
-<img width="708" alt="스크린샷 2025-06-07 오전 1 38 11" src="https://github.com/user-attachments/assets/b6fd9d75-4fdf-4316-bb2d-e79f53b9f6f7" />
+<img src="https://github.com/user-attachments/assets/b6fd9d75-4fdf-4316-bb2d-e79f53b9f6f7" alt="Challenge Screenshot 2" width="100%"/>
 
 
 
