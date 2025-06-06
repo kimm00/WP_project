@@ -143,7 +143,7 @@ body {
 /* -------------------- Challenge Progress Box-------------------- */
 .challenge-progress-box {
   display: flex;
-  justify-content: space-between; /* 텍스트 왼쪽, 그래프 오른쪽 */
+  justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 24px;
@@ -207,7 +207,7 @@ body {
   width: 280px;
 }
 .challenge-card {
-  flex: 0 1 calc(50% - 1.5rem); /* listed in two */
+  flex: 0 1 calc(50% - 1.5rem);
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -227,7 +227,7 @@ body {
 .challenge-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem; /* Card spacing */
+  gap: 1.5rem;
   justify-content: center; 
 }
 
@@ -325,7 +325,7 @@ body {
 .site-header {
   width: 100%;
   max-width: 100%;
-  padding: 16px 24px;  /* Reduce left and right margins */
+  padding: 16px 24px;
   box-shadow: 0 1px 6px rgba(0,0,0,0.04);
   display: flex;
   justify-content: space-between;
@@ -334,7 +334,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow-x: hidden;  /* Cuts overflowing content */
+  overflow-x: hidden;
 }
 .mypage-container {
   max-width: 720px;
@@ -646,8 +646,8 @@ body {
 
 /* todat date */
 .react-calendar__tile--now {
-  background: #19C197 !important;   /* 부드러운 민트색: 강조 + 통일성 */
-  color: #fff !important;           /* 텍스트는 흰색으로 가독성 확보 */
+  background: #19C197 !important;
+  color: #fff !important;
   font-weight: bold;
   border-radius: 8px;
   transition: background 0.3s ease;
@@ -655,14 +655,14 @@ body {
 
 /* selected date */
 .react-calendar__tile--active {
-  background: #1F2F56 !important;   /* 짙은 네이비 */
+  background: #1F2F56 !important;
   color: white !important;
   font-weight: bold;
   border-radius: 8px;
   transition: background 0.3s ease;
 }
 .react-calendar__tile--active:enabled:hover {
-  background: #2c3f6b !important; /* 네이비 hover 시 약간 밝게 */
+  background: #2c3f6b !important;
 }
 
 /* Change Weekend Color */
@@ -708,7 +708,7 @@ body {
   font-size: 13px;
   color: #aaa;
   margin-top: auto;
-  border-top: 1px solid #f1f1f1; /* Subtle dividing line */
+  border-top: 1px solid #f1f1f1;
 }
 
 .footer a {
@@ -721,6 +721,44 @@ body {
   text-decoration: underline;
 }
 
+/* -------------------- Common Card Layout -------------------- */
+.expense-item {
+  border-left: 5px solid #19C197;
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.expense-item strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.expense-item p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.expense-item button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #f44336;
+  border: none;
+  color: white;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.expense-item button:hover {
+  background-color: #d32f2f;
+}
 
 /* -------------------- Responsive Layout -------------------- */
 

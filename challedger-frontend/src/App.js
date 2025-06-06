@@ -11,6 +11,7 @@ import RecordPage from './pages/RecordPage';
 import ChallengePage from './pages/ChallengePage';
 import StatsPage from './pages/StatsPage';
 import MyPage from './pages/MyPage';
+import ExpenseListPage from './pages/ExpenseListPage'; 
 
 function App() {
   return React.createElement(
@@ -50,6 +51,10 @@ function App() {
       React.createElement(Route, {
         path: '/mypage',
         element: React.createElement(MyPage)
+      }),
+      React.createElement(Route, {
+        path: '/expenses',
+        element: React.createElement(ExpenseListPage)
       })
     )
   );

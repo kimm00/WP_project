@@ -105,7 +105,12 @@ function HomePage() {
         React.createElement('button', {
           className: 'home-btn',
           onClick: goToStats
-        }, '📊 View Your Progress')
+        }, '📊 View Your Progress'),
+
+        React.createElement('button', {
+          className: 'some-button-class',
+          onClick: () => navigate('/expenses'),
+        }, '📜 View Expense History')
       )
     ),
     
