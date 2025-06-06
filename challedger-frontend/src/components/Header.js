@@ -38,7 +38,7 @@ function Header() {
       },
       React.createElement('img', {
         src: '/logo-header.png',
-        alt: 'ChalLedger 로고',
+        alt: 'ChalLedger logo',
         className: 'header-logo'
       }),
       React.createElement('span', { className: 'brand-name' }, 'ChalLedger')
