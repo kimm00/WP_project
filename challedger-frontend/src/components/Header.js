@@ -37,7 +37,7 @@ function Header() {
         style: { cursor: 'pointer' }
       },
       React.createElement('img', {
-        src: '/logo.png',
+        src: '/logo-header.png',
         alt: 'ChalLedger 로고',
         className: 'header-logo'
       }),
