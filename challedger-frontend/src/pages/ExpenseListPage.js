@@ -28,17 +28,29 @@ function ExpenseListPage() {
     fetchExpenses();
   }, []);
 
-  const handleDelete = async (id) => {
+  // Function to delete a expense record by its ID
+  const deleteExpense = async (expenseId) => {
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+  
+    if (!user || !user.token) {
+      alert('You must be logged in to delete expenses.');
+      return;
+    }
+  
     try {
-      const user = JSON.parse(localStorage.getItem('user')) || {};
-      const token = user.token;
-      await api.delete(`/api/expenses/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      // Send DELETE request to backend
+      await api.delete(`/api/expenses/${expenseId}`, {
+        headers: { Authorization: `Bearer ${user.token}` }
       });
-      setExpenses(expenses.filter((e) => e.id !== id));
+  
+      // Update local state to remove the deleted expense
+      setExpenses((prev) => prev.filter((e) => e.id !== expenseId));
+  
+      // Notify user of successful deletion
+      alert('✅ Expense has been successfully deleted!');
     } catch (err) {
       console.error('❌ Failed to delete expense:', err);
-      alert('Failed to delete');
+      alert('Failed to delete expense.');
     }
   };
 
@@ -104,12 +116,12 @@ function ExpenseListPage() {
                   {
                     className: 'expense-delete-button',
                     onClick: () => {
-                      if (window.confirm('Are you sure you want to delete this?')) {
-                        handleDelete(item.id);
+                      if (window.confirm('Are you sure you want to delete this expense?')) {
+                        deleteExpense(item.id);
                       }
                     }
                   },
-                  '🗑 Delete'
+                  'Delete'
                 )
               )
             )

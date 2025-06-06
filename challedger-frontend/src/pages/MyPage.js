@@ -121,6 +121,9 @@ function MyPage() {
 
       // Update local state to remove the deleted challenge from the list
       setChallenges((prev) => prev.filter((c) => c.id !== challengeId));
+
+      // Notify user of successful deletion
+      alert('✅ Challenge has been successfully deleted!');
     } catch (err) {
       console.error('❌ Failed to delete challenge:', err);
       alert('Failed to delete challenge.');
@@ -273,7 +276,7 @@ function MyPage() {
                       }
                     }
                   },
-                  '🗑 Delete'
+                  'Delete'
                 )
               );
             })          
