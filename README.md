@@ -112,5 +112,5 @@ This GIF demonstrates the full flow from creating a challenge to adding expenses
 ### 🚀 Live Demo
 
 ```
-👉 https://challedger-frontend.onrender.com
+👉 https://challedger.onrender.com
 ```
