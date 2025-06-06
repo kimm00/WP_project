@@ -46,6 +46,7 @@ function HomePage() {
   const goToRecord = () => navigate('/record');
   const goToChallenge = () => navigate('/challenge');
   const goToStats = () => navigate('/stats');
+  const goToExpenseList = () => navigate('/expenses');
 
   return React.createElement(
     React.Fragment,
@@ -108,8 +109,8 @@ function HomePage() {
         }, '📊 View Your Progress'),
 
         React.createElement('button', {
-          className: 'some-button-class',
-          onClick: () => navigate('/expenses'),
+          className: 'home-btn',
+          onClick: goToExpenseList
         }, '📜 View Expense History')
       )
     ),
