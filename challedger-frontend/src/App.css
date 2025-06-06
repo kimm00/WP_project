@@ -711,7 +711,7 @@ body {
   margin: 0;
 }
 
-.expense-item-flex {
+.expense-item-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -722,7 +722,6 @@ body {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Delete 버튼 스타일 */
 .expense-delete-button {
   background-color: #f44336;
   color: white;

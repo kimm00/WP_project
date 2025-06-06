@@ -86,18 +86,18 @@ function ExpenseListPage() {
                 'li',
                 {
                   key: item.id,
-                  className: 'expense-item',
+                  className: 'expense-item-wrapper',
                 },
                 React.createElement(
                   'div',
-                  null,
-                  React.createElement('strong', null, item.category || 'Unknown'),
+                  { className: 'expense-text-block' },
                   item.description
-                    ? React.createElement('p', null, item.description)
+                    ? React.createElement('p', { className: 'expense-description' }, item.description)
                     : null,
+                  React.createElement('strong', null, item.category || 'Unknown'),
                   React.createElement('p', null, `${Number(item.amount).toLocaleString()} KRW`),
                   React.createElement('p', null, new Date(item.date).toLocaleDateString())
-                ),
+              ),
                 React.createElement(
                     'button',
                     { className: 'expense-delete-button',
