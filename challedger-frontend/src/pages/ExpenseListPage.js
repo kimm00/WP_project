@@ -1,6 +1,6 @@
 // src/pages/ExpenseListPage.js
 import React, { useEffect, useState } from 'react';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import api from '../services/api';
@@ -8,9 +8,7 @@ import api from '../services/api';
 function ExpenseListPage() {
   const [expenses, setExpenses] = useState([]);
   const [error, setError] = useState('');
-  //const navigate = useNavigate();
-
-  //const goHome = () => navigate('/home');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -44,16 +42,38 @@ function ExpenseListPage() {
     }
   };
 
+  // Navigate back to home
+  function goHome() {
+    navigate('/home');
+  }
+
   return React.createElement(
     React.Fragment,
     null,
+
+    // Top navigation
     React.createElement(Header),
 
+    // Challenge creation UI
     React.createElement(
       'div',
-      { className: 'record-container' },
-      React.createElement('h2', null, '💸 Expense History'),
+      { className: 'expense-list-container' },
 
+      // Logo + Back button
+      React.createElement(
+        'div',
+        { className: 'expense-list-header' },
+        React.createElement('img', {
+          src: '/logo.png',
+          alt: 'ChalLedger Logo',
+          className: 'record-logo'
+        }),
+        React.createElement('button', { className: 'back-button', onClick: goHome }, '← Back to Home')
+      ),
+      
+      // Challenge input form
+      React.createElement('h1', { className: 'expense-list-title' }, '💸 Expense History'),
+      
       error ? React.createElement('p', { style: { color: 'red' } }, error) : null,
 
       expenses.length === 0
@@ -80,23 +100,14 @@ function ExpenseListPage() {
                 React.createElement('p', null, new Date(item.date).toLocaleDateString()),
                 React.createElement(
                     'button',
-                    {
+                    { className: 'expense-delete-button',
                       onClick: () => {
                         if (window.confirm('Are you sure you want to delete this?')) {
                           handleDelete(item.id);
                         }
-                      },
-                      style: {
-                        backgroundColor: '#f44336',
-                        color: 'white',
-                        border: 'none',
-                        padding: '6px 12px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        marginTop: '6px'
                       }
                     },
-                    'Delete'
+                    '🗑 Delete'
                   )                  
               )
             )

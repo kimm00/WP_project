@@ -20,6 +20,7 @@ body {
 .login-container,
 .home-container,
 .record-container,
+.expense-list-container,
 .challenge-container {
   max-width: 640px;
   margin: 40px auto;
@@ -47,6 +48,7 @@ body {
 /* -------------------- Text -------------------- */
 .login-title,
 .home-title,
+.expense-list-title,
 .challenge-title,
 .record-title {
   font-size: 26px;
@@ -93,6 +95,7 @@ body {
 .login-button,
 .home-btn,
 .record-button,
+.expense-delete-button,
 .challenge-button,
 .btn {
   padding: 14px;
@@ -110,6 +113,7 @@ body {
 .login-button:hover,
 .home-btn:hover,
 .record-button:hover,
+.expense-delete-button:hover,
 .challenge-button:hover,
 .btn:hover {
   background-color: var(--color-primary-hover);
