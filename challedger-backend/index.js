@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware setup
 app.use(cors({
-  origin: 'https://challedger-frontend.onrender.com',
+  origin: 'https://challedger.onrender.com',
   credentials: true
 }));
 app.use(express.json()); // Parse incoming JSON requests
