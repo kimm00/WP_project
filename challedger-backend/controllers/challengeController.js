@@ -172,3 +172,25 @@ exports.getAllChallengesWithProgress = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch all challenges', detail: err.message });
   }
 };
+
+// Delete a specific challenge
+exports.deleteChallenge = async (req, res) => {
+  const userId = req.user.id;
+  const challengeId = req.params.id;
+
+  try {
+    const result = await db.query(
+      'DELETE FROM challenges WHERE id = $1 AND user_id = $2 RETURNING *',
+      [challengeId, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Challenge not found or not authorized' });
+    }
+
+    res.status(200).json({ message: 'Challenge deleted successfully' });
+  } catch (err) {
+    console.error('❌ Failed to delete challenge:', err);
+    res.status(500).json({ error: 'Failed to delete challenge', detail: err.message });
+  }
+};

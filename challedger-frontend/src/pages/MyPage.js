@@ -226,12 +226,31 @@ function MyPage() {
                     padding: '12px',
                     marginBottom: '10px',
                     backgroundColor: '#fff',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
                   }
                 },
-                React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
-                React.createElement('p', null, period),
-                React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement('strong', { style: { fontWeight: 'bold' } }, `${statusIcon} ${c.title || 'Untitled'}`),
+                  React.createElement('p', null, period),
+                  React.createElement('p', null, `${Number(c.actual_spending || 0).toLocaleString()} / ${Number(c.goal_amount || 1).toLocaleString()} KRW`)
+                ),
+                React.createElement(
+                  'button',
+                  {
+                    className: 'challenge-delete-button',
+                    onClick: () => {
+                      if (window.confirm('Are you sure you want to delete this challenge?')) {
+                        deleteChallenge(c.id);
+                      }
+                    }
+                  },
+                  '🗑 Delete'
+                )
               );
             })          
         )
