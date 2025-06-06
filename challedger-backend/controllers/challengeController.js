@@ -37,8 +37,11 @@ exports.createChallenge = async (req, res) => {
 exports.getCurrentChallenges = async (req, res) => {
   const userId = req.user.id;
 
+  // Get today's date in Korea Standard Time (KST, UTC+9)
+  const now = new Date();
+  const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // +9 hours
+
   // Get today's date in YYYY-MM-DD format
-  const todayObj = new Date();
   const yyyy = todayObj.getFullYear();
   const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
   const dd = String(todayObj.getDate()).padStart(2, '0');
