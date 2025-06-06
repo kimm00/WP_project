@@ -783,6 +783,7 @@ body {
 
 .expense-delete-button:hover {
   background-color: #F95C2F;
+  transform: translateY(-2px);
 }
 
 /* -------------------- Footer -------------------- */
