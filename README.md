@@ -101,22 +101,8 @@ This GIF demonstrates the full flow from creating a challenge to adding expenses
 
 ## 🧪 How to Run the Project
 
-### 📦 1) Clone the Repository
+### 🚀 Live Demo
 
-```bash
-git clone https://github.com/kimm00/WP_project.git
-cd WP_project
 ```
-
-### 🛠️ 2) Installation & Startup 
-
-```bash
-# backend
-cd challedger-backend
-npm install
-npm run start
-
-# frontend
-cd challedger-frontend
-npm install
-npm start
+👉 https://challedger-frontend.onrender.com
+```
