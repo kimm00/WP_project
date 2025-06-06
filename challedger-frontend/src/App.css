@@ -724,7 +724,7 @@ body {
 
 .expense-colored-bar {
   width: 8px;
-  background-color: var(--color-primary);
+  background-color: #6a6a6a;
 }
 
 .expense-card-content {
