@@ -705,36 +705,64 @@ body {
 }
 
 /* -------------------- Expense List -------------------- */
-.expense-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+.expense-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
 }
 
-.expense-item-wrapper {
+.expense-colored-card {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+  min-height: 88px;
+  position: relative;
+}
+
+.expense-colored-bar {
+  width: 8px;
+  background-color: var(--color-primary);
+}
+
+.expense-card-content {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.expense-card-content p,
+.expense-card-content strong {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.expense-card-content strong {
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .expense-delete-button {
-  background-color: #f44336;
+  align-self: center;
+  margin-right: 20px;
+  background-color: #F95C2F;
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  height: fit-content;
   transition: background-color 0.2s ease;
 }
 
 .expense-delete-button:hover {
-  background-color: #d32f2f;
+  background-color: #e0481c;
 }
 
 /* -------------------- Footer -------------------- */

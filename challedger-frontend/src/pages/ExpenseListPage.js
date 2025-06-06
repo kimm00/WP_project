@@ -71,44 +71,46 @@ function ExpenseListPage() {
         React.createElement('button', { className: 'back-button', onClick: goHome }, '← Back to Home')
       ),
       
-      // Challenge input form
+      // Title
       React.createElement('h1', { className: 'expense-list-title' }, '💸 Expense History'),
-      
+
+      // Error message
       error ? React.createElement('p', { style: { color: 'red' } }, error) : null,
 
+      // Expense List
       expenses.length === 0
         ? React.createElement('p', null, 'No expenses recorded.')
         : React.createElement(
-            'ul',
-            { className: 'expense-list' },
+            'div',
+            { className: 'expense-list-box' },
             expenses.map((item) =>
               React.createElement(
-                'li',
+                'div',
                 {
                   key: item.id,
-                  className: 'expense-item-wrapper',
+                  className: 'expense-colored-card'
                 },
+                React.createElement('div', { className: 'expense-colored-bar' }),
                 React.createElement(
                   'div',
-                  { className: 'expense-text-block' },
-                  item.description
-                    ? React.createElement('p', { className: 'expense-description' }, item.description)
-                    : null,
+                  { className: 'expense-card-content' },
+                  React.createElement('p', { className: 'expense-description' }, item.description),
                   React.createElement('strong', null, item.category || 'Unknown'),
                   React.createElement('p', null, `${Number(item.amount).toLocaleString()} KRW`),
                   React.createElement('p', null, new Date(item.date).toLocaleDateString())
-              ),
+                ),
                 React.createElement(
-                    'button',
-                    { className: 'expense-delete-button',
-                      onClick: () => {
-                        if (window.confirm('Are you sure you want to delete this?')) {
-                          handleDelete(item.id);
-                        }
+                  'button',
+                  {
+                    className: 'expense-delete-button',
+                    onClick: () => {
+                      if (window.confirm('Are you sure you want to delete this?')) {
+                        handleDelete(item.id);
                       }
-                    },
-                    '🗑 Delete'
-                  )                  
+                    }
+                  },
+                  '🗑 Delete'
+                )
               )
             )
           )
