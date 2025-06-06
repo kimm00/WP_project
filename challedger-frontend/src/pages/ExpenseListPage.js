@@ -32,7 +32,7 @@ function ExpenseListPage() {
     try {
       const user = JSON.parse(localStorage.getItem('user')) || {};
       const token = user.token;
-      await api.delete(`/api/expenses/all/${id}`, {
+      await api.delete(`/api/expenses/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExpenses(expenses.filter((e) => e.id !== id));
