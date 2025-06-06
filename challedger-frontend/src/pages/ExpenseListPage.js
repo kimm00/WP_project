@@ -87,17 +87,17 @@ function ExpenseListPage() {
                 {
                   key: item.id,
                   className: 'expense-item',
-                  style: {
-                    marginBottom: '10px',
-                    padding: '10px',
-                    backgroundColor: '#fff',
-                    borderRadius: '8px',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
-                  }
                 },
-                React.createElement('strong', null, item.category || 'Unknown'),
-                React.createElement('p', null, `${item.amount.toLocaleString()} KRW`),
-                React.createElement('p', null, new Date(item.date).toLocaleDateString()),
+                React.createElement(
+                  'div',
+                  null,
+                  React.createElement('strong', null, item.category || 'Unknown'),
+                  item.description
+                    ? React.createElement('p', null, item.description)
+                    : null,
+                  React.createElement('p', null, `${Number(item.amount).toLocaleString()} KRW`),
+                  React.createElement('p', null, new Date(item.date).toLocaleDateString())
+                ),
                 React.createElement(
                     'button',
                     { className: 'expense-delete-button',
