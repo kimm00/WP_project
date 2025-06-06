@@ -15,7 +15,7 @@ function ExpenseListPage() {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const res = await api.get('/api/expenses', {
+        const res = await api.get('/api/expenses/all', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setExpenses(res.data);
@@ -32,7 +32,7 @@ function ExpenseListPage() {
     try {
       const user = JSON.parse(localStorage.getItem('user')) || {};
       const token = user.token;
-      await api.delete(`/api/expenses/${id}`, {
+      await api.delete(`/api/expenses/all/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExpenses(expenses.filter((e) => e.id !== id));

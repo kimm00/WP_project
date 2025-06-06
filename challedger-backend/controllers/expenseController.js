@@ -25,8 +25,26 @@ exports.createExpense = async (req, res) => {
   }
 };
 
-// Retrieve all expenses for the specified month
-exports.getExpenses = async (req, res) => {
+// Retrieve all expenses
+exports.getAllExpenses = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const result = await db.query(
+      `SELECT * FROM expenses 
+       WHERE user_id = $1 
+       ORDER BY date DESC`,
+      [userId]
+    );
+    // Return the list of expenses as JSON
+    res.json(result.rows);
+  } catch (err) {
+    // Handle any errors during the database query
+    res.status(500).json({ error: 'Failed to fetch expenses', detail: err.message });
+  }
+};
+
+// Retrieve expenses for the specified month
+exports.getMonthlyExpenses = async (req, res) => {
   const userId = req.user.id;
   const { month } = req.query; // Expected format: 'YYYY-MM'
 
