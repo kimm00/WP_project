@@ -706,13 +706,16 @@ body {
 
 /* -------------------- Challenge List -------------------- */
 .challenge-delete-button {
+  align-self: center;
+  margin-right: 20px;
   background-color: #959393;
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 8px;
-  font-size: 13px;
   cursor: pointer;
+  font-size: 14px;
+  height: fit-content;
   transition: background-color 0.2s ease;
 }
 
