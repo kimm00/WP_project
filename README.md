@@ -89,6 +89,14 @@ This GIF demonstrates the full flow from creating a challenge to adding expenses
 ![Challenge and Expense Flow](https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/challenge-expense.gif)
 ---
 
+### 📝 Badges
+<img src="https://github.com/user-attachments/assets/89072bae-07d8-46de-b891-14b301a39d87" alt="Challenge Screenshot" width="500"/>
+
+### 📝 Weekly Spending Overview & Weekly Category Breakdown
+<img width="708" alt="스크린샷 2025-06-07 오전 1 38 11" src="https://github.com/user-attachments/assets/b6fd9d75-4fdf-4316-bb2d-e79f53b9f6f7" />
+
+
+
 ## 👨‍👩‍👧‍👦 Team Introduction
 
 | Name         | Role                        | Main Contributions                                                                 |
