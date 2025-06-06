@@ -103,6 +103,30 @@ function MyPage() {
     fetchData();
   }, []);
 
+  // Function to delete a challenge by its ID
+  const deleteChallenge = async (challengeId) => {
+    const user = JSON.parse(localStorage.getItem('user')) || {};
+
+    // Check if user is logged in and has a token
+    if (!user || !user.token) {
+      alert('You must be logged in to delete challenges.');
+      return;
+    }
+
+    try {
+      // Send DELETE request to backend
+      await api.delete(`/api/challenges/${challengeId}`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+
+      // Update local state to remove the deleted challenge from the list
+      setChallenges((prev) => prev.filter((c) => c.id !== challengeId));
+    } catch (err) {
+      console.error('❌ Failed to delete challenge:', err);
+      alert('Failed to delete challenge.');
+    }
+  };
+
   // Apply challenge filter (All, In Progress, Success, Fail)
   const filteredChallenges =
     filter === 'All'
