@@ -750,7 +750,7 @@ body {
 .expense-delete-button {
   align-self: center;
   margin-right: 20px;
-  background-color: #F95C2F;
+  background-color: #525252;
   color: white;
   border: none;
   padding: 8px 14px;
@@ -762,7 +762,7 @@ body {
 }
 
 .expense-delete-button:hover {
-  background-color: #e0481c;
+  background-color: #F95C2F;
 }
 
 /* -------------------- Footer -------------------- */

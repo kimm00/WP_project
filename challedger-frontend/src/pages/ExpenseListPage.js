@@ -94,9 +94,9 @@ function ExpenseListPage() {
                 React.createElement(
                   'div',
                   { className: 'expense-card-content' },
-                  React.createElement('p', { className: 'expense-description' }, item.description),
-                  React.createElement('strong', null, item.category || 'Unknown'),
-                  React.createElement('p', null, `${Number(item.amount).toLocaleString()} KRW`),
+                  React.createElement('p', item.category || 'Unknown'),
+                  React.createElement('strong', null, item.description),
+                  React.createElement('strong', null, `${Number(item.amount).toLocaleString()} KRW`),
                   React.createElement('p', null, new Date(item.date).toLocaleDateString())
                 ),
                 React.createElement(
