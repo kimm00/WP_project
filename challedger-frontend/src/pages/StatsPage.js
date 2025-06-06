@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer'; 
+import api from '../services/api'; // Use shared Axios instance
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
@@ -12,7 +12,7 @@ import 'react-calendar/dist/Calendar.css';
 
 // Color palette for charts
 const COLORS = [
-  '#19C197', '#F95C2F', '#FFC940', '#8884d8',
+  '#008080', '#F95C2F', '#FFC940', '#8884d8',
   '#FF7F50', '#00BFFF', '#ADFF2F', '#FF69B4',
   '#A52A2A', '#20B2AA', '#DAA520', '#9370DB',
   '#4682B4'
@@ -62,7 +62,7 @@ function StatsPage() {
         const token = user.token;
         const month = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1).toString().padStart(2, '0');
 
-        const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
+        const res = await api.get(`/api/expenses?month=${month}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -81,7 +81,7 @@ function StatsPage() {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const res = await axios.get('http://localhost:4000/api/challenges/progress', {
+        const res = await api.get('/api/challenges/progress', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const list = Array.isArray(res.data) ? res.data : [res.data];
@@ -91,7 +91,7 @@ function StatsPage() {
         setProgressError('No ongoing challenges found.');
       }
     };
-  
+
     fetchChallenges();
   }, []);
 
@@ -121,7 +121,7 @@ function StatsPage() {
       const jsDay = d.getDay();
       const isoDay = jsDay === 0 ? 6 : jsDay - 1;
       const dayName = days[isoDay];
-  
+
       dailyMap[dayName] = (dailyMap[dayName] || 0) + Number(item.amount);
       categoryMap[item.category] = (categoryMap[item.category] || 0) + Number(item.amount);
     });
@@ -137,7 +137,7 @@ function StatsPage() {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
         const month = chartDate.toISOString().slice(0, 7);
-        const res = await axios.get(`http://localhost:4000/api/expenses?month=${month}`, {
+        const res = await api.get(`/api/expenses?month=${month}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setExpenses(res.data);
@@ -161,7 +161,7 @@ function StatsPage() {
       // Spending Overview
       React.createElement('div', { className: 'section-box' },
         React.createElement('button', { className: 'back-button', onClick: goHome }, '← Back to Home'),
-        React.createElement('h2', { className: 'record-title' }, '📊 Spending Overview'),
+        React.createElement('h2', { className: 'record-title' }, '📊 Weekly Spending Overview'),
         error && React.createElement('p', { className: 'error' }, error),
         React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
           React.createElement(BarChart, { data: dailyData },
@@ -175,7 +175,7 @@ function StatsPage() {
 
       // Category Breakdown
       React.createElement('div', { className: 'section-box' },
-        React.createElement('h2', { className: 'record-title' }, '📂 Category Breakdown'),
+        React.createElement('h2', { className: 'record-title' }, '📂 Weekly Category Breakdown'),
         React.createElement(ResponsiveContainer, { width: '100%', height: 300 },
           React.createElement(PieChart, null,
             React.createElement(Pie, {

@@ -7,7 +7,7 @@ exports.completeChallenge = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    await pool.execute(`UPDATE challenges SET status = 'Completed' WHERE id = ? AND user_id = ?`, [challengeId, userId]);
+    await db.query(`UPDATE challenges SET status = 'Completed' WHERE id = $1 AND user_id = $2`, [challengeId, userId]);
 
     res.json({ success: true, message: 'Challenge marked as completed.' });
   } catch (err) {
@@ -24,7 +24,7 @@ exports.createChallenge = async (req, res) => {
   try {
     await db.query(
       `INSERT INTO challenges (user_id, title, category, goal_amount, start_date, end_date)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+       VALUES ($1, $2, $3, $4, $5, $6)`,
       [userId, title, category, goal_amount, start_date, end_date]
     );
     res.status(201).json({ message: 'Challenge created successfully' });
@@ -45,23 +45,24 @@ exports.getCurrentChallenges = async (req, res) => {
   const today = `${yyyy}-${mm}-${dd}`;
 
   try {
-    const [challengeRows] = await db.query(
+    const result = await db.query(
       `SELECT * FROM challenges
-       WHERE user_id = ? AND start_date <= ? AND end_date >= ?
+       WHERE user_id = $1 AND start_date <= $2 AND end_date >= $2
        ORDER BY start_date DESC`,
-      [userId, today, today]
+      [userId, today]
     );
+    const challengeRows = result.rows;
 
     // Calculate actual spending for each challenge
     const enhanced = await Promise.all(
       challengeRows.map(async (ch) => {
-        const [spendingRows] = await db.query(
+        const spendResult = await db.query(
           `SELECT SUM(amount) AS total FROM expenses
-           WHERE user_id = ? AND category = ? AND DATE(date) BETWEEN DATE(?) AND DATE(?)`,
+           WHERE user_id = $1 AND category = $2 AND date BETWEEN $3 AND $4`,
           [userId, ch.category, ch.start_date, ch.end_date]
         );
 
-        const actual = Number(spendingRows[0].total || 0);
+        const actual = Number(spendResult.rows[0].total || 0);
 
         return {
           ...ch,
@@ -86,22 +87,23 @@ exports.getChallengeProgresses = async (req, res) => {
   const today = `${yyyy}-${mm}-${dd}`;
 
   try {
-    const [challengeRows] = await db.query(
+    const result = await db.query(
       `SELECT * FROM challenges
-       WHERE user_id = ? AND start_date <= ? AND end_date >= ?
+       WHERE user_id = $1 AND start_date <= $2 AND end_date >= $2
        ORDER BY start_date DESC`,
-      [userId, today, today]
+      [userId, today]
     );
+    const challengeRows = result.rows;
 
     const enhanced = await Promise.all(
       challengeRows.map(async (ch) => {
-        const [spendingRows] = await db.query(
+        const spendResult = await db.query(
           `SELECT SUM(amount) AS total FROM expenses
-           WHERE user_id = ? AND category = ? AND date BETWEEN ? AND ?`,
+           WHERE user_id = $1 AND category = $2 AND date BETWEEN $3 AND $4`,
           [userId, ch.category, ch.start_date, ch.end_date]
         );
 
-        const actual = Number(spendingRows[0].total || 0);
+        const actual = Number(spendResult.rows[0].total || 0);
         const goal = Number(ch.goal_amount) || 1;
         const progress = Math.min(Math.round((actual / goal) * 100), 100);
 
@@ -128,20 +130,21 @@ exports.getAllChallengesWithProgress = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const [challengeRows] = await db.query(
-      `SELECT * FROM challenges WHERE user_id = ? ORDER BY start_date DESC`,
+    const result = await db.query(
+      `SELECT * FROM challenges WHERE user_id = $1 ORDER BY start_date DESC`,
       [userId]
     );
+    const challengeRows = result.rows;
 
     const enhanced = await Promise.all(
       challengeRows.map(async (ch) => {
-        const [spendingRows] = await db.query(
+        const spendResult = await db.query(
           `SELECT SUM(amount) AS total FROM expenses
-            WHERE user_id = ? AND category = ? AND date BETWEEN ? AND ?`,
+           WHERE user_id = $1 AND category = $2 AND date BETWEEN $3 AND $4`,
           [userId, ch.category, ch.start_date, ch.end_date]
         );
 
-        const actual = Number(spendingRows[0].total || 0);
+        const actual = Number(spendResult.rows[0].total || 0);
         const goal = Number(ch.goal_amount) || 1;
         const progress = Math.min(Math.round((actual / goal) * 100), 100);
 

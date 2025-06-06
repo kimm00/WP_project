@@ -1,9 +1,9 @@
 // src/pages/HomePage.js
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer'; 
+import Footer from '../components/Footer';
+import api from '../services/api'; // Use shared Axios instance
 
 function HomePage() {
   const navigate = useNavigate();
@@ -25,7 +25,9 @@ function HomePage() {
       try {
         const user = JSON.parse(localStorage.getItem('user')) || {};
         const token = user.token;
-        const res = await axios.get('http://localhost:4000/api/challenges/current', {
+
+        // Call the current challenges API with auth header
+        const res = await api.get('/api/challenges/current', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -81,9 +83,9 @@ function HomePage() {
               { key: i, style: { marginBottom: '16px' } },
               React.createElement('p', { style: { fontWeight: 'bold', marginBottom: '4px' } }, `🎯 ${c.title || 'Untitled'}`),
               React.createElement('p', null, `- Spend less than ${Number(c.goal_amount).toLocaleString()} KRW on ${c.category.toLowerCase()}`),
-              React.createElement('p', null, `- Current spending: ${Number(c.actual_spending || 0).toLocaleString()} KRW`),
+              React.createElement('p', null, `- Current spending: ${Number(c.actual_spending || 0).toLocaleString()} KRW`)
+            )
           ))
-        )
       ),
 
       // Navigation buttons

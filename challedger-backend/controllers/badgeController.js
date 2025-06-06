@@ -6,12 +6,12 @@ exports.getUserBadges = async (req, res) => {
 
   try {
     // Query badges associated with the current user
-    const [rows] = await pool.query(
-      `SELECT badge_name, awarded_at FROM badges WHERE user_id = ?`,
+    const result = await pool.query(
+      `SELECT badge_name, awarded_at FROM badges WHERE user_id = $1`,
       [userId]
     );
     // Send badge list to client
-    res.json({ badges: rows });
+    res.json({ badges: result.rows });
   } catch (err) {
     console.error('❌ Failed to retrieve badges:', err);
     res.status(500).json({ error: 'Failed to retrieve badges', detail: err.message });
