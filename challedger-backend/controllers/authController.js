@@ -1,10 +1,10 @@
-const db = require('../models/db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const db = require('../models/db');  // Import the database connection
+const bcrypt = require('bcrypt');  // Import bcrypt for password hashing and comparison
+const jwt = require('jsonwebtoken');  // Import jsonwebtoken for creating JWT tokens
 
 // Handle user signup
 exports.signup = async (req, res) => {
-  const { email, password, username } = req.body;
+  const { email, password, username } = req.body;  // Extract user input from request body
   try {
     // Hash the password with salt rounds = 10
     const hashed = await bcrypt.hash(password, 10);
@@ -45,4 +45,4 @@ exports.login = async (req, res) => {
     // Send error if login fails
     res.status(500).json({ error: 'Login failed', detail: err.message });
   }
-};
+};g

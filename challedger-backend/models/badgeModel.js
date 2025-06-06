@@ -1,3 +1,4 @@
+// Import the PostgreSQL connection pool
 const pool = require('./db');
 
 // Check if user has completed at least one challenge
@@ -6,6 +7,7 @@ async function hasCompletedAnyChallenge(userId) {
     `SELECT COUNT(*) AS count FROM challenges WHERE user_id = $1 AND status = 'Completed'`,
     [userId]
   );
+  // Return true if the user has completed at least one challenge
   return Number(result.rows[0].count) > 0;
 }
 
@@ -15,6 +17,7 @@ async function hasBadge(userId, badgeName) {
     `SELECT 1 FROM badges WHERE user_id = $1 AND badge_name = $2 LIMIT 1`,
     [userId, badgeName]
   );
+  // Return true if the badge already exists for the user
   return result.rows.length > 0;
 }
 
@@ -25,9 +28,10 @@ async function grantBadge(userId, badgeName) {
     [userId, badgeName]
   );
 
-  console.log('🔍 badge 존재 여부:', result.rows);
+  console.log('🔍 Badge existence check:', result.rows);
 
   if (result.rows.length === 0) {
+    // Insert the new badge into the badges table
     await pool.query(
       `INSERT INTO badges (user_id, badge_name) VALUES ($1, $2)`,
       [userId, badgeName]
@@ -37,6 +41,7 @@ async function grantBadge(userId, badgeName) {
   }
 }
 
+// Export the functions for use in other parts of the project
 module.exports = {
   hasCompletedAnyChallenge,
   hasBadge,

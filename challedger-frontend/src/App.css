@@ -721,6 +721,7 @@ body {
 
 .challenge-delete-button:hover {
   background-color: #F95C2F;
+  transform: translateY(-2px); 
 }
 
 /* -------------------- Expense List -------------------- */
