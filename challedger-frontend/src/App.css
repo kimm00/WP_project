@@ -674,6 +674,48 @@ body {
   color: #f95c2f;
 }
 
+/* Daily Expense Calendar box */
+.expense-calendar-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-top: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* calendar title */
+.expense-calendar-box h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* fix calendar container */
+.react-calendar {
+  width: 100% !important;
+  max-width: 100%;
+  border: none;
+  font-family: inherit;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+/* fix calendar tile overflow */
+.react-calendar__tile {
+  padding: 12px 6px !important;
+  box-sizing: border-box;
+}
+
+/* make sure calendar is inside card */
+.react-calendar__month-view {
+  padding: 0 12px;
+}
+
 /* -------------------- Badge -------------------- */
 .badge-list {
   display: flex;
