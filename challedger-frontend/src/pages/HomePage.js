@@ -56,6 +56,10 @@ function HomePage() {
     // Top site header
     React.createElement(Header),
 
+    React.createElement(
+      'div',
+      { className: 'page-wrapper' },
+
     // Main content area
     React.createElement(
       'div',
@@ -130,7 +134,8 @@ function HomePage() {
           onClick: goToExpenseList
         }, '📜 View Expense History')
       )
-    ),
+    )
+  ),
 
     // Bottom site footer
     React.createElement(Footer)

@@ -70,6 +70,10 @@ function ExpenseListPage() {
     // Header component at the top
     React.createElement(Header),
 
+    React.createElement(
+      'div',
+      { className: 'page-wrapper' },
+
     // Main content container
     React.createElement(
       'div',
@@ -135,6 +139,7 @@ function ExpenseListPage() {
               )
             )
           )
+        )
     ),
 
     // Footer component at the bottom

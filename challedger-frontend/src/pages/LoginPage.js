@@ -37,12 +37,16 @@ function LoginPage() {
 
   return React.createElement(
     'div',
-    { className: 'login-container' },
+    { className: 'page-wrapper' }, 
     
+    React.createElement(
+    'div',
+    { className: 'login-container' },
+
     // App logo
     React.createElement('img', {
       src: '/logo.png',
-      alt: 'ChalLedger 로고',
+      alt: 'ChalLedger logo',
       className: 'login-logo',
     }),
 
@@ -95,7 +99,8 @@ function LoginPage() {
         'Sign up'
       )
     )
-  );
+  )
+ );
 }
 
 export default LoginPage;

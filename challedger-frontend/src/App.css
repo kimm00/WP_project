@@ -35,7 +35,7 @@ body {
 .home-logo,
 .record-logo {
   display: block;
-  width: 140px;
+  width: 200px;
   height: auto;
   margin: 0 auto 24px;
 }
@@ -848,14 +848,18 @@ body {
 
 /* -------------------- Responsive Layout -------------------- */
 
-/*  Mobile (≤600px) */
+/* Mobile (≤600px) */
 @media (max-width: 600px) {
   .page-wrapper,
   .login-container,
   .home-container,
   .record-container,
   .challenge-container,
-  .mypage-container {
+  .mypage-container,
+  .landing-container,
+  .signup-container,
+  .expense-list-container,
+  .stats-container {
     padding: 16px;
     margin: 20px auto;
   }
@@ -868,11 +872,7 @@ body {
     flex: 1 0 45%;
   }
 
-  .calendar-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-
+  .calendar-grid,
   .challenge-progress-box {
     flex-direction: column;
     align-items: center;
@@ -885,25 +885,43 @@ body {
 
   .landing-title {
     font-size: 24px;
+    text-align: center;
+    margin-top: 0;        
   }
 
   .landing-subtitle {
     font-size: 14px;
+    text-align: center;
   }
 
   .landing-left img {
-    width: 140px;
+    text-align: center;
+    padding: 0;
+    margin-bottom: 4px;
+  }
+
+  .landing-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 8px;
   }
 }
 
-/*  Tablet (601px ~ 1024px) */
+
+/* Tablet (601px ~ 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .page-wrapper,
   .login-container,
   .home-container,
   .record-container,
   .challenge-container,
-  .mypage-container {
+  .mypage-container,
+  .landing-container,
+  .signup-container,
+  .expense-list-container,
+  .stats-container {
     padding: 24px;
     margin: 40px auto;
   }
@@ -917,6 +935,7 @@ body {
   }
 
   .landing-left img {
-    width: 200px;
+    width: 350px;
+    padding: 0;
   }
 }
