@@ -1,7 +1,7 @@
 const db = require('../models/db');
 
-describe('db 모듈', () => {
-  test('DB 객체가 정의되어 있어야 함', () => {
+describe('db module', () => {
+  test('DB object should be defined', () => {
     expect(db).toBeDefined();
   });
 });
