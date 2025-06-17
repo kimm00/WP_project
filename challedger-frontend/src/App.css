@@ -20,6 +20,7 @@ body {
 .login-container,
 .home-container,
 .record-container,
+.expense-list-container,
 .challenge-container {
   max-width: 640px;
   margin: 40px auto;
@@ -34,7 +35,7 @@ body {
 .home-logo,
 .record-logo {
   display: block;
-  width: 140px;
+  width: 200px;
   height: auto;
   margin: 0 auto 24px;
 }
@@ -47,6 +48,7 @@ body {
 /* -------------------- Text -------------------- */
 .login-title,
 .home-title,
+.expense-list-title,
 .challenge-title,
 .record-title {
   font-size: 26px;
@@ -93,6 +95,7 @@ body {
 .login-button,
 .home-btn,
 .record-button,
+.expense-delete-button,
 .challenge-button,
 .btn {
   padding: 14px;
@@ -110,6 +113,7 @@ body {
 .login-button:hover,
 .home-btn:hover,
 .record-button:hover,
+.expense-delete-button:hover,
 .challenge-button:hover,
 .btn:hover {
   background-color: var(--color-primary-hover);
@@ -143,7 +147,7 @@ body {
 /* -------------------- Challenge Progress Box-------------------- */
 .challenge-progress-box {
   display: flex;
-  justify-content: space-between; /* 텍스트 왼쪽, 그래프 오른쪽 */
+  justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 24px;
@@ -207,7 +211,7 @@ body {
   width: 280px;
 }
 .challenge-card {
-  flex: 0 1 calc(50% - 1.5rem); /* listed in two */
+  flex: 0 1 calc(50% - 1.5rem);
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -227,7 +231,7 @@ body {
 .challenge-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem; /* Card spacing */
+  gap: 1.5rem;
   justify-content: center; 
 }
 
@@ -325,7 +329,7 @@ body {
 .site-header {
   width: 100%;
   max-width: 100%;
-  padding: 16px 24px;  /* Reduce left and right margins */
+  padding: 16px 24px;
   box-shadow: 0 1px 6px rgba(0,0,0,0.04);
   display: flex;
   justify-content: space-between;
@@ -334,7 +338,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  overflow-x: hidden;  /* Cuts overflowing content */
+  overflow-x: hidden;
 }
 .mypage-container {
   max-width: 720px;
@@ -646,8 +650,8 @@ body {
 
 /* todat date */
 .react-calendar__tile--now {
-  background: #19C197 !important;   /* 부드러운 민트색: 강조 + 통일성 */
-  color: #fff !important;           /* 텍스트는 흰색으로 가독성 확보 */
+  background: #19C197 !important;
+  color: #fff !important;
   font-weight: bold;
   border-radius: 8px;
   transition: background 0.3s ease;
@@ -655,19 +659,61 @@ body {
 
 /* selected date */
 .react-calendar__tile--active {
-  background: #1F2F56 !important;   /* 짙은 네이비 */
+  background: #1F2F56 !important;
   color: white !important;
   font-weight: bold;
   border-radius: 8px;
   transition: background 0.3s ease;
 }
 .react-calendar__tile--active:enabled:hover {
-  background: #2c3f6b !important; /* 네이비 hover 시 약간 밝게 */
+  background: #2c3f6b !important;
 }
 
 /* Change Weekend Color */
 .react-calendar__month-view__days__day--weekend {
   color: #f95c2f;
+}
+
+/* Daily Expense Calendar box */
+.expense-calendar-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-top: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* calendar title */
+.expense-calendar-box h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* fix calendar container */
+.react-calendar {
+  width: 100% !important;
+  max-width: 100%;
+  border: none;
+  font-family: inherit;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+/* fix calendar tile overflow */
+.react-calendar__tile {
+  padding: 12px 6px !important;
+  box-sizing: border-box;
+}
+
+/* make sure calendar is inside card */
+.react-calendar__month-view {
+  padding: 0 12px;
 }
 
 /* -------------------- Badge -------------------- */
@@ -700,6 +746,88 @@ body {
   font-weight: bold;
 }
 
+/* -------------------- Challenge List -------------------- */
+.challenge-delete-button {
+  align-self: center;
+  margin-right: 20px;
+  background-color: #959393;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  height: fit-content;
+  transition: background-color 0.2s ease;
+}
+
+.challenge-delete-button:hover {
+  background-color: #F95C2F;
+  transform: translateY(-2px); 
+}
+
+/* -------------------- Expense List -------------------- */
+.expense-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.expense-colored-card {
+  display: flex;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+  min-height: 88px;
+  position: relative;
+}
+
+.expense-colored-bar {
+  width: 8px;
+  background-color: #6a6a6a;
+}
+
+.expense-card-content {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.expense-card-content p,
+.expense-card-content strong {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.expense-card-content strong {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.expense-delete-button {
+  align-self: center;
+  margin-right: 20px;
+  background-color: #959393;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  height: fit-content;
+  transition: background-color 0.2s ease;
+}
+
+.expense-delete-button:hover {
+  background-color: #F95C2F;
+  transform: translateY(-2px);
+}
+
 /* -------------------- Footer -------------------- */
 .footer {
   background-color: #fefefe;  
@@ -708,7 +836,7 @@ body {
   font-size: 13px;
   color: #aaa;
   margin-top: auto;
-  border-top: 1px solid #f1f1f1; /* Subtle dividing line */
+  border-top: 1px solid #f1f1f1;
 }
 
 .footer a {
@@ -721,17 +849,59 @@ body {
   text-decoration: underline;
 }
 
+/* -------------------- Common Card Layout -------------------- */
+.expense-item {
+  border-left: 5px solid #19C197;
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.expense-item strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.expense-item p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.expense-item button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #f44336;
+  border: none;
+  color: white;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.expense-item button:hover {
+  background-color: #d32f2f;
+}
 
 /* -------------------- Responsive Layout -------------------- */
 
-/*  Mobile (≤600px) */
+/* Mobile (≤600px) */
 @media (max-width: 600px) {
   .page-wrapper,
   .login-container,
   .home-container,
   .record-container,
   .challenge-container,
-  .mypage-container {
+  .mypage-container,
+  .landing-container,
+  .signup-container,
+  .expense-list-container,
+  .stats-container {
     padding: 16px;
     margin: 20px auto;
   }
@@ -744,11 +914,7 @@ body {
     flex: 1 0 45%;
   }
 
-  .calendar-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-
+  .calendar-grid,
   .challenge-progress-box {
     flex-direction: column;
     align-items: center;
@@ -761,25 +927,43 @@ body {
 
   .landing-title {
     font-size: 24px;
+    text-align: center;
+    margin-top: 0;        
   }
 
   .landing-subtitle {
     font-size: 14px;
+    text-align: center;
   }
 
   .landing-left img {
-    width: 140px;
+    text-align: center;
+    padding: 0;
+    margin-bottom: 4px;
+  }
+
+  .landing-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 8px;
   }
 }
 
-/*  Tablet (601px ~ 1024px) */
+
+/* Tablet (601px ~ 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .page-wrapper,
   .login-container,
   .home-container,
   .record-container,
   .challenge-container,
-  .mypage-container {
+  .mypage-container,
+  .landing-container,
+  .signup-container,
+  .expense-list-container,
+  .stats-container {
     padding: 24px;
     margin: 40px auto;
   }
@@ -793,6 +977,7 @@ body {
   }
 
   .landing-left img {
-    width: 200px;
+    width: 350px;
+    padding: 0;
   }
 }

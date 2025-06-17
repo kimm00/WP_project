@@ -4,7 +4,7 @@
 Track your goals, monitor spending, and earn badges
 as you achieve challenges! 🎯💰🏅
 
-<img src="https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/logo-main.png" alt="ChalLedger Logo" width="300"/>
+<img src="https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/logo-main.png" alt="ChalLedger Logo" width="500"/>
 
 ---
 
@@ -70,7 +70,7 @@ ChalLedger rewards users with unique badges based on challenge completion and sp
 
 - **Frontend**: React.js, React Router, CSS (custom responsive design)  
 - **Backend**: Node.js, Express.js  
-- **Database**: MySQL  
+- **Database**: PostgreSQL  
 - **Testing**: React Testing Library  
 - **Performance**: web-vitals (optional Core Web Vitals reporting)
 
@@ -89,6 +89,14 @@ This GIF demonstrates the full flow from creating a challenge to adding expenses
 ![Challenge and Expense Flow](https://raw.githubusercontent.com/kimm00/WP_project/main/challedger-frontend/public/challenge-expense.gif)
 ---
 
+### 📝 Badges
+<img src="https://github.com/user-attachments/assets/89072bae-07d8-46de-b891-14b301a39d87" alt="Challenge Screenshot" width="100%"/>
+
+### 📝 Weekly Spending Overview & Weekly Category Breakdown
+<img src="https://github.com/user-attachments/assets/b6fd9d75-4fdf-4316-bb2d-e79f53b9f6f7" alt="Challenge Screenshot 2" width="100%"/>
+
+
+
 ## 👨‍👩‍👧‍👦 Team Introduction
 
 | Name         | Role                        | Main Contributions                                                                 |
@@ -101,22 +109,8 @@ This GIF demonstrates the full flow from creating a challenge to adding expenses
 
 ## 🧪 How to Run the Project
 
-### 📦 1) Clone the Repository
+### 🚀 Live Demo
 
-```bash
-git clone https://github.com/kimm00/WP_project.git
-cd WP_project
 ```
-
-### 🛠️ 2) Installation & Startup 
-
-```bash
-# backend
-cd challedger-backend
-npm install
-npm run start
-
-# frontend
-cd challedger-frontend
-npm install
-npm start
+https://challedger.onrender.com
+```

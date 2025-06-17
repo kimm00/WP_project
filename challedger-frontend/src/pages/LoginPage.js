@@ -30,19 +30,23 @@ function LoginPage() {
       setError('');
       navigate('/home'); 
     } catch (err) {
-      console.error('❌ 로그인 실패:', err.response?.data || err.message);
+      console.error('❌ Login failed:', err.response?.data || err.message);
       setError(err.response?.data?.error || 'Login failed');
     }
   }  
 
   return React.createElement(
     'div',
-    { className: 'login-container' },
+    { className: 'page-wrapper' }, 
     
+    React.createElement(
+    'div',
+    { className: 'login-container' },
+
     // App logo
     React.createElement('img', {
       src: '/logo.png',
-      alt: 'ChalLedger 로고',
+      alt: 'ChalLedger logo',
       className: 'login-logo',
     }),
 
@@ -95,7 +99,8 @@ function LoginPage() {
         'Sign up'
       )
     )
-  );
+  )
+ );
 }
 
 export default LoginPage;

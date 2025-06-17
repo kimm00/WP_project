@@ -37,11 +37,14 @@ exports.createChallenge = async (req, res) => {
 exports.getCurrentChallenges = async (req, res) => {
   const userId = req.user.id;
 
+  // Get today's date in Korea Standard Time (KST, UTC+9)
+  const now = new Date();
+  const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // +9 hours
+
   // Get today's date in YYYY-MM-DD format
-  const todayObj = new Date();
-  const yyyy = todayObj.getFullYear();
-  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
-  const dd = String(todayObj.getDate()).padStart(2, '0');
+  const yyyy = koreaTime.getFullYear(); 
+  const mm = String(koreaTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(koreaTime.getDate()).padStart(2, '0');
   const today = `${yyyy}-${mm}-${dd}`;
 
   try {
@@ -80,10 +83,12 @@ exports.getCurrentChallenges = async (req, res) => {
 // Get progress info (percent spent) for current challenges
 exports.getChallengeProgresses = async (req, res) => {
   const userId = req.user.id;
-  const todayObj = new Date();
-  const yyyy = todayObj.getFullYear();
-  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
-  const dd = String(todayObj.getDate()).padStart(2, '0');
+  const now = new Date();
+  const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  
+  const yyyy = koreaTime.getFullYear();
+  const mm = String(koreaTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(koreaTime.getDate()).padStart(2, '0');
   const today = `${yyyy}-${mm}-${dd}`;
 
   try {
@@ -170,5 +175,27 @@ exports.getAllChallengesWithProgress = async (req, res) => {
     res.json(enhanced);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch all challenges', detail: err.message });
+  }
+};
+
+// Delete a specific challenge
+exports.deleteChallenge = async (req, res) => {
+  const userId = req.user.id;
+  const challengeId = req.params.id;
+
+  try {
+    const result = await db.query(
+      'DELETE FROM challenges WHERE id = $1 AND user_id = $2 RETURNING *',
+      [challengeId, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Challenge not found or not authorized' });
+    }
+
+    res.status(200).json({ message: 'Challenge deleted successfully' });
+  } catch (err) {
+    console.error('❌ Failed to delete challenge:', err);
+    res.status(500).json({ error: 'Failed to delete challenge', detail: err.message });
   }
 };

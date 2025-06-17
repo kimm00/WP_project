@@ -93,6 +93,10 @@ function ChallengePage() {
     // Top navigation
     React.createElement(Header),
 
+    React.createElement(
+      'div',
+      { className: 'page-wrapper' },
+
     // Challenge creation UI
     React.createElement(
       'div',
@@ -176,7 +180,8 @@ function ChallengePage() {
           '✅ Start Challenge'
         )
       )
-    ),
+    )
+  ),
 
     // Footer
     React.createElement(Footer)
