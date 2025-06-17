@@ -4,7 +4,7 @@ import ExpenseListPage from '../pages/ExpenseListPage';
 import { BrowserRouter } from 'react-router-dom';
 import api from '../services/api';
 
-// 모킹
+// Mock API and components
 jest.mock('../services/api');
 jest.mock('../components/Header', () => () => <div>Mock Header</div>);
 jest.mock('../components/Footer', () => () => <div>Mock Footer</div>);
@@ -27,6 +27,7 @@ describe('ExpenseListPage', () => {
     }
   ];
 
+  // Utility to render component with router context
   const renderWithRouter = () =>
     render(
       <BrowserRouter>
@@ -34,13 +35,14 @@ describe('ExpenseListPage', () => {
       </BrowserRouter>
     );
 
+  // Reset mocks before each test
   beforeEach(() => {
     localStorage.clear();
     jest.clearAllMocks();
   });
 
   test('renders no expenses if user not logged in or no data', async () => {
-    api.get.mockResolvedValueOnce({ data: [] }); // 빈 응답
+    api.get.mockResolvedValueOnce({ data: [] }); // Mock empty API response
     localStorage.setItem('user', JSON.stringify({ token: 'fake-token' }));
 
     renderWithRouter();
@@ -54,7 +56,7 @@ describe('ExpenseListPage', () => {
 
     renderWithRouter();
 
-    // 기다려야 함 (useEffect에서 비동기 호출이므로)
+    // Wait for expenses to appear (because data is fetched asynchronously)
     await waitFor(() => {
       expect(screen.getByText(/Lunch at cafe/i)).toBeInTheDocument();
       expect(screen.getByText(/Bus fare/i)).toBeInTheDocument();
@@ -68,19 +70,20 @@ describe('ExpenseListPage', () => {
     api.delete.mockResolvedValueOnce({});
     localStorage.setItem('user', JSON.stringify({ token: 'fake-token' }));
 
-    // confirm 창 모킹
+    // Mock confirm and alert
     window.confirm = jest.fn(() => true);
     window.alert = jest.fn();
 
     renderWithRouter();
 
-    // 렌더 완료 대기
+    // Wait for content to be rendered
     await screen.findByText(/Lunch at cafe/);
 
     const deleteButtons = screen.getAllByText('Delete');
     fireEvent.click(deleteButtons[0]);
 
     expect(window.confirm).toHaveBeenCalled();
+
     await waitFor(() =>
       expect(api.delete).toHaveBeenCalledWith('/api/expenses/1', {
         headers: { Authorization: 'Bearer fake-token' }

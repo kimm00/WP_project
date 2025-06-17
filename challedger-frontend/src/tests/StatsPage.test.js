@@ -3,19 +3,23 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import StatsPage from '../pages/StatsPage';
 
-// api 모킹
+// Mock API module
 jest.mock('../services/api', () => ({
   get: jest.fn(),
 }));
 
-// react-calendar 모킹
+// Mock react-calendar to simulate a simple date picker
 jest.mock('react-calendar', () => {
   return function MockCalendar({ onChange }) {
-    return <div data-testid="calendar" onClick={() => onChange(new Date())}>Mock Calendar</div>;
+    return (
+      <div data-testid="calendar" onClick={() => onChange(new Date())}>
+        Mock Calendar
+      </div>
+    );
   };
 });
 
-// recharts 내부 요소 모킹 (예: ResponsiveContainer, PieChart 등)
+// Mock recharts component to avoid rendering actual charts
 jest.mock('recharts', () => {
   const Original = jest.requireActual('recharts');
   return {
@@ -24,15 +28,18 @@ jest.mock('recharts', () => {
   };
 });
 
-// Header/Footer도 필요한 경우 간단히 모킹
+// Mock Header and Footer components
 jest.mock('../components/Header', () => () => <div>Mock Header</div>);
 jest.mock('../components/Footer', () => () => <div>Mock Footer</div>);
 
+// Import mocked api after jest.mock
 import api from '../services/api';
 
 beforeEach(() => {
+  // Set mock user token in localStorage
   localStorage.setItem('user', JSON.stringify({ token: 'test-token' }));
 
+  // Define API mock responses
   api.get.mockImplementation((url) => {
     if (url.startsWith('/api/expenses')) {
       return Promise.resolve({
@@ -66,6 +73,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  // Clean up mocks after each test
   jest.clearAllMocks();
   localStorage.clear();
 });
@@ -78,6 +86,7 @@ describe('StatsPage', () => {
       </Router>
     );
 
+    // Check for presence of key text after API data loads
     await waitFor(() => {
       expect(screen.getByText(/Weekly Spending Overview/i)).toBeInTheDocument();
     });

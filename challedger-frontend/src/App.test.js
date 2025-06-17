@@ -3,7 +3,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-// ✅ 페이지 컴포넌트 mock
+//  mock
 jest.mock('./pages/LandingPage', () => () => 'Landing Page');
 jest.mock('./pages/LoginPage', () => () => 'Login Page');
 jest.mock('./pages/SignupPage', () => () => 'Signup Page');
@@ -13,7 +13,7 @@ jest.mock('./pages/ChallengePage', () => () => 'Challenge Page');
 jest.mock('./pages/StatsPage', () => () => 'Stats Page');
 jest.mock('./pages/MyPage', () => () => 'My Page');
 
-// ✅ 테스트
+// test
 describe('App Routing', () => {
   it('renders LandingPage at root path "/"', () => {
     window.history.pushState({}, '', '/');

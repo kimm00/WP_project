@@ -4,7 +4,7 @@ import { render, screen, waitFor, fireEvent, within } from '@testing-library/rea
 import MyPage from '../pages/MyPage';
 import { MemoryRouter } from 'react-router-dom';
 
-// ✅ api 모듈 mock
+// ✅ Mock the API module
 jest.mock('../services/api', () => ({
   get: jest.fn()
 }));
@@ -18,7 +18,7 @@ describe('MyPage', () => {
   };
 
   beforeEach(() => {
-    // ✅ localStorage mock 설정
+    // ✅ Mock localStorage
     Object.defineProperty(window, 'localStorage', {
       value: {
         getItem: jest.fn((key) => {
@@ -32,7 +32,7 @@ describe('MyPage', () => {
       writable: true,
     });
 
-    // ✅ API 응답 mock
+    // ✅ Mock API responses
     api.get.mockImplementation((url) => {
       if (url === '/api/challenges/all') {
         return Promise.resolve({
@@ -73,17 +73,18 @@ describe('MyPage', () => {
   });
 
   it('renders user info, badges, and challenge history', async () => {
+    // ✅ Render component with router
     render(
       React.createElement(MemoryRouter, null,
         React.createElement(MyPage)
       )
     );
 
-    // ✅ 사용자 정보 표시
+    // ✅ User info should appear
     expect(await screen.findByText('TestUser')).toBeInTheDocument();
     expect(await screen.findByText('test@example.com')).toBeInTheDocument();
 
-    // ✅ 배지 섹션에서만 텍스트 탐색
+    // ✅ Check badges section
     const badgeSection = await screen.findByText('Badges');
     const badgeBox = badgeSection.closest('.section-box');
     const badgeScope = within(badgeBox);
@@ -91,7 +92,7 @@ describe('MyPage', () => {
     expect(badgeScope.getByText('Food Budget Destroyer')).toBeInTheDocument();
     expect(badgeScope.getByText('Transport Tracker')).toBeInTheDocument();
 
-    // ✅ 챌린지 섹션에서만 텍스트 탐색
+    // ✅ Check challenge section
     const challengeTitle = await screen.findByText('My Challenges');
     const challengeBox = challengeTitle.closest('.section-box');
     const challengeScope = within(challengeBox);
@@ -113,19 +114,19 @@ describe('MyPage', () => {
     const historyBox = historySection.closest('.section-box');
     const historyScope = within(historyBox);
 
-    // ✅ Success 필터 확인
+    // ✅ Click "Success" filter and check result
     fireEvent.click(screen.getByText('Success'));
     await waitFor(() => {
       expect(historyScope.getByText(/✅ Food Challenge/)).toBeInTheDocument();
     });
 
-    // ✅ Fail 필터 확인
+    // ✅ Click "Fail" filter and check result
     fireEvent.click(screen.getByText('Fail'));
     await waitFor(() => {
       expect(historyScope.getByText(/❌ Transport Tracker/)).toBeInTheDocument();
     });
 
-    // ✅ All 필터 확인
+    // ✅ Click "All" filter and check both results
     fireEvent.click(screen.getByText('All'));
     await waitFor(() => {
       expect(historyScope.getByText(/✅ Food Challenge/)).toBeInTheDocument();

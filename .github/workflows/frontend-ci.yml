@@ -2,11 +2,9 @@ name: Frontend CI
 
 on:
   push:
-    branches:
-      - sodam
+    branches: [ main, CI ]
   pull_request:
-    branches:
-      - sodam
+    branches: [ main, CI ]
 
 jobs:
   build:
@@ -26,7 +24,7 @@ jobs:
         working-directory: ./challedger-frontend
         run: npm install
 
-      - name: Run Tests # ✅ 이 부분을 새로 추가
+      - name: Run Tests
         working-directory: ./challedger-frontend
         run: npm test -- --watchAll=false
 
