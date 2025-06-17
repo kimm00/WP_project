@@ -2,9 +2,9 @@ name: Backend CI
 
 on:
   push:
-    branches: [ main, doyi ]
+    branches: [ main, CI ]
   pull_request:
-    branches: [ main, doyi ]
+    branches: [ main, CI ]
 
 jobs:
   build:
@@ -20,9 +20,9 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
         working-directory: ./challedger-backend
+        run: npm install
 
       - name: Run tests
-        run: npm test
         working-directory: ./challedger-backend
+        run: npm test
