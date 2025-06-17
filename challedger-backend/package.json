@@ -4,7 +4,7 @@
   "description": "Backend for ChalLedger, challenge-based expense tracking app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"No tests yet\" && exit 0",
+    "test": "jest --runInBand",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },

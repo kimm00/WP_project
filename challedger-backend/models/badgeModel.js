@@ -36,8 +36,10 @@ async function grantBadge(userId, badgeName) {
       `INSERT INTO badges (user_id, badge_name) VALUES ($1, $2)`,
       [userId, badgeName]
     );
+    return [badgeName];
   } else {
     console.log(`ℹ️ Badge '${badgeName}' already exists for user ${userId}`);
+    return [];
   }
 }
 
