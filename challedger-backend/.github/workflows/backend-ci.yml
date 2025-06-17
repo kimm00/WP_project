@@ -20,9 +20,9 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
+        working-directory: ./challedger-backend
         run: npm install
-        working-directory: ./challedger-backend
-
+        
       - name: Run tests
-        run: npm test
         working-directory: ./challedger-backend
+        run: npm test
