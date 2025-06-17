@@ -1,61 +1,64 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import RecordPage from '../pages/RecordPage';
 import { BrowserRouter } from 'react-router-dom';
+import api from '../services/api'; // ✅ 수정된 경로
 
-jest.mock('../services/api', () => ({
-  post: jest.fn(() => Promise.resolve({ data: {} })),
-}));
+// 모킹
+jest.mock('../services/api');
+jest.mock('../components/Header', () => () => <div>Mock Header</div>);
+jest.mock('../components/Footer', () => () => <div>Mock Footer</div>);
 
-// ✅ 모의 유저 세팅
-beforeEach(() => {
-  const mockUser = {
-    email: 'test@example.com',
-    username: 'TestUser',
-    token: 'mockToken'
-  };
-  window.localStorage.setItem('user', JSON.stringify(mockUser));
-});
-
-// ✅ 모의 alert 설정
-beforeAll(() => {
-  window.alert = jest.fn();
-});
-
-// ✅ 렌더 함수
-function renderRecordPage() {
-  return render(
-    <BrowserRouter>
-      <RecordPage />
-    </BrowserRouter>
-  );
-}
-
-test('renders RecordPage form and submits data', async () => {
-  renderRecordPage();
-
-  // ✅ ID 기반 label 찾기
-  fireEvent.change(screen.getByLabelText(/Date/i), {
-    target: { value: '2025-06-02' }
+describe('RecordPage', () => {
+  beforeEach(() => {
+    localStorage.clear();
   });
 
-  fireEvent.change(screen.getByLabelText(/Amount/i), {
-    target: { value: '10000' }
+  function renderWithRouter() {
+    render(
+      <BrowserRouter>
+        <RecordPage />
+      </BrowserRouter>
+    );
+  }
+
+  test('renders title and submit button', () => {
+    renderWithRouter();
+    expect(screen.getByText(/🧾 Record Your Expense/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /💾 Save Expense/i })).toBeInTheDocument();
   });
 
-  fireEvent.change(screen.getByLabelText(/Category/i), {
-    target: { value: 'Food' }
+  test('shows alert if not logged in', () => {
+    renderWithRouter();
+    window.alert = jest.fn();
+
+    fireEvent.click(screen.getByRole('button', { name: /💾 Save Expense/i }));
+
+    expect(window.alert).toHaveBeenCalledWith('Login required');
   });
 
-  fireEvent.change(screen.getByLabelText(/Note/i), {
-    target: { value: 'Lunch' }
-  });
+  test('submits form successfully with token', async () => {
+    api.post.mockResolvedValueOnce({});
+    localStorage.setItem('user', JSON.stringify({ token: 'fake-token' }));
 
-  fireEvent.click(screen.getByRole('button', { name: /Save Expense/i }));
+    renderWithRouter();
 
-  await waitFor(() => {
-    expect(window.alert).toHaveBeenCalledWith(
-      '✅ Your spending has been successfully recorded!'
+    const amountInput = screen.getByRole('spinbutton'); // input[type="number"]
+    fireEvent.change(amountInput, { target: { value: '10000' } });
+
+    fireEvent.click(screen.getByRole('button', { name: /💾 Save Expense/i }));
+
+    expect(api.post).toHaveBeenCalledWith(
+      '/api/expenses',
+      expect.objectContaining({
+        amount: '10000',
+        category: 'Food',
+        date: expect.any(String),
+        description: ''
+      }),
+      expect.objectContaining({
+        headers: { Authorization: 'Bearer fake-token' }
+      })
     );
   });
 });
