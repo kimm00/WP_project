@@ -17,4 +17,18 @@ router.get('/tables', async (req, res) => {
   }
 });
 
+router.get('/table/:name', async (req, res) => {
+    const tableName = req.params.name;
+  
+    try {
+      const [rows] = await db.query(`SELECT * FROM ${tableName} LIMIT 50`);
+      res.json({ rows });
+    } catch (err) {
+      res.status(500).json({
+        error: `Failed to fetch data from table '${tableName}'`,
+        detail: err.message
+      });
+    }
+  });
+
 module.exports = router;

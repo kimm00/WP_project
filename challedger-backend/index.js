@@ -34,7 +34,7 @@ app.get('/test-db', async (req, res) => {
     res.json({ result: rows[0].result }); // { result: 2 }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'DB 연결 실패' });
+    res.status(500).json({ error: 'DB connection failed' });
   }
 });
 
