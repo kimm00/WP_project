@@ -50,3 +50,6 @@ app.use('/api/challenges', challengeRoutes);
 
 const badgeRoutes = require('./routes/badge');
 app.use('/api/badges', badgeRoutes);
+
+const debugRoutes = require('./routes/debug');
+app.use('/api/debug', debugRoutes);
