@@ -17,18 +17,20 @@ router.get('/tables', async (req, res) => {
   }
 });
 
+// GET /api/debug/table/:name
 router.get('/table/:name', async (req, res) => {
-    const tableName = req.params.name;
-  
-    try {
-      const [rows] = await db.query(`SELECT * FROM ${tableName} LIMIT 50`);
-      res.json({  rows: result.rows });
-    } catch (err) {
-      res.status(500).json({
-        error: `Failed to fetch data from table '${tableName}'`,
-        detail: err.message
-      });
-    }
-  });
+  const tableName = req.params.name;
+
+  try {
+    const result = await pool.query(`SELECT * FROM ${tableName} LIMIT 50`);
+    res.json({ rows: result.rows }); 
+  } catch (err) {
+    console.error(`❌ Failed to fetch data from table '${tableName}':`, err);
+    res.status(500).json({
+      error: `Failed to fetch data from table '${tableName}'`,
+      detail: err.message
+    });
+  }
+});
 
 module.exports = router;
