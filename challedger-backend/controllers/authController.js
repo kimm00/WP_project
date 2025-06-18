@@ -4,22 +4,31 @@ const jwt = require('jsonwebtoken');  // Import jsonwebtoken for creating JWT to
 
 // Handle user signup
 exports.signup = async (req, res) => {
-  const { email, password, username } = req.body;  // Extract user input from request body
+  const { email, password, username } = req.body;
+
+  if (!username || username.length < 3 || username.length > 20) {
+    return res.status(400).json({ error: 'Username must be 3-20 characters long.' });
+  }
+
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error: 'Password must be at least 8 characters and include a letter, a number, and a special character.'
+    });
+  }
+
   try {
-    // Hash the password with salt rounds = 10
     const hashed = await bcrypt.hash(password, 10);
-    // Insert the new user into the database
     await db.query(
       'INSERT INTO users (username, email, password) VALUES ($1, $2, $3)',
       [username, email, hashed]
     );
-    // Send success response
     res.status(201).json({ message: 'Signup successful' });
   } catch (err) {
-    // Send error if signup fails
     res.status(500).json({ error: 'Signup failed', detail: err.message });
   }
 };
+
 
 // Handle user login
 exports.login = async (req, res) => {
