@@ -70,88 +70,94 @@ function RecordPage() {
   return React.createElement(
     React.Fragment,
     null,
-
-    //  Header section
+  
+    // Header
     React.createElement(Header),
-
-    // Expense form card
+  
+    // Wrapper for center alignment and spacing
     React.createElement(
       'div',
-      { className: 'record-container' },
-
-      // Logo
-      React.createElement('img', {
-        src: '/logo.png',
-        alt: 'ChalLedger Logo',
-        className: 'record-logo'
-      }),
-
-      // Back button
+      { className: 'page-wrapper' },
+  
+      // Expense form container
       React.createElement(
-        'button',
-        { className: 'back-button', onClick: goHome },
-        '← Back to Home'
-      ),
-
-      // Title
-      React.createElement('h1', { className: 'record-title' }, '🧾 Record Your Expense'),
-
-      // Input form
-      React.createElement(
-        'form',
-        { className: 'record-form', onSubmit: handleSubmit },
-
-        React.createElement('label', null, 'Date'),
-        React.createElement('input', {
-          type: 'date',
-          value: date,
-          onChange: (e) => setDate(e.target.value),
-          className: 'record-input'
+        'div',
+        { className: 'record-container' },
+  
+        // Logo
+        React.createElement('img', {
+          src: '/logo.png',
+          alt: 'ChalLedger Logo',
+          className: 'record-logo'
         }),
-
-        React.createElement('label', null, 'Amount (KRW)'),
-        React.createElement('input', {
-          type: 'number',
-          value: amount,
-          onChange: (e) => setAmount(e.target.value),
-          className: 'record-input',
-          required: true
-        }),
-
-        React.createElement('label', null, 'Category'),
-        React.createElement(
-          'select',
-          {
-            value: category,
-            onChange: (e) => setCategory(e.target.value),
-            className: 'record-input'
-          },
-          categoryOptions.map((opt) =>
-            React.createElement('option', { key: opt, value: opt }, opt)
-          )
-        ),
-
-        React.createElement('label', null, 'Note (optional)'),
-        React.createElement('input', {
-          type: 'text',
-          value: note,
-          onChange: (e) => setNote(e.target.value),
-          className: 'record-input'
-        }),
-
+  
+        // Back button
         React.createElement(
           'button',
-          { type: 'submit', className: 'record-button' },
-          '💾 Save Expense'
+          { className: 'back-button', onClick: goHome },
+          '← Back to Home'
         ),
-
-        // Error display
-        error &&
+  
+        // Title
+        React.createElement('h1', { className: 'record-title' }, '🧾 Record Your Expense'),
+  
+        // Input form
+        React.createElement(
+          'form',
+          { className: 'record-form', onSubmit: handleSubmit },
+  
+          React.createElement('label', null, 'Date'),
+          React.createElement('input', {
+            type: 'date',
+            value: date,
+            onChange: (e) => setDate(e.target.value),
+            className: 'record-input'
+          }),
+  
+          React.createElement('label', null, 'Amount (KRW)'),
+          React.createElement('input', {
+            type: 'number',
+            value: amount,
+            onChange: (e) => setAmount(e.target.value),
+            className: 'record-input',
+            required: true
+          }),
+  
+          React.createElement('label', null, 'Category'),
           React.createElement(
-            'p',
-            { style: { color: 'red', fontSize: '14px', marginTop: '10px' } },
-            error
-          )
+            'select',
+            {
+              value: category,
+              onChange: (e) => setCategory(e.target.value),
+              className: 'record-input'
+            },
+            categoryOptions.map((opt) =>
+              React.createElement('option', { key: opt, value: opt }, opt)
+            )
+          ),
+  
+          React.createElement('label', null, 'Note (optional)'),
+          React.createElement('input', {
+            type: 'text',
+            value: note,
+            onChange: (e) => setNote(e.target.value),
+            className: 'record-input'
+          }),
+  
+          React.createElement(
+            'button',
+            { type: 'submit', className: 'record-button' },
+            '💾 Save Expense'
+          ),
+  
+          // Error display
+          error &&
+            React.createElement(
+              'p',
+              { style: { color: 'red', fontSize: '14px', marginTop: '10px' } },
+              error
+            )
+        )
       )
     ),
 

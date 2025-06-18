@@ -1,8 +1,8 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "ChalLedger",
+  "name": "ChalLedger - Challenge and Expense Tracker",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#19C197",
   "background_color": "#ffffff"
 }

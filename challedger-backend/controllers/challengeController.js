@@ -42,9 +42,9 @@ exports.getCurrentChallenges = async (req, res) => {
   const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000); // +9 hours
 
   // Get today's date in YYYY-MM-DD format
-  const yyyy = todayObj.getFullYear();
-  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
-  const dd = String(todayObj.getDate()).padStart(2, '0');
+  const yyyy = koreaTime.getFullYear(); 
+  const mm = String(koreaTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(koreaTime.getDate()).padStart(2, '0');
   const today = `${yyyy}-${mm}-${dd}`;
 
   try {
@@ -83,10 +83,12 @@ exports.getCurrentChallenges = async (req, res) => {
 // Get progress info (percent spent) for current challenges
 exports.getChallengeProgresses = async (req, res) => {
   const userId = req.user.id;
-  const todayObj = new Date();
-  const yyyy = todayObj.getFullYear();
-  const mm = String(todayObj.getMonth() + 1).padStart(2, '0');
-  const dd = String(todayObj.getDate()).padStart(2, '0');
+  const now = new Date();
+  const koreaTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  
+  const yyyy = koreaTime.getFullYear();
+  const mm = String(koreaTime.getMonth() + 1).padStart(2, '0');
+  const dd = String(koreaTime.getDate()).padStart(2, '0');
   const today = `${yyyy}-${mm}-${dd}`;
 
   try {

@@ -4,7 +4,7 @@
   "description": "Backend for ChalLedger, challenge-based expense tracking app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --runInBand",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -21,6 +21,7 @@
     "pg": "^8.16.0"
   },
   "devDependencies": {
+    "jest": "^30.0.0",
     "nodemon": "^3.1.10"
   }
 }

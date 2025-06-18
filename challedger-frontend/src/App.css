@@ -35,7 +35,7 @@ body {
 .home-logo,
 .record-logo {
   display: block;
-  width: 140px;
+  width: 200px;
   height: auto;
   margin: 0 auto 24px;
 }
@@ -674,6 +674,48 @@ body {
   color: #f95c2f;
 }
 
+/* Daily Expense Calendar box */
+.expense-calendar-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-top: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* calendar title */
+.expense-calendar-box h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* fix calendar container */
+.react-calendar {
+  width: 100% !important;
+  max-width: 100%;
+  border: none;
+  font-family: inherit;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+/* fix calendar tile overflow */
+.react-calendar__tile {
+  padding: 12px 6px !important;
+  box-sizing: border-box;
+}
+
+/* make sure calendar is inside card */
+.react-calendar__month-view {
+  padding: 0 12px;
+}
+
 /* -------------------- Badge -------------------- */
 .badge-list {
   display: flex;
@@ -783,6 +825,7 @@ body {
 
 .expense-delete-button:hover {
   background-color: #F95C2F;
+  transform: translateY(-2px);
 }
 
 /* -------------------- Footer -------------------- */
@@ -847,14 +890,18 @@ body {
 
 /* -------------------- Responsive Layout -------------------- */
 
-/*  Mobile (≤600px) */
+/* Mobile (≤600px) */
 @media (max-width: 600px) {
   .page-wrapper,
   .login-container,
   .home-container,
   .record-container,
   .challenge-container,
-  .mypage-container {
+  .mypage-container,
+  .landing-container,
+  .signup-container,
+  .expense-list-container,
+  .stats-container {
     padding: 16px;
     margin: 20px auto;
   }
@@ -867,11 +914,7 @@ body {
     flex: 1 0 45%;
   }
 
-  .calendar-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-
+  .calendar-grid,
   .challenge-progress-box {
     flex-direction: column;
     align-items: center;
@@ -884,25 +927,43 @@ body {
 
   .landing-title {
     font-size: 24px;
+    text-align: center;
+    margin-top: 0;        
   }
 
   .landing-subtitle {
     font-size: 14px;
+    text-align: center;
   }
 
   .landing-left img {
-    width: 140px;
+    text-align: center;
+    padding: 0;
+    margin-bottom: 4px;
+  }
+
+  .landing-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 8px;
   }
 }
 
-/*  Tablet (601px ~ 1024px) */
+
+/* Tablet (601px ~ 1024px) */
 @media (min-width: 601px) and (max-width: 1024px) {
   .page-wrapper,
   .login-container,
   .home-container,
   .record-container,
   .challenge-container,
-  .mypage-container {
+  .mypage-container,
+  .landing-container,
+  .signup-container,
+  .expense-list-container,
+  .stats-container {
     padding: 24px;
     margin: 40px auto;
   }
@@ -916,6 +977,7 @@ body {
   }
 
   .landing-left img {
-    width: 200px;
+    width: 350px;
+    padding: 0;
   }
 }

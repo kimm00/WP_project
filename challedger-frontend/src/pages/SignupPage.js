@@ -40,11 +40,16 @@ function SignupPage() {
   }
 
   return React.createElement(
+      'div',
+      { className: 'page-wrapper' },
+    
+    React.createElement(
     'div',
     { className: 'login-container' }, // Reuse login styles
+
     React.createElement('img', {
       src: '/logo.png',
-      alt: 'ChalLedger 로고',
+      alt: 'ChalLedger logo',
       className: 'login-logo',
     }),
     React.createElement('h1', { className: 'login-title' }, 'Create Your Account'),
@@ -115,7 +120,8 @@ function SignupPage() {
         'Log in'
       )
     )
-  );
+  )
+ );
 }
 
 export default SignupPage;
