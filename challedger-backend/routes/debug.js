@@ -22,7 +22,7 @@ router.get('/table/:name', async (req, res) => {
   
     try {
       const [rows] = await db.query(`SELECT * FROM ${tableName} LIMIT 50`);
-      res.json({ rows });
+      res.json({  rows: result.rows });
     } catch (err) {
       res.status(500).json({
         error: `Failed to fetch data from table '${tableName}'`,
